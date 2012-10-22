@@ -25,6 +25,18 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{b82345b6-ed29-4a67-8425-7630739aff36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Galaxy">
+      <UniqueIdentifier>{0c8e7f4d-17cb-4ca6-b740-72def3fee05c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Galaxy">
+      <UniqueIdentifier>{91f0ec2d-a172-4812-a40f-b9a1352cb5a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Defines">
+      <UniqueIdentifier>{ac0192c8-1898-46b8-acd7-09e611c5280d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Defines">
+      <UniqueIdentifier>{ca5607c4-0003-4731-aef0-9078f8e9ef98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppManager.cpp">
@@ -51,6 +63,30 @@
     <ClCompile Include="SceneMainMenu.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="StarSystem.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="OrionSpur.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="StellarGroup.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="Defines_math.cpp">
+      <Filter>Source Files\Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="AsteroidBelt.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp">
@@ -72,6 +108,30 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Planet.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="StarSystem.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="HabitableObject.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="OrionSpur.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="StellarGroup.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines_Math.h">
+      <Filter>Header Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="AsteroidBelt.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
