@@ -19,25 +19,21 @@ bool SFGManager::Initialise()
 	return true;
 }
 
-bool SFGManager::Update(float a_DeltaT)
+void SFGManager::Update(float a_DeltaT)
 {
 	if(m_Initialised)
 	{
 		m_pSFGDesktop->Update(a_DeltaT);
-		return true;
 	}
-	return false;
 }
 
-bool SFGManager::Render(sf::RenderTarget& a_RenderTarget)
+void SFGManager::Render(sf::RenderTarget& a_RenderTarget)
 {
 	if(m_Initialised)
 	{
 		// Draw the GUI
 		m_sfgui.Display(a_RenderTarget);
-		return true;
 	}
-	return false;
 }
 
 void SFGManager::HandleEvent(sf::Event a_Event)
@@ -68,6 +64,16 @@ bool AddWidget(sfg::SharedPtr<sfg::Widget> a_Widget)
 	if(SFGManager::GetSingleton().CheckInitialised())
 	{
 		SFGManager::GetSingleton().GetSFGDesktop()->Add(a_Widget);
+		return true;
+	}
+	return false;
+}
+
+bool ClearWidget(sfg::SharedPtr<sfg::Widget> a_Widget)
+{
+	if(SFGManager::GetSingleton().CheckInitialised())
+	{
+		SFGManager::GetSingleton().GetSFGDesktop()->Remove(a_Widget);
 		return true;
 	}
 	return false;

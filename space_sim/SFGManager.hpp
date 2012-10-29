@@ -19,8 +19,8 @@ public:
 	bool Initialise();
 	bool CheckInitialised();
 	//
-	bool Update(float a_DeltaT);
-	bool Render(sf::RenderTarget& a_RenderTarget);
+	void Update(float a_DeltaT);
+	void Render(sf::RenderTarget& a_RenderTarget);
 	void HandleEvent(sf::Event a_Event);
 	//
 	sfg::SharedPtr<sfg::Desktop> GetSFGDesktop();
@@ -34,5 +34,6 @@ private:
 };
 
 bool AddWidget(sfg::SharedPtr<sfg::Widget> a_Widget);
+bool ClearWidget(sfg::SharedPtr<sfg::Widget> a_Widget);
 
 #endif SFG_MANAGER_HPP

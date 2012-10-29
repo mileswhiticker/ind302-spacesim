@@ -1,6 +1,8 @@
 #include "AppManager.hpp"
+
 #include "SimManager.hpp"
 #include "SFGManager.hpp"
+#include "SceneManager.hpp"
 
 #include <SFML\Graphics\RenderWindow.hpp>
 #include <SFML\Window\Event.hpp>
@@ -27,13 +29,7 @@ bool AppManager::Initialise()
 	//
 	SFGManager::GetSingleton().Initialise();
 	SimManager::GetSingleton().Initialise();
-	//
-	/*m_BackgroundTexture.loadFromFile("../media/background.jpg");
-	m_BackgroundSprite.setTexture(m_BackgroundTexture);
-	sf::Vector2f windowDims = GetWindowDimensions();
-	sf::Vector2u texSize = m_BackgroundTexture.getSize();
-	sf::Vector2f newScale = sf::Vector2f(windowDims.x / float(texSize.x), windowDims.y / float(texSize.y));
-	m_BackgroundSprite.setScale(newScale);*/
+	SceneManager::GetSingleton().LaunchScene(MAIN_MENU);
 	//
 	return true;
 }
@@ -41,6 +37,7 @@ bool AppManager::Initialise()
 void AppManager::Update(float a_DeltaT)
 {
 	SimManager::GetSingleton().Update(a_DeltaT);
+	SceneManager::GetSingleton().Update(a_DeltaT);
 	SFGManager::GetSingleton().Update(a_DeltaT);
 }
 
@@ -83,10 +80,12 @@ bool AppManager::Render()
 	{
 		// Clear screen
 		m_pRenderWindow->clear();
-
+		//why does appmanager have a bg?
 		m_pRenderWindow->draw(m_BackgroundSprite);
 
 		SimManager::GetSingleton().Render(*m_pRenderWindow);
+		SceneManager::GetSingleton().Render(*m_pRenderWindow);
+		
 		SFGManager::GetSingleton().Render(*m_pRenderWindow);
 
 		//draw the renderwindow

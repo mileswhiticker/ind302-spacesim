@@ -2,6 +2,13 @@
 #define SCENE_MANAGER_HPP
 
 #include "SceneTypes.h"
+#include <vector>
+
+namespace sf
+{
+	class RenderTarget;
+	class Sprite;
+};
 class Scene;
 
 class SceneManager
@@ -20,6 +27,9 @@ public:
 	bool LaunchScene(SceneType a_SceneType);
 	void ClearScene();
 	//
+	void Update(float a_DeltaT);
+	void Render(sf::RenderTarget& a_RenderTarget);
+	//
 	Scene* GetCurrentScene();
 	//
 private:
@@ -27,6 +37,7 @@ private:
 	//
 	bool m_NeedsClearing;
 	Scene* m_pScene;
+	std::vector<sf::Sprite*> m_pSprites;
 	//
 };
 

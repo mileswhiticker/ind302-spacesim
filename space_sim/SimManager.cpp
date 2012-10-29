@@ -17,9 +17,6 @@ bool SimManager::Initialise()
 	if(m_Initialised)
 		return false;
 	//
-	SceneManager::GetSingleton().LaunchScene(MAIN_MENU);
-	m_pSprites = SceneManager::GetSingleton().GetCurrentScene()->GetSprites();
-	//
 	m_Initialised = true;
 	return true;
 }

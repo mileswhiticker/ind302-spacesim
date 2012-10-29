@@ -1,5 +1,9 @@
 #include "SceneManager.hpp"
-#include "Scene.hpp"
+#include "Scene_MainMenu.hpp"
+#include "Scene_Game.hpp"
+
+#include <SFML\Graphics\RenderTarget.hpp>
+#include <SFML\Graphics\Sprite.hpp>
 
 SceneManager::SceneManager()
 :	m_NeedsClearing(false)
@@ -26,9 +30,23 @@ bool SceneManager::LaunchScene(SceneType a_SceneType)
 
 			m_pScene = new MainMenu();
 			m_NeedsClearing = true;
-			return true;
+			break;
+		};
+	case(SIM):
+		{
+			if(m_NeedsClearing)
+			{
+				ClearScene();
+			}
+
+			m_pScene = new Game();
+			m_NeedsClearing = true;
+			break;
 		};
 	}
+
+	m_pSprites = m_pScene->GetSprites();
+	return true;
 }
 
 void SceneManager::ClearScene()
@@ -44,4 +62,18 @@ void SceneManager::ClearScene()
 Scene* SceneManager::GetCurrentScene()
 {
 	return m_pScene;
+}
+
+void SceneManager::Update(float a_DeltaT)
+{
+	return;
+}
+
+void SceneManager::Render(sf::RenderTarget& a_RenderTarget)
+{
+	//draw any sprites
+	for(auto it = m_pSprites.begin(); it != m_pSprites.end(); ++it)
+	{
+		a_RenderTarget.draw(**it);
+	}
 }
