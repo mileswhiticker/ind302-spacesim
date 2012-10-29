@@ -1,9 +1,13 @@
-#include "Scene.hpp"
-#include "SFGManager.hpp"
+#include "Scene_MainMenu.hpp"
+
+#include "SceneManager.hpp"
 #include "AppManager.hpp"
+#include "SFGManager.hpp"
 
 #include <SFML\Graphics\Image.hpp>
-#include <sfml\Graphics\Sprite.hpp>
+#include <SFML\Graphics\Sprite.hpp>
+
+#include <windows.h>
 
 MainMenu::MainMenu()
 :	Scene()
@@ -12,30 +16,33 @@ MainMenu::MainMenu()
 	//
 	
 	sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
-
-	sfg::Button::Ptr pStartButton = sfg::Button::Create("Start");
-	pStartButton->SetPosition(sf::Vector2f(windowDims.x / 5, 2.f * (windowDims.y / 5.f)));
+	
+	m_pButtons.push_back(sfg::Button::Create("Start"));
+	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 2.f * (windowDims.y / 5.f)));
+	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::LaunchGame, this);
 	/*sf::Image startButtonImage;
 	startButtonImage.loadFromFile("../media/startbutton.png");
 	sfg::Image::Ptr pstartButtonImage = sfg::Image::Create(startButtonImage);
 	pStartButton->SetImage(pstartButtonImage);*/
-	AddWidget(pStartButton);
+	AddWidget(m_pButtons.back());
 	
-	sfg::Button::Ptr pAboutButton = sfg::Button::Create("About");
-	pAboutButton->SetPosition(sf::Vector2f(windowDims.x / 5, 3.f * (windowDims.y / 5.f)));
+	m_pButtons.push_back(sfg::Button::Create("About"));
+	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 3.f * (windowDims.y / 5.f)));
+	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::About, this);
 	/*sf::Image aboutButtonImage;
 	aboutButtonImage.loadFromFile("../media/aboutbutton.png");
 	sfg::Image::Ptr paboutButtonImage = sfg::Image::Create(aboutButtonImage);
 	pAboutButton->SetImage(paboutButtonImage);*/
-	AddWidget(pAboutButton);
+	AddWidget(m_pButtons.back());
 
-	sfg::Button::Ptr pQuitButton = sfg::Button::Create("Quit");
-	pQuitButton->SetPosition(sf::Vector2f(windowDims.x / 5, 4.f * (windowDims.y / 5.f)));
+	m_pButtons.push_back(sfg::Button::Create("Quit"));
+	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 4.f * (windowDims.y / 5.f)));
+	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::Quit, this);
 	/*sf::Image quitButtonImage;
 	quitButtonImage.loadFromFile("../media/aboutbutton.png");
 	sfg::Image::Ptr pquitButtonImage = sfg::Image::Create(quitButtonImage);
 	pQuitButton->SetImage(pquitButtonImage);*/
-	AddWidget(pQuitButton);
+	AddWidget(m_pButtons.back());
 	
 	//background
 	sf::Texture* pTexture = new sf::Texture();
@@ -66,16 +73,18 @@ MainMenu::MainMenu()
 	pWindow->Add(box);*/
 }
 
-void MainMenu::ToggleDisplayScene()
+void MainMenu::LaunchGame()
 {
-	Scene::ToggleDisplayScene();
+	SceneManager::GetSingleton().LaunchScene(SIM);
+}
 
-	if(m_Displayed)
-	{
-		//
-	}
-	else
-	{
-		//
-	}
+void MainMenu::About()
+{
+	MessageBox(0, "About dialog will go here.", "About", 0);
+}
+
+void MainMenu::Quit()
+{
+	//yeeee
+	exit(0);
 }

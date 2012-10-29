@@ -3,6 +3,7 @@
 
 #include "SceneTypes.h"
 #include <vector>
+#include <SFGUI\Button.hpp>
 
 namespace sf
 {
@@ -14,6 +15,7 @@ class Scene
 {
 public:
 	Scene();
+	virtual ~Scene();
 	//
 	virtual void ToggleDisplayScene();
 	SceneType GetSceneType();
@@ -27,18 +29,7 @@ protected:
 	std::vector<sf::Sprite*> m_pSprites;
 	std::vector<sf::Texture*> m_pTextures;
 	//
+	std::vector<sfg::Button::Ptr> m_pButtons;
 };
 
-class MainMenu
-:	public Scene
-{
-public:
-	MainMenu();
-	//
-	virtual void ToggleDisplayScene();
-	//
-private:
-	//
-};
-
-#endif SCENE_HPP
+#endif //SCENE_HPP
