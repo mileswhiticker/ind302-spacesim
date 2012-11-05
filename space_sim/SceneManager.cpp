@@ -71,9 +71,5 @@ void SceneManager::Update(float a_DeltaT)
 
 void SceneManager::Render(sf::RenderTarget& a_RenderTarget)
 {
-	//draw any sprites
-	for(auto it = m_pSprites.begin(); it != m_pSprites.end(); ++it)
-	{
-		a_RenderTarget.draw(**it);
-	}
+	m_pScene->Render(a_RenderTarget);
 }

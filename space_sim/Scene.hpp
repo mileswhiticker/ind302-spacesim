@@ -3,7 +3,7 @@
 
 #include "SceneTypes.h"
 #include <vector>
-#include <SFGUI\Button.hpp>
+#include <SFGUI\Widget.hpp>
 
 namespace sf
 {
@@ -21,6 +21,7 @@ public:
 	SceneType GetSceneType();
 	//
 	std::vector<sf::Sprite*> GetSprites();
+	void Render(sf::RenderTarget& a_RenderTarget);
 	//
 protected:
 	bool m_Displayed;
@@ -29,7 +30,7 @@ protected:
 	std::vector<sf::Sprite*> m_pSprites;
 	std::vector<sf::Texture*> m_pTextures;
 	//
-	std::vector<sfg::Button::Ptr> m_pButtons;
+	std::vector<sfg::Widget::Ptr> m_pWidgets;
 };
 
 #endif //SCENE_HPP

@@ -17,32 +17,20 @@ MainMenu::MainMenu()
 	
 	sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
 	
-	m_pButtons.push_back(sfg::Button::Create("Start"));
-	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 2.f * (windowDims.y / 5.f)));
-	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::LaunchGame, this);
-	/*sf::Image startButtonImage;
-	startButtonImage.loadFromFile("../media/startbutton.png");
-	sfg::Image::Ptr pstartButtonImage = sfg::Image::Create(startButtonImage);
-	pStartButton->SetImage(pstartButtonImage);*/
-	AddWidget(m_pButtons.back());
+	m_pWidgets.push_back(sfg::Button::Create("Start"));
+	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 2.f * (windowDims.y / 5.f)));
+	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::LaunchGame, this);
+	AddWidget(m_pWidgets.back());
 	
-	m_pButtons.push_back(sfg::Button::Create("About"));
-	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 3.f * (windowDims.y / 5.f)));
-	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::About, this);
-	/*sf::Image aboutButtonImage;
-	aboutButtonImage.loadFromFile("../media/aboutbutton.png");
-	sfg::Image::Ptr paboutButtonImage = sfg::Image::Create(aboutButtonImage);
-	pAboutButton->SetImage(paboutButtonImage);*/
-	AddWidget(m_pButtons.back());
+	m_pWidgets.push_back(sfg::Button::Create("About"));
+	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 3.f * (windowDims.y / 5.f)));
+	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::About, this);
+	AddWidget(m_pWidgets.back());
 
-	m_pButtons.push_back(sfg::Button::Create("Quit"));
-	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 4.f * (windowDims.y / 5.f)));
-	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::Quit, this);
-	/*sf::Image quitButtonImage;
-	quitButtonImage.loadFromFile("../media/aboutbutton.png");
-	sfg::Image::Ptr pquitButtonImage = sfg::Image::Create(quitButtonImage);
-	pQuitButton->SetImage(pquitButtonImage);*/
-	AddWidget(m_pButtons.back());
+	m_pWidgets.push_back(sfg::Button::Create("Quit"));
+	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 4.f * (windowDims.y / 5.f)));
+	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::Quit, this);
+	AddWidget(m_pWidgets.back());
 	
 	//background
 	sf::Texture* pTexture = new sf::Texture();
@@ -62,15 +50,7 @@ MainMenu::MainMenu()
 
 	pSprite = new sf::Sprite(*pTexture);
 	texSize = pTexture->getSize();
-	//pSprite->setScale( sf::Vector2f(windowDims.x / texSize.x, windowDims.y / texSize.y) );
 	m_pSprites.push_back(pSprite);
-
-	//create a test window
-	/*sfg::Box::Ptr box( sfg::Box::Create( sfg::Box::VERTICAL, 5.f ) );
-	box->Pack( sfg::Label::Create( "This is a test window." ), false );
-	sfg::Window::Ptr pWindow = sfg::Window::Create();
-	pWindow->SetTitle("test window title");
-	pWindow->Add(box);*/
 }
 
 void MainMenu::LaunchGame()

@@ -11,11 +11,11 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	while(m_pButtons.size())
+	while(m_pWidgets.size())
 	{
-		sfg::Button::Ptr pButton = m_pButtons.front();
-		ClearWidget(pButton);
-		m_pButtons.erase(m_pButtons.begin());
+		sfg::Widget::Ptr pWidget = m_pWidgets.front();
+		ClearWidget(pWidget);
+		m_pWidgets.erase(m_pWidgets.begin());
 	}
 }
 
@@ -41,4 +41,13 @@ SceneType Scene::GetSceneType()
 std::vector<sf::Sprite*> Scene::GetSprites()
 {
 	return m_pSprites;
+}
+
+void Scene::Render(sf::RenderTarget& a_RenderTarget)
+{
+	//draw any sprites
+	for(auto it = m_pSprites.begin(); it != m_pSprites.end(); ++it)
+	{
+		a_RenderTarget.draw(**it);
+	}
 }

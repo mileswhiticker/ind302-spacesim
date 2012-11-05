@@ -15,10 +15,10 @@ Game::Game()
 	
 	sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
 
-	m_pButtons.push_back(sfg::Button::Create("Main Menu"));
-	m_pButtons.back()->SetPosition(sf::Vector2f(windowDims.x / 6.f, windowDims.y / 6.f));
-	m_pButtons.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::LaunchMainMenu, this);
-	AddWidget(m_pButtons.back());
+	m_pWidgets.push_back(sfg::Button::Create("Main Menu"));
+	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 6.f, windowDims.y / 6.f));
+	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::LaunchMainMenu, this);
+	AddWidget(m_pWidgets.back());
 	
 	//background
 	sf::Texture* pTexture = new sf::Texture();
