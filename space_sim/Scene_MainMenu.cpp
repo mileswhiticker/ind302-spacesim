@@ -20,17 +20,14 @@ MainMenu::MainMenu()
 	m_pWidgets.push_back(sfg::Button::Create("Start"));
 	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 2.f * (windowDims.y / 5.f)));
 	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::LaunchGame, this);
-	AddWidget(m_pWidgets.back());
 	
 	m_pWidgets.push_back(sfg::Button::Create("About"));
 	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 3.f * (windowDims.y / 5.f)));
 	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::About, this);
-	AddWidget(m_pWidgets.back());
 
 	m_pWidgets.push_back(sfg::Button::Create("Quit"));
 	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 5, 4.f * (windowDims.y / 5.f)));
 	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&MainMenu::Quit, this);
-	AddWidget(m_pWidgets.back());
 	
 	//background
 	sf::Texture* pTexture = new sf::Texture();
@@ -51,6 +48,8 @@ MainMenu::MainMenu()
 	pSprite = new sf::Sprite(*pTexture);
 	texSize = pTexture->getSize();
 	m_pSprites.push_back(pSprite);
+	
+	Initialise();
 }
 
 void MainMenu::LaunchGame()

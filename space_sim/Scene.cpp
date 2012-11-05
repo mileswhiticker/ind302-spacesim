@@ -19,6 +19,14 @@ Scene::~Scene()
 	}
 }
 
+void Scene::Initialise()
+{
+	for(auto it = m_pWidgets.begin(); it != m_pWidgets.end(); ++it)
+	{
+		AddWidget(*it);
+	}
+}
+
 void Scene::ToggleDisplayScene()
 {
 	m_Displayed = !m_Displayed;

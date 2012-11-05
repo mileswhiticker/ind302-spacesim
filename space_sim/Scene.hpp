@@ -26,6 +26,7 @@ public:
 protected:
 	bool m_Displayed;
 	SceneType m_SceneType;
+	void Initialise();
 	//
 	std::vector<sf::Sprite*> m_pSprites;
 	std::vector<sf::Texture*> m_pTextures;
