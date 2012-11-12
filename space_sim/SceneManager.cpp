@@ -2,6 +2,8 @@
 #include "Scene_MainMenu.hpp"
 #include "Scene_Game.hpp"
 
+#include "GameManager.hpp"
+
 #include <SFML\Graphics\RenderTarget.hpp>
 #include <SFML\Graphics\Sprite.hpp>
 
@@ -57,6 +59,7 @@ void SceneManager::ClearScene()
 		m_pScene = 0;
 	}
 	m_NeedsClearing = false;
+	GameManager::GetSingleton().Uninitialise();
 }
 
 Scene* SceneManager::GetCurrentScene()

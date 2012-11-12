@@ -10,8 +10,7 @@
 #define MAX_STARSYSTEMS_PER_STELLARGROUP 100
 
 StellarGroup::StellarGroup(bool a_IsLocalGroup)
-:	mRelPosition(sf::Vector2f())
-,	mDiameter(0)
+:	mDiameter(0)
 ,	mNumStarSystems(0)
 {
 	//what's this used for?

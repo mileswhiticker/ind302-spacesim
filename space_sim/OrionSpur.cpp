@@ -7,12 +7,12 @@
 #define MIN_NUM_STELLARGROUPS 90
 #define MAX_NUM_STELLARGROUPS 175
 
-static std::vector<StellarGroup*> mStellarGroups;
+static std::vector<StellarGroup*> StellarGroups;
 
 bool OrionSpur::Generate()
 {
 	//return false if we've already genned everything
-	if(mStellarGroups.size())
+	if(StellarGroups.size())
 		return false;
 
 	//we have to pre-generate all the stellar groups, so that they can be displayed on the orion spur viewscreen
@@ -20,11 +20,11 @@ bool OrionSpur::Generate()
 	for(int curGroupNum = 0; curGroupNum < numStellarGroups; ++curGroupNum)
 	{
 		//they each handle their own construction
-		mStellarGroups.push_back(new StellarGroup());
+		StellarGroups.push_back(new StellarGroup());
 	}
 
 	//create the local stellar group
-	mStellarGroups.push_back(new StellarGroup(true));
+	StellarGroups.push_back(new StellarGroup(true));
 
 	return true;
 }
@@ -32,16 +32,21 @@ bool OrionSpur::Generate()
 bool OrionSpur::Clear()
 {
 	//return false if we've already cleared everything
-	if(!mStellarGroups.size())
+	if(!StellarGroups.size())
 		return false;
 
 	//clear out stellar groups
-	for(auto it = mStellarGroups.begin(); it != mStellarGroups.end(); ++it)
+	for(auto it = StellarGroups.begin(); it != StellarGroups.end(); ++it)
 	{
 		StellarGroup* pCurStellarGroup = (StellarGroup*)*it;
 		delete pCurStellarGroup;
-		it = mStellarGroups.erase(it);
+		it = StellarGroups.erase(it);
 	}
 
 	return true;
+}
+
+std::vector<StellarGroup*> OrionSpur::GetStellarGroups()
+{
+	return StellarGroups;
 }

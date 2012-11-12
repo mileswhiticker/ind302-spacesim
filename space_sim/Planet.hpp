@@ -2,11 +2,13 @@
 #define PLANET_HPP
 
 #include "HabitableObject.hpp"
+#include "DisplayableObject.hpp"
 
 class StarSystem;
 
 class Planet
 :	public HabitableObject
+,	public DisplayableObject
 {
 public:
 	Planet(type a_NewType, StarSystem* a_pOrbitingStarSystem);

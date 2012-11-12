@@ -5,12 +5,15 @@
 #include <vector>
 #include <SFML\System\Vector2.hpp>
 
+#include "DisplayableObject.hpp"
+
 // Predeclares
 class HabitableObject;
 class AsteroidBelt;
 class StellarGroup;
 
 class StarSystem
+:	public DisplayableObject
 {
 public:
 	StarSystem(StellarGroup* a_pOwningGroup, bool a_IsHomeSystem = false);

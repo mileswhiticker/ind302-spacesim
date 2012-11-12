@@ -11,6 +11,8 @@ public:
 	static bool Generate();
 	static bool Clear();
 	//
+	static std::vector<StellarGroup*> GetStellarGroups();
+	//
 private:
 	OrionSpur();
 	//

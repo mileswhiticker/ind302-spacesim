@@ -3,6 +3,7 @@
 #include "AppManager.hpp"
 #include "SFGManager.hpp"
 #include "SceneManager.hpp"
+#include "GameManager.hpp"
 
 #include <SFML\Graphics\Image.hpp>
 #include <SFML\Graphics\Sprite.hpp>
@@ -17,10 +18,6 @@ Game::Game()
 	
 	sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
 
-	m_pWidgets.push_back(sfg::Button::Create("Main Menu"));
-	m_pWidgets.back()->SetPosition(sf::Vector2f(windowDims.x / 6.f, windowDims.y / 6.f));
-	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::LaunchMainMenu, this);
-	
 	sf::FloatRect allocation;
 
 	//right panel
@@ -81,7 +78,7 @@ Game::Game()
 	//
 	m_pWidgets.push_back(pBottomPanel);
 
-	//bottomt right status panel
+	//bottom right status panel
 	sfg::Table::Ptr pStatusTable = sfg::Table::Create();
 	allocation.top = 5 * windowDims.y / 6;
 	allocation.height = windowDims.y / 6;
@@ -90,7 +87,12 @@ Game::Game()
 	pStatusTable->Attach(sfg::Label::Create("The current date is X/Y/ZWVU"), sf::Rect<sf::Uint32>(0,0,1,1));
 	pStatusTable->SetAllocation(allocation);
 	m_pWidgets.push_back(pStatusTable);
-
+	
+	//returnn to main menu button
+	m_pWidgets.push_back(sfg::Button::Create("Main Menu"));
+	m_pWidgets.back()->SetPosition(sf::Vector2f(5 * windowDims.x / 6.f, 5 * windowDims.y / 6.f));
+	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::LaunchMainMenu, this);
+	
 	//background
 	sf::Texture* pTexture = new sf::Texture();
 	pTexture->loadFromFile("../media/starry.jpg");
@@ -103,6 +105,7 @@ Game::Game()
 	m_pSprites.push_back(pSprite);
 
 	Initialise();
+	GameManager::GetSingleton().Initialise();
 }
 
 void Game::LaunchMainMenu()

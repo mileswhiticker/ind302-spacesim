@@ -4,9 +4,12 @@
 #include <vector>
 #include <SFML\System\Vector2.hpp>
 
+#include "DisplayableObject.hpp"
+
 class StarSystem;
 
 class StellarGroup
+:	public DisplayableObject
 {
 public:
 	StellarGroup(bool a_IsLocalGroup = false);
@@ -15,7 +18,6 @@ public:
 	//
 private:
 	float mDiameter;
-	sf::Vector2f mRelPosition;
 	int mNumStarSystems;
 	//
 	std::vector<StarSystem*> mStarSystems;
