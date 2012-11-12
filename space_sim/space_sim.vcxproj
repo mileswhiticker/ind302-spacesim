@@ -74,6 +74,7 @@
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="AsteroidBelt.cpp" />
     <ClCompile Include="Defines_math.cpp" />
+    <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="guicon.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="AppManager.hpp" />
     <ClInclude Include="AsteroidBelt.hpp" />
     <ClInclude Include="Defines_Math.h" />
+    <ClInclude Include="DisplayableObject.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="guicon.h" />
     <ClInclude Include="Planet.hpp" />
