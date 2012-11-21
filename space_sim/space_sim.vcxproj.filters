@@ -91,6 +91,9 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="DisplayableObject.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -147,6 +150,9 @@
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="DisplayableObject.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameHelpers.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

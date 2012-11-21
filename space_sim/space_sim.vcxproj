@@ -53,7 +53,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-window-d.lib;sfml-system-d.lib;sfml-graphics-d.lib;sfgui-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfgui-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -75,6 +75,7 @@
     <ClCompile Include="AsteroidBelt.cpp" />
     <ClCompile Include="Defines_math.cpp" />
     <ClCompile Include="DisplayableObject.cpp" />
+    <ClCompile Include="GameHelpers.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="guicon.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="AsteroidBelt.hpp" />
     <ClInclude Include="Defines_Math.h" />
     <ClInclude Include="DisplayableObject.hpp" />
+    <ClInclude Include="GameHelpers.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="guicon.h" />
     <ClInclude Include="Planet.hpp" />
