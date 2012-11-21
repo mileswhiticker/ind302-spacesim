@@ -4,13 +4,18 @@
 #include "HabitableObject.hpp"
 #include "DisplayableObject.hpp"
 
+class StarSystem;
+
 class AsteroidBelt
 :	public HabitableObject
 ,	public DisplayableObject
 {
 public:
-	AsteroidBelt();
+	AsteroidBelt(StarSystem* a_pParent);
 	virtual ~AsteroidBelt();
+	//
+protected:
+	void GenerateContents();
 	//
 private:
 	//

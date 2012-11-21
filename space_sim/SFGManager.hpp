@@ -22,14 +22,16 @@ public:
 	void Update(float a_DeltaT);
 	void Render(sf::RenderTarget& a_RenderTarget);
 	void HandleEvent(sf::Event a_Event);
+	sf::Vector2f GetWindowDimensions();
 	//
-	sfg::SharedPtr<sfg::Desktop> GetSFGDesktop();
+	sfg::Desktop& GetSFGDesktop();
 	//
 private:
 	SFGManager();
 	bool m_Initialised;
 	//
-	sfg::SharedPtr<sfg::Desktop> m_pSFGDesktop;
+	//sfg::SharedPtr<sfg::Desktop> m_pSFGDesktop;
+	sfg::Desktop m_SFGDesktop;
 	sfg::SFGUI m_sfgui;
 };
 

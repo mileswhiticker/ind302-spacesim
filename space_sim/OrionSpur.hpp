@@ -2,19 +2,25 @@
 #define ORION_SPUR_HPP
 
 #include <vector>
+#include <SFGUI\Widget.hpp>
+#include "DisplayableObject.hpp"
 class StellarGroup;
 
 class OrionSpur
+:	public DisplayableObject
 {
 public:
-	//two very powerful functions, be careful
-	static bool Generate();
-	static bool Clear();
+	OrionSpur();
+	~OrionSpur();
 	//
-	static std::vector<StellarGroup*> GetStellarGroups();
+	virtual void DisplayContents();
+	//virtual void HideContents();
+	//
+protected:
+	void GenerateContents();
 	//
 private:
-	OrionSpur();
+	int mNumStellarGroups;
 	//
 };
 

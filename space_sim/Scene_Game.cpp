@@ -1,9 +1,10 @@
 #include "Scene_Game.hpp"
 
-#include "AppManager.hpp"
 #include "SFGManager.hpp"
 #include "SceneManager.hpp"
 #include "GameManager.hpp"
+
+#include "GameHelpers.hpp"
 
 #include <SFML\Graphics\Image.hpp>
 #include <SFML\Graphics\Sprite.hpp>
@@ -16,7 +17,7 @@ Game::Game()
 	m_SceneType = SIM;
 	//
 	
-	sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
+	sf::Vector2f windowDims = SFGManager::GetSingleton().GetWindowDimensions();
 
 	sf::FloatRect allocation;
 
@@ -79,19 +80,22 @@ Game::Game()
 	m_pWidgets.push_back(pBottomPanel);
 
 	//bottom right status panel
-	sfg::Table::Ptr pStatusTable = sfg::Table::Create();
+	m_pStatusTable = sfg::Table::Create();
 	allocation.top = 5 * windowDims.y / 6;
 	allocation.height = windowDims.y / 6;
 	allocation.left = 5 * windowDims.x / 6;
 	allocation.width = windowDims.x / 6;
-	pStatusTable->Attach(sfg::Label::Create("The current date is X/Y/ZWVU"), sf::Rect<sf::Uint32>(0,0,1,1));
-	pStatusTable->SetAllocation(allocation);
-	m_pWidgets.push_back(pStatusTable);
+	m_pStatusTable->Attach(sfg::Label::Create("The current date is X/Y/ZWVU"), sf::Rect<sf::Uint32>(0,0,1,1));
+	m_pTitleLabel = sfg::Label::Create("Orion Spur");
+	m_pStatusTable->Attach(m_pTitleLabel, sf::Rect<sf::Uint32>(0,1,1,1));
+	m_pStatusTable->SetAllocation(allocation);
+	m_pWidgets.push_back(m_pStatusTable);
 	
-	//returnn to main menu button
-	m_pWidgets.push_back(sfg::Button::Create("Main Menu"));
-	m_pWidgets.back()->SetPosition(sf::Vector2f(5 * windowDims.x / 6.f, 5 * windowDims.y / 6.f));
-	m_pWidgets.back()->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::LaunchMainMenu, this);
+	//return to main menu button
+	m_pMainMenuButton = sfg::Button::Create("Main Menu");
+	m_pWidgets.push_back(m_pMainMenuButton);
+	m_pMainMenuButton->SetPosition(sf::Vector2f(0, 0));
+	m_pMainMenuButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::UpOneLevel, this);
 	
 	//background
 	sf::Texture* pTexture = new sf::Texture();
@@ -105,10 +109,22 @@ Game::Game()
 	m_pSprites.push_back(pSprite);
 
 	Initialise();
-	GameManager::GetSingleton().Initialise();
+	GameManager::GetSingleton().Initialise(this);
 }
 
-void Game::LaunchMainMenu()
+void Game::UpOneLevel()
 {
-	SceneManager::GetSingleton().LaunchScene(MAIN_MENU);
+	GameManager::GetSingleton().UpOneLevel();
+}
+
+void Game::ChangeView(DisplayableObject* a_pNewFocus)
+{
+	if(!a_pNewFocus)
+		return;
+
+	if(a_pNewFocus->GetParent())
+		m_pMainMenuButton->SetLabel(GetDisplayStringname(a_pNewFocus->GetParent()->GetDisplayableType()));
+	else
+		m_pMainMenuButton->SetLabel("Main Menu");
+	m_pTitleLabel->SetText( GetDisplayStringname(a_pNewFocus->GetDisplayableType()) );
 }

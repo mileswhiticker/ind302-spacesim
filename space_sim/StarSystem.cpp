@@ -1,25 +1,27 @@
 #include "StarSystem.hpp"
 
 #include "GameManager.hpp"
+#include "SFGManager.hpp"
+#include "StellarGroup.hpp"
 
 #include "Defines_Math.h"
 #include "AsteroidBelt.hpp"
 #include "Planet.hpp"
 
-StarSystem::StarSystem(StellarGroup* a_pOwningGroup, bool a_IsHomeSystem)
-:	mIsNebula(false)
-,	mAsteroidBelt(*new AsteroidBelt())
-,	mRelPosition(sf::Vector2f())
-,	m_pOwningGroup(a_pOwningGroup)
+StarSystem::StarSystem(StellarGroup* a_pParent, bool a_IsHomeSystem)
+:	DisplayableObject(DisplayableObject::STARSYSTEM, a_pParent)
+,	mIsNebula(false)
+//,	mAsteroidBelt(*new AsteroidBelt())
 {
 	if(a_IsHomeSystem)
 	{
-		//create this system's planets
-		Generate();
-
 		//create the starting planet
-		mHabitableObjects.push_back(new Planet(HabitableObject::PLANET_GAIAN, this));
-		GameManager::SetHomePlanet((Planet*)mHabitableObjects.back());
+		mContents.push_back(new Planet(this, HabitableObject::PLANET_GAIAN));
+		GameManager::SetHomePlanet((Planet*)mContents.back());
+
+		//create this system's planets
+		GenerateContents();
+		HideContents();
 
 		//we're at the center of the entire playable area
 		mRelPosition.x = 0.5f;
@@ -29,7 +31,11 @@ StarSystem::StarSystem(StellarGroup* a_pOwningGroup, bool a_IsHomeSystem)
 	{
 		//5% chance of being a nebula
 		mIsNebula = iRand() > 95 ? true : false;
+		
+		mRelPosition.x = fRand();
+		mRelPosition.y = fRand();
 
+		/*
 		//calculate a random position for this group in the stellar group
 		//calculate random coords with an even distribution across the internal volume of a sphere
 		float phi = fRand() * PI;
@@ -44,28 +50,84 @@ StarSystem::StarSystem(StellarGroup* a_pOwningGroup, bool a_IsHomeSystem)
 		mRelPosition.x = r * sin( theta) * cos( phi );
 		mRelPosition.y = r * sin( theta) * sin( phi );
 		//mRelPosition.z = r * cos( theta );
+		*/
 	}
 }
 
 StarSystem::~StarSystem()
 {
-	for(auto it = mHabitableObjects.begin(); it != mHabitableObjects.end(); it)
-	{
-		HabitableObject* pCurHabitableObject = (HabitableObject*)*it;
-		delete pCurHabitableObject;
-		it = mHabitableObjects.erase(it);
-	}
-
-	delete &mAsteroidBelt;
+	//delete &mAsteroidBelt;
 }
 
-void StarSystem::Generate()
+#define PLANET_DIM 12
+
+void StarSystem::GenerateContents()
 {
 	int numPlanets = iRand(20);
 	for(int curPlanetNum = 0; curPlanetNum < numPlanets; ++curPlanetNum)
 	{
 		//create random planet type
-		Planet* pCurPlanet = new Planet((HabitableObject::HabitableType)iRand((int)HabitableObject::PLANET_TERRAN, (int)HabitableObject::PLANET_GASGIANT), this);
-		mHabitableObjects.push_back(pCurPlanet); 
+		Planet* pCurPlanet = new Planet(this, (HabitableObject::HabitableType)iRand((int)HabitableObject::PLANET_TERRAN, (int)HabitableObject::PLANET_GASGIANT));
+		mContents.push_back(pCurPlanet); 
 	}
+	sf::Vector2f windowDims = SFGManager::GetSingleton().GetWindowDimensions();
+	windowDims.x *= 5.f/6.f;
+	windowDims.x -= PLANET_DIM;
+	windowDims.y *= 5.f/6.f;
+	windowDims.y -= PLANET_DIM;
+	for(auto it = mContents.begin(); it != mContents.end(); ++it)
+	{
+		StarSystem* pStarSystem = (StarSystem*)*it;
+		sf::Vector2f relPos = pStarSystem->GetRelPosition();
+		sfg::Button::Ptr pButton = sfg::Button::Create("");
+		pButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&DisplayableObject::OnClick, (DisplayableObject*)pStarSystem);
+		
+		sf::Image* pSFImage = new sf::Image();
+		pSFImage->loadFromFile("../media/planet.png");
+		sfg::Image::Ptr pSFGImage = sfg::Image::Create(*pSFImage);
+		pSFGImage->SetImage(*pSFImage);
+		pButton->SetImage(pSFGImage);
+
+		sf::FloatRect allocation;
+		allocation.top = windowDims.y * relPos.y;
+		allocation.height = PLANET_DIM;
+		allocation.left = windowDims.x * relPos.x;
+		allocation.width = PLANET_DIM;
+		pButton->SetAllocation(allocation);
+		//
+		mContentsButtons.push_back(pButton);
+		AddWidget(pButton);
+	}
+
+	//create the star
+	mContents.push_back(new Star(this));
+	sfg::Button::Ptr pButton = sfg::Button::Create("");
+	pButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&DisplayableObject::OnClick, (DisplayableObject*)mContents.back());
+		
+	sf::Image* pSFImage = new sf::Image();
+	pSFImage->loadFromFile("../media/star.png");
+	sfg::Image::Ptr pSFGImage = sfg::Image::Create(*pSFImage);
+	pSFGImage->SetImage(*pSFImage);
+	pButton->SetImage(pSFGImage);
+
+	sf::FloatRect allocation;
+	allocation.top = windowDims.y * 0.5f;
+	allocation.height = PLANET_DIM;
+	allocation.left = windowDims.x * 0.5f;
+	allocation.width = PLANET_DIM;
+	pButton->SetAllocation(allocation);
+	//
+	mContentsButtons.push_back(pButton);
+	AddWidget(pButton);
+
+	//
+	mGeneratedContents = true;
+}
+
+void StarSystem::DisplayContents()
+{
+	if(!mGeneratedContents)
+		GenerateContents();
+	//
+	DisplayableObject::DisplayContents();
 }

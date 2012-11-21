@@ -11,11 +11,28 @@ class Planet
 ,	public DisplayableObject
 {
 public:
-	Planet(HabitableObject::HabitableType a_NewType, StarSystem* a_pOrbitingStarSystem);
-	virtual ~Planet();
+	Planet(StarSystem* a_pParent, HabitableObject::HabitableType a_NewType);
+	//
+protected:
+	void GenerateContents();
 	//
 private:
 	//
 };
+
+class Star
+:	public HabitableObject
+,	public DisplayableObject
+{
+public:
+	Star(StarSystem* a_pParent);
+	//
+protected:
+	void GenerateContents();
+	//
+private:
+	//
+};
+
 
 #endif	//PLANET_HPP
