@@ -19,6 +19,7 @@
 *.suo
 *.ipch
 *.user
+*.lastbuildstate
 
 # Misc
 *.exe
