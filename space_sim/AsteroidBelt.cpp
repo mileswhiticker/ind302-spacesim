@@ -2,7 +2,7 @@
 
 AsteroidBelt::AsteroidBelt()
 {
-	mMyType = ASTEROID_BELT;
+	mMyHabitableType = ASTEROID_BELT;
 }
 
 AsteroidBelt::~AsteroidBelt()

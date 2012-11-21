@@ -7,7 +7,7 @@ class StarSystem;
 class HabitableObject
 {
 public:
-	enum type
+	enum HabitableType
 	{
 		INVALID = 0,
 		//
@@ -30,10 +30,11 @@ public:
 	//
 	StarSystem* GetOrbitingStarSystem();
 	HabitableObject* GetOrbitingObject();
+	HabitableType GetHabitableType();
 	//
 protected:
 	//sample vars - NYI
-	type mMyType;
+	HabitableType mMyHabitableType;
 	int mPopulation;
 	//
 	StarSystem* m_pOrbitingStarSystem;

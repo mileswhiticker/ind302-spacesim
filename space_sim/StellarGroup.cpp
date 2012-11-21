@@ -31,8 +31,13 @@ StellarGroup::StellarGroup(bool a_IsLocalGroup)
 	else
 	{
 		//calculate a random position for this group in the orion spur cross-section
+
+		//just pick a random point in a square for now
+		mRelPosition.x = fRand();
+		mRelPosition.y = fRand();
+
 		//calculate random coords with an even distribution across the internal volume of a sphere
-		float phi = fRand() * PI;
+		/*float phi = fRand() * PI;
 		float costheta = fRand() * 2 - 1;
 		float u = fRand();
 
@@ -43,13 +48,13 @@ StellarGroup::StellarGroup(bool a_IsLocalGroup)
 		//as we're treating everything as 2D for now, just drop the zPos
 		mRelPosition.x = r * sin( theta) * cos( phi );
 		mRelPosition.y = r * sin( theta) * sin( phi );
-		//mRelPosition.z = r * cos( theta );
+		//mRelPosition.z = r * cos( theta );*/
 	}
 }
 
 StellarGroup::~StellarGroup()
 {
-	for(auto it = mStarSystems.begin(); it != mStarSystems.end(); ++it)
+	for(auto it = mStarSystems.begin(); it != mStarSystems.end(); it)
 	{
 		StarSystem* pCurStarSystem = (StarSystem*)*it;
 		delete pCurStarSystem;

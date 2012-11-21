@@ -11,7 +11,7 @@ class Planet
 ,	public DisplayableObject
 {
 public:
-	Planet(type a_NewType, StarSystem* a_pOrbitingStarSystem);
+	Planet(HabitableObject::HabitableType a_NewType, StarSystem* a_pOrbitingStarSystem);
 	virtual ~Planet();
 	//
 private:

@@ -7,11 +7,23 @@ class DisplayableObject
 {
 public:
 	sf::Vector2f GetRelPosition();
+	enum DisplayableType
+	{
+		STELLARGROUP,
+		STARSYSTEM,
+		PLANET,
+		//
+		MAXVAL
+	};
+	//
+	virtual void OnClick();
+	DisplayableType GetDisplayableType();
 	//
 protected:
 	sf::Vector2f mRelPosition;
 	//
 private:
+	DisplayableType mMyDisplayableType;
 	//
 };
 

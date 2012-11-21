@@ -17,7 +17,7 @@ bool OrionSpur::Generate()
 
 	//we have to pre-generate all the stellar groups, so that they can be displayed on the orion spur viewscreen
 	int numStellarGroups = iRand(MIN_NUM_STELLARGROUPS, MAX_NUM_STELLARGROUPS);
-	for(int curGroupNum = 0; curGroupNum < numStellarGroups; ++curGroupNum)
+	for(int curGroupNum = 1; curGroupNum < numStellarGroups; ++curGroupNum)
 	{
 		//they each handle their own construction
 		StellarGroups.push_back(new StellarGroup());
@@ -36,7 +36,7 @@ bool OrionSpur::Clear()
 		return false;
 
 	//clear out stellar groups
-	for(auto it = StellarGroups.begin(); it != StellarGroups.end(); ++it)
+	for(auto it = StellarGroups.begin(); it != StellarGroups.end(); it)
 	{
 		StellarGroup* pCurStellarGroup = (StellarGroup*)*it;
 		delete pCurStellarGroup;

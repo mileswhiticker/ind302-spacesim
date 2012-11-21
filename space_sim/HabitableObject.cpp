@@ -4,7 +4,7 @@
 
 HabitableObject::HabitableObject()
 :	mPopulation(0)
-,	mMyType(INVALID)
+,	mMyHabitableType(INVALID)
 ,	m_pOrbitingStarSystem(NULL)
 ,	m_pOrbitingObject(NULL)
 {
@@ -24,4 +24,9 @@ StarSystem* HabitableObject::GetOrbitingStarSystem()
 HabitableObject* HabitableObject::GetOrbitingObject()
 {
 	return m_pOrbitingObject;
+}
+
+HabitableObject::HabitableType HabitableObject::GetHabitableType()
+{
+	return mMyHabitableType;
 }

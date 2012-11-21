@@ -49,7 +49,7 @@ StarSystem::StarSystem(StellarGroup* a_pOwningGroup, bool a_IsHomeSystem)
 
 StarSystem::~StarSystem()
 {
-	for(auto it = mHabitableObjects.begin(); it != mHabitableObjects.end(); ++it)
+	for(auto it = mHabitableObjects.begin(); it != mHabitableObjects.end(); it)
 	{
 		HabitableObject* pCurHabitableObject = (HabitableObject*)*it;
 		delete pCurHabitableObject;
@@ -65,7 +65,7 @@ void StarSystem::Generate()
 	for(int curPlanetNum = 0; curPlanetNum < numPlanets; ++curPlanetNum)
 	{
 		//create random planet type
-		Planet* pCurPlanet = new Planet((HabitableObject::type)iRand((int)HabitableObject::PLANET_TERRAN, (int)HabitableObject::PLANET_GASGIANT), this);
+		Planet* pCurPlanet = new Planet((HabitableObject::HabitableType)iRand((int)HabitableObject::PLANET_TERRAN, (int)HabitableObject::PLANET_GASGIANT), this);
 		mHabitableObjects.push_back(pCurPlanet); 
 	}
 }
