@@ -33,11 +33,54 @@ Planet* GameManager::GetHomePlanet()
 void GameManager::Initialise()
 {
 	OrionSpur::Generate();
+
+	//lay out the stellar groups
+	std::vector<StellarGroup*> stellarGroups = OrionSpur::GetStellarGroups();
+	sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
+	windowDims.x *= 5.f/6.f;
+	windowDims.x -= 32;
+	windowDims.y *= 5.f/6.f;
+	windowDims.y -= 32;
+	for(auto it = stellarGroups.begin(); it != stellarGroups.end(); ++it)
+	{
+		StellarGroup* pStellarGroup = *it;
+		sf::Vector2f relPos = pStellarGroup->GetRelPosition();
+		sfg::Button::Ptr pButton = sfg::Button::Create("");
+		pButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&DisplayableObject::OnClick, (DisplayableObject*)pStellarGroup);
+
+		/*sf::Image* pSFImage = new sf::Image();
+		pSFImage->loadFromFile("../media/group.png");
+		sfg::Image::Ptr pSFGImage = sfg::Image::Create();
+		pSFGImage->SetImage(*pSFImage);
+		pButton->SetImage(pSFGImage);*/
+
+		sf::FloatRect allocation;
+		allocation.top = windowDims.y * relPos.y;
+		allocation.height = 32;
+		allocation.left = windowDims.x * relPos.x;
+		allocation.width = 32;
+		pButton->SetAllocation(allocation);
+		//
+		m_StellarGroupButtons.push_back(pButton);
+		AddWidget(pButton);
+	}
+
+	//lay out the other displayable objects
+	//todo
+
 	ShowView(ORIONSPUR);
 }
 
 void GameManager::Uninitialise()
 {
+	//clear out gamey things
+	for(auto it = m_StellarGroupButtons.begin(); it != m_StellarGroupButtons.end(); it)
+	{
+		ClearWidget(*it);
+		it = m_StellarGroupButtons.erase(it);
+	}
+	OrionSpur::Clear();
+
 	ShowView(MAXVAL);
 }
 
@@ -55,26 +98,38 @@ void GameManager::ShowView(View a_NewView)
 		{
 		case(ORIONSPUR):
 			{
-				std::vector<StellarGroup*> stellarGroups = OrionSpur::GetStellarGroups();
+				/*std::vector<StellarGroup*> stellarGroups = OrionSpur::GetStellarGroups();
 				sf::Vector2f windowDims = AppManager::GetSingleton().GetWindowDimensions();
 				windowDims.x *= 5.f/6.f;
+				windowDims.x -= 32;
 				windowDims.y *= 5.f/6.f;
+				windowDims.y -= 32;
 				for(auto it = stellarGroups.begin(); it != stellarGroups.end(); ++it)
 				{
 					StellarGroup* pStellarGroup = *it;
 					sf::Vector2f relPos = pStellarGroup->GetRelPosition();
-					//relPos.x -= 1.f;
-					//relPos.y -= 1.f;
-					//
 					sfg::Button::Ptr pButton = sfg::Button::Create("");
-					sf::Image* pSFImage = new sf::Image();
+					pButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&DisplayableObject::OnClick, (DisplayableObject*)pStellarGroup);
+
+					/*sf::Image* pSFImage = new sf::Image();
 					pSFImage->loadFromFile("../media/group.png");
 					sfg::Image::Ptr pSFGImage = sfg::Image::Create();
-					pButton->SetImage(pSFGImage);
-					pButton->SetPosition( sf::Vector2f(windowDims.x * relPos.x, windowDims.y * relPos.y) );
+					pSFGImage->SetImage(*pSFImage);
+					pButton->SetImage(pSFGImage);*
+
+					sf::FloatRect allocation;
+					allocation.top = windowDims.y * relPos.y;
+					allocation.height = 32;
+					allocation.left = windowDims.x * relPos.x;
+					allocation.width = 32;
+					pButton->SetAllocation(allocation);
 					//
-					m_ClickableObjects.push_back(pButton);
+					m_StellarGroupButtons.push_back(pButton);
 					AddWidget(pButton);
+				}*/
+				for(auto it = m_StellarGroupButtons.begin(); it != m_StellarGroupButtons.end(); ++it)
+				{
+					(*it)->Show(true);
 				}
 				break;
 			}
@@ -85,9 +140,15 @@ void GameManager::ShowView(View a_NewView)
 
 void GameManager::ClearCurView()
 {
-	for(auto it = m_ClickableObjects.begin(); it != m_ClickableObjects.end(); it)
+	switch(m_CurView)
 	{
-		ClearWidget(*it);
-		it = m_ClickableObjects.erase(it);
+	case(ORIONSPUR):
+		{
+			for(auto it = m_StellarGroupButtons.begin(); it != m_StellarGroupButtons.end(); it)
+			{
+				(*it)->Show(false);
+			}
+			break;
+		}
 	}
 }

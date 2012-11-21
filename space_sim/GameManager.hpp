@@ -42,7 +42,7 @@ private:
 	//
 	View m_CurView;
 	//
-	std::vector<sfg::Widget::Ptr> m_ClickableObjects;
+	std::vector<sfg::Widget::Ptr> m_StellarGroupButtons;
 };
 
 #endif	//GAME_MANAGER_HPP
