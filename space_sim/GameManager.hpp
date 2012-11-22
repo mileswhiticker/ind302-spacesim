@@ -2,12 +2,9 @@
 #define GAME_MANAGER_HPP
 
 #include <vector>
-#include "DisplayableObject.hpp"
+#include <SFGUI\Widget.hpp>
 
-class OrionSpur;
 class Planet;
-class DisplayableObject;
-class Game;
 namespace sf
 {
 	class Image;
@@ -25,31 +22,27 @@ public:
 		return instance;
 	}
 	//
-	/*enum Viewable
+	enum View
 	{
 		ORIONSPUR,
-		STARSYSTEM,
 		STELLARGROUP,
+		STARSYSTEM,
 		PLANET,
 		//
 		MAXVAL
-	};*/
-	void Initialise(Game* a_pGameScene);
+	};
+	void Initialise();
 	void Uninitialise();
-	//
-	void ViewDisplayableObject(DisplayableObject* a_pDisplayObject);
-	void UpOneLevel();
 	//
 private:
 	GameManager();
 	//
-	//void ShowView(View a_NewView);
+	void ShowView(View a_NewView);
 	void ClearCurView();
-	OrionSpur* m_pOrionSpur;
-	Game* m_pGameScene;
 	//
-	DisplayableObject::DisplayableType m_CurView;
-	DisplayableObject* m_pCurViewedObject;
+	View m_CurView;
+	//
+	std::vector<sfg::Widget::Ptr> m_StellarGroupButtons;
 };
 
 #endif	//GAME_MANAGER_HPP

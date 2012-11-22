@@ -14,7 +14,7 @@ int __stdcall WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 	if(!appMgr.Initialise())
 		return 1;
 
-	RedirectIOToConsole();
+	//RedirectIOToConsole();
 	
 	sf::Clock clock;
 	while(!appMgr.CheckQuitting())

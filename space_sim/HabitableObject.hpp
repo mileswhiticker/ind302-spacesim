@@ -10,7 +10,6 @@ public:
 	enum HabitableType
 	{
 		INVALID = 0,
-		STAR,
 		//
 		PLANET_TERRAN,
 		PLANET_GAIAN,

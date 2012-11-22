@@ -7,25 +7,20 @@
 #include "DisplayableObject.hpp"
 
 class StarSystem;
-class OrionSpur;
 
 class StellarGroup
 :	public DisplayableObject
 {
 public:
-	StellarGroup(OrionSpur* a_pParent, bool a_IsLocalGroup = false);
+	StellarGroup(bool a_IsLocalGroup = false);
 	~StellarGroup();
-	//
-	virtual void DisplayContents();
-	//virtual void HideContents();
-	//
-protected:
-	void GenerateContents();
+	void Generate();
 	//
 private:
 	float mDiameter;
 	int mNumStarSystems;
 	//
+	std::vector<StarSystem*> mStarSystems;
 };
 
 #endif	//STELLAR_GROUP_HPP
