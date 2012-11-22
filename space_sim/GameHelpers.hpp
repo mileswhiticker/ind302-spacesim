@@ -6,5 +6,6 @@
 
 std::string GetDisplayStringname(DisplayableObject::DisplayableType a_DisplayType);
 std::string GetHabitableStringname(HabitableObject::HabitableType a_HabitableType);
+std::string GetResourceStringname(Resource::ResourceType a_ResourceType);
 
 #endif	//GAME_HELPERS_HPP

@@ -14,21 +14,28 @@ namespace Resource
 		PERFLUOROCARBONS,
 		OXYGEN,
 		//
-		FOOD,
-		WATER,
-		FUEL,
-		//
 		ORGANICWASTE,
 		SCRAPWASTE,
 		WASTE,
+		//
+		FOOD,
+		WATER,
+		FUEL,
 		//
 		GIRDERS,
 		SHEETMETAL,
 		COMPONENTS,
 		CIRCUITRY,
 		//
+		MACHINERY,
+		DOMESTICGOODS,
+		LUXURYGOODS,
+		//
 		MAXVAL
 	};
 };
+
+#define NUM_RAW_MATERIALS int(Resource::WASTE)
+#define NUM_PRODUCED_GOODS (int(Resource::MAXVAL) - NUM_RAW_MATERIALS)
 
 #endif	//RESOURCES_HPP

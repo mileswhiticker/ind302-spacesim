@@ -11,6 +11,10 @@ int iRand(int a_Min, int a_Max);
 float fRand(float a_Max);
 int iRand(int a_Max);
 
+float AverageWeight(float a_WeightOne, float a_QuantityOne, float a_WeightTwo, float a_QuantityTwo);
+
+double round(double a_InitialValue, int a_MaxNumDecimals);
+
 //cube root
 float curt(float input);
 

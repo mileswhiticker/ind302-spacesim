@@ -14,5 +14,6 @@ enum TimeRate
 #define HOURS_DAY 24
 #define DAYS_WEEK 7
 #define WEEKS_MONTH 4
+#define MONTHS_YEAR 12
 
 #endif	//DEFINES_TIME_H

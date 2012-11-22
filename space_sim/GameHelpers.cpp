@@ -113,3 +113,120 @@ std::string GetHabitableStringname(HabitableObject::HabitableType a_HabitableTyp
 		}
 	}
 }
+
+std::string GetResourceStringname(Resource::ResourceType a_ResourceType)
+{
+	switch(a_ResourceType)
+	{
+	default:
+		{
+			return "unknown";
+			break;
+		}
+	case(Resource::MAXVAL):
+		{
+			return "uninitialised";
+			break;
+		}
+	case(Resource::CARBONACEOUS):
+		{
+			return "CARBONACEOUS";
+			break;
+		}
+	case(Resource::CIRCUITRY):
+		{
+			return "CIRCUITRY";
+			break;
+		}
+	case(Resource::COMPONENTS):
+		{
+			return "COMPONENTS";
+			break;
+		}
+	case(Resource::DOMESTICGOODS):
+		{
+			return "DOMESTICGOODS";
+			break;
+		}
+	case(Resource::FOOD):
+		{
+			return "FOOD";
+			break;
+		}
+	case(Resource::FUEL):
+		{
+			return "FUEL";
+			break;
+		}
+	case(Resource::GIRDERS):
+		{
+			return "GIRDERS";
+			break;
+		}
+	case(Resource::HYDROCARBON):
+		{
+			return "HYDROCARBON";
+			break;
+		}
+	case(Resource::HYDROGEN):
+		{
+			return "HYDROGEN";
+			break;
+		}
+	case(Resource::LUXURYGOODS):
+		{
+			return "LUXURYGOODS";
+			break;
+		}
+	case(Resource::MACHINERY):
+		{
+			return "MACHINERY";
+			break;
+		}
+	case(Resource::METALLIC):
+		{
+			return "METALLIC";
+			break;
+		}
+	case(Resource::ORGANICWASTE):
+		{
+			return "ORGANICWASTE";
+			break;
+		}
+	case(Resource::OXYGEN):
+		{
+			return "OXYGEN";
+			break;
+		}
+	case(Resource::PERFLUOROCARBONS):
+		{
+			return "PERFLUOROCARBONS";
+			break;
+		}
+	case(Resource::SCRAPWASTE):
+		{
+			return "SCRAPWASTE";
+			break;
+		}
+	case(Resource::SILICACEOUS):
+		{
+			return "SILICACEOUS";
+			break;
+		}
+	case(Resource::SHEETMETAL):
+		{
+			return "SHEETMETAL";
+			break;
+		}
+	case(Resource::WASTE):
+		{
+			return "WASTE";
+			break;
+		}
+	case(Resource::WATER):
+		{
+			return "WATER";
+			break;
+		}
+	}
+}
