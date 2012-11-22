@@ -1,16 +1,26 @@
 #include "StellarGroup.hpp"
 
 #include "Defines_Math.h"
+
+#include "OrionSpur.hpp"
 #include "StarSystem.hpp"
+
+#include "SFGManager.hpp"
+
+#include <SFGUI\Button.hpp>
+#include <SFGUI\Image.hpp>
 
 #define MIN_STELLAR_GROUP_DIAMETER 20
 #define MAX_STELLAR_GROUP_DIAMETER 40
 
-#define MIN_STARSYSTEMS_PER_STELLARGROUP 30
-#define MAX_STARSYSTEMS_PER_STELLARGROUP 100
+#define MIN_STARSYSTEMS_PER_STELLARGROUP 5//30
+#define MAX_STARSYSTEMS_PER_STELLARGROUP 15//100
 
-StellarGroup::StellarGroup(bool a_IsLocalGroup)
-:	mDiameter(0)
+#define STARSYSTEM_DIM 12
+
+StellarGroup::StellarGroup(OrionSpur* a_pParent, bool a_IsLocalGroup)
+:	DisplayableObject(DisplayableObject::STELLARGROUP, a_pParent)
+,	mDiameter(0)
 ,	mNumStarSystems(0)
 {
 	//what's this used for?
@@ -22,11 +32,8 @@ StellarGroup::StellarGroup(bool a_IsLocalGroup)
 		mRelPosition.x = 0.5f;
 		mRelPosition.y = 0.5f;
 
-		//fill out or star systems
-		Generate();
-
 		//create home system
-		mStarSystems.push_back(new StarSystem(this, true));
+		mContents.push_back(new StarSystem(this, true));
 	}
 	else
 	{
@@ -50,25 +57,27 @@ StellarGroup::StellarGroup(bool a_IsLocalGroup)
 		mRelPosition.y = r * sin( theta) * sin( phi );
 		//mRelPosition.z = r * cos( theta );*/
 	}
-}
 
-StellarGroup::~StellarGroup()
-{
-	for(auto it = mStarSystems.begin(); it != mStarSystems.end(); it)
-	{
-		StarSystem* pCurStarSystem = (StarSystem*)*it;
-		delete pCurStarSystem;
-		it = mStarSystems.erase(it);
-	}
-}
-
-void StellarGroup::Generate()
-{
 	//only need to generate these as we come into range of this stellar group
 	int numStarSystems = iRand(MIN_STARSYSTEMS_PER_STELLARGROUP, MAX_STARSYSTEMS_PER_STELLARGROUP);
 	for(int curSystemNum = 0; curSystemNum < numStarSystems; ++curSystemNum)
 	{
 		//create new star system
-		mStarSystems.push_back(new StarSystem(this)); 
+		mContents.push_back(new StarSystem(this));
 	}
+}
+
+StellarGroup::~StellarGroup()
+{
+	for(auto it = mContents.begin(); it != mContents.end(); it)
+	{
+		StarSystem* pCurStarSystem = (StarSystem*)*it;
+		delete pCurStarSystem;
+		it = mContents.erase(it);
+	}
+}
+
+void StellarGroup::GenerateContents()
+{
+	//
 }

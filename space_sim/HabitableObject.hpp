@@ -1,18 +1,25 @@
 #ifndef HABITABLE_OBJECT_HPP
 #define HABITABLE_OBJECT_HPP
 
+#include "DisplayableObject.hpp"
 class StarSystem;
+#include <map>
+#include <string>
+#include "Resources.hpp"
+#include "Defines_Time.h"
 
 //abstract base class for all colonisable entities in space (including space stations)
 class HabitableObject
+:	public DisplayableObject
 {
 public:
 	enum HabitableType
 	{
 		INVALID = 0,
+		STAR,
 		//
+		PLANET_DEAD,
 		PLANET_TERRAN,
-		PLANET_GAIAN,
 		PLANET_ICE,
 		PLANET_GASGIANT,
 		//
@@ -25,20 +32,55 @@ public:
 		//
 		MAXVAL
 	};
-	HabitableObject();
+	HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSystem);
 	virtual ~HabitableObject()=0;
 	//
 	StarSystem* GetOrbitingStarSystem();
 	HabitableObject* GetOrbitingObject();
 	HabitableType GetHabitableType();
 	//
+	std::string GetName();
+	std::string GetCoordsString();
+	float ObjectMass();
+	int Population();
+	float Diameter();
+	float AtmosDensity();
+	virtual void OnClick();
+	//
+	float GetResNum(Resource::ResourceType a_ResType);
+	float GetResQ(Resource::ResourceType a_ResType);
+	//
+	void Update(float a_DeltaT, TimeRate a_TimeRate);
+	//
 protected:
-	//sample vars - NYI
+	void HourlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
+	void DailyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
+	void WeeklyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
+	void MonthlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
+	//
 	HabitableType mMyHabitableType;
+	std::string mObjName;
 	int mPopulation;
+	float mInfrastructure;
+	float mObjectMass;				//absolute mass (assume constant density)
+	float mObjectDiameter;			//absolute diameter (assume perfectly spherical)
+	float mAtmosDensity;			//liquid volume per meter^3
+	//
+	float m_tLeftMainUpdate;
+	int m_NumLeftDailyUpdate;
+	int m_NumLeftWeeklyUpdate;
+	int m_NumLeftMonthlyUpdate;
+	//
+	void GenerateData();
+	//
+	std::map<Resource::ResourceType, float> m_ResourceQ;
+	std::map<Resource::ResourceType, float> m_ResourceNum;
+	//todo: atmospheric composition
 	//
 	StarSystem* m_pOrbitingStarSystem;
 	HabitableObject* m_pOrbitingObject;
+
+	int mCalculatedResourceSpace;
 };
 
 #endif	//HABITABLE_OBJECT_HPP

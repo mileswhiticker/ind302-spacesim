@@ -8,6 +8,7 @@
 namespace sf
 {
 	class RenderWindow;
+	class RenderTarget;
 	//
 };
 
@@ -30,6 +31,7 @@ public:
 	bool Render();
 	//
 	sf::Vector2f GetWindowDimensions();
+	sf::RenderTarget& GetRenderTarget();
 	//
 	bool CheckQuitting();
 	//

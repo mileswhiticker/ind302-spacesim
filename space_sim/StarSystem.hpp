@@ -16,17 +16,17 @@ class StarSystem
 :	public DisplayableObject
 {
 public:
-	StarSystem(StellarGroup* a_pOwningGroup, bool a_IsHomeSystem = false);
+	StarSystem(StellarGroup* a_pParent, bool a_IsHomeSystem = false);
 	~StarSystem();
-	void Generate();
+	//
+	//virtual void HideContents();
+	//
+protected:
+	void GenerateContents();
 	//
 private:
-	// All habitable objects
-	std::vector<HabitableObject*> mHabitableObjects;
-	sf::Vector2f mRelPosition;
-	AsteroidBelt& mAsteroidBelt;
+	//AsteroidBelt& mAsteroidBelt;
 	bool mIsNebula;
-	StellarGroup* m_pOwningGroup;
 };
 
 #endif	//STAR_SYSTEM_HPP

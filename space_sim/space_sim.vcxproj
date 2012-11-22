@@ -53,7 +53,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfgui-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfgui-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;libboost_thread-vc100-mt-gd-1_49.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,7 +72,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppManager.cpp" />
-    <ClCompile Include="AsteroidBelt.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="Defines_math.cpp" />
     <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="GameHelpers.cpp" />
@@ -90,17 +90,21 @@
     <ClCompile Include="HabitableObject.cpp" />
     <ClCompile Include="StarSystem.cpp" />
     <ClCompile Include="StellarGroup.cpp" />
+    <ClCompile Include="Traders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp" />
-    <ClInclude Include="AsteroidBelt.hpp" />
+    <ClInclude Include="Asteroid.hpp" />
     <ClInclude Include="Defines_Math.h" />
+    <ClInclude Include="Defines_Time.h" />
     <ClInclude Include="DisplayableObject.hpp" />
     <ClInclude Include="GameHelpers.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="guicon.h" />
+    <ClInclude Include="Num2StringHelper.h" />
     <ClInclude Include="Planet.hpp" />
     <ClInclude Include="HabitableObject.hpp" />
+    <ClInclude Include="Resources.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneManager.hpp" />
     <ClInclude Include="SceneTypes.h" />
@@ -111,6 +115,10 @@
     <ClInclude Include="OrionSpur.hpp" />
     <ClInclude Include="StarSystem.hpp" />
     <ClInclude Include="StellarGroup.hpp" />
+    <ClInclude Include="Traders.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Num2StringHelper.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

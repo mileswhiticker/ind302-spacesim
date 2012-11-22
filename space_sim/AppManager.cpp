@@ -6,7 +6,6 @@
 
 #include <SFML\Graphics\RenderWindow.hpp>
 #include <SFML\Window\Event.hpp>
-
 #include <SFGUI\Button.hpp>
 
 AppManager::AppManager()
@@ -19,6 +18,8 @@ AppManager::AppManager()
 
 bool AppManager::Initialise()
 {
+	sf::Clock timer;
+	//
 	if(m_Initialised)
 		return false;
 	//
@@ -30,6 +31,8 @@ bool AppManager::Initialise()
 	SFGManager::GetSingleton().Initialise();
 	SimManager::GetSingleton().Initialise();
 	SceneManager::GetSingleton().LaunchScene(MAIN_MENU);
+
+	srand(timer.getElapsedTime().asMilliseconds());
 	//
 	return true;
 }
@@ -85,7 +88,6 @@ bool AppManager::Render()
 
 		SimManager::GetSingleton().Render(*m_pRenderWindow);
 		SceneManager::GetSingleton().Render(*m_pRenderWindow);
-		
 		SFGManager::GetSingleton().Render(*m_pRenderWindow);
 
 		//draw the renderwindow
@@ -114,3 +116,9 @@ sf::Vector2f AppManager::GetWindowDimensions()
 	//
 	return sf::Vector2f();
 }
+
+sf::RenderTarget& AppManager::GetRenderTarget()
+{
+	return *m_pRenderWindow;
+}
+

@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Defines">
       <UniqueIdentifier>{ca5607c4-0003-4731-aef0-9078f8e9ef98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Traders">
+      <UniqueIdentifier>{a18a816f-aff8-4866-aa5e-6527679483a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Traders">
+      <UniqueIdentifier>{e700698c-286a-4bb9-a281-c4b89ada10ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppManager.cpp">
@@ -78,9 +84,6 @@
     <ClCompile Include="Defines_math.cpp">
       <Filter>Source Files\Defines</Filter>
     </ClCompile>
-    <ClCompile Include="AsteroidBelt.cpp">
-      <Filter>Source Files\Galaxy</Filter>
-    </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -93,8 +96,14 @@
     <ClCompile Include="DisplayableObject.cpp">
       <Filter>Source Files\Galaxy</Filter>
     </ClCompile>
+    <ClCompile Include="Traders.cpp">
+      <Filter>Source Files\Traders</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Source Files\Galaxy</Filter>
+    </ClCompile>
     <ClCompile Include="GameHelpers.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +146,6 @@
     <ClInclude Include="Defines_Math.h">
       <Filter>Header Files\Defines</Filter>
     </ClInclude>
-    <ClInclude Include="AsteroidBelt.hpp">
-      <Filter>Header Files\Galaxy</Filter>
-    </ClInclude>
     <ClInclude Include="GameManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -152,8 +158,28 @@
     <ClInclude Include="DisplayableObject.hpp">
       <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
-    <ClInclude Include="GameHelpers.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Traders.hpp">
+      <Filter>Header Files\Traders</Filter>
     </ClInclude>
+    <ClInclude Include="Asteroid.hpp">
+      <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.hpp">
+      <Filter>Header Files\Traders</Filter>
+    </ClInclude>
+    <ClInclude Include="Num2StringHelper.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GameHelpers.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines_Time.h">
+      <Filter>Header Files\Defines</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Num2StringHelper.inl">
+      <Filter>Source Files\Utils</Filter>
+    </None>
   </ItemGroup>
 </Project>
