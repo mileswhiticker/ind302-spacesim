@@ -1,0 +1,34 @@
+#ifndef RESOURCES_HPP
+#define RESOURCES_HPP
+
+namespace Resource
+{
+	enum ResourceType
+	{
+		CARBONACEOUS,
+		SILICACEOUS,
+		METALLIC,
+		HYDROCARBON,
+		//
+		HYDROGEN,
+		PERFLUOROCARBONS,
+		OXYGEN,
+		//
+		FOOD,
+		WATER,
+		FUEL,
+		//
+		ORGANICWASTE,
+		SCRAPWASTE,
+		WASTE,
+		//
+		GIRDERS,
+		SHEETMETAL,
+		COMPONENTS,
+		CIRCUITRY,
+		//
+		MAXVAL
+	};
+};
+
+#endif	//RESOURCES_HPP

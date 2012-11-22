@@ -20,7 +20,7 @@ float fRand(float a_Min, float a_Max)
 
 int iRand(int a_Min, int a_Max)
 {
-	return a_Min + int(fRand() * (a_Max - a_Min));
+	return a_Min + rand() % (a_Max - a_Min);
 }
 
 float fRand(float a_Max)
