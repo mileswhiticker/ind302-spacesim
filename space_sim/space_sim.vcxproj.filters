@@ -31,17 +31,17 @@
     <Filter Include="Source Files\Galaxy">
       <UniqueIdentifier>{91f0ec2d-a172-4812-a40f-b9a1352cb5a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Defines">
-      <UniqueIdentifier>{ac0192c8-1898-46b8-acd7-09e611c5280d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Defines">
-      <UniqueIdentifier>{ca5607c4-0003-4731-aef0-9078f8e9ef98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Traders">
       <UniqueIdentifier>{a18a816f-aff8-4866-aa5e-6527679483a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Traders">
       <UniqueIdentifier>{e700698c-286a-4bb9-a281-c4b89ada10ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Galaxy\HabitableObject">
+      <UniqueIdentifier>{cd85398a-40d3-431c-b669-c6639e432583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Galaxy\HabitableObject">
+      <UniqueIdentifier>{3cc19e66-0a22-439a-a093-5585472c86b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,17 +72,11 @@
     <ClCompile Include="StarSystem.cpp">
       <Filter>Source Files\Galaxy</Filter>
     </ClCompile>
-    <ClCompile Include="HabitableObject.cpp">
-      <Filter>Source Files\Galaxy</Filter>
-    </ClCompile>
     <ClCompile Include="OrionSpur.cpp">
       <Filter>Source Files\Galaxy</Filter>
     </ClCompile>
     <ClCompile Include="StellarGroup.cpp">
       <Filter>Source Files\Galaxy</Filter>
-    </ClCompile>
-    <ClCompile Include="Defines_math.cpp">
-      <Filter>Source Files\Defines</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
@@ -103,6 +97,15 @@
       <Filter>Source Files\Galaxy</Filter>
     </ClCompile>
     <ClCompile Include="GameHelpers.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_Update.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelpers.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,17 +137,11 @@
     <ClInclude Include="StarSystem.hpp">
       <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
-    <ClInclude Include="HabitableObject.hpp">
-      <Filter>Header Files\Galaxy</Filter>
-    </ClInclude>
     <ClInclude Include="OrionSpur.hpp">
       <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
     <ClInclude Include="StellarGroup.hpp">
       <Filter>Header Files\Galaxy</Filter>
-    </ClInclude>
-    <ClInclude Include="Defines_Math.h">
-      <Filter>Header Files\Defines</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.hpp">
       <Filter>Header Files</Filter>
@@ -174,7 +171,13 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Defines_Time.h">
-      <Filter>Header Files\Defines</Filter>
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelpers.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="HabitableObject.hpp">
+      <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

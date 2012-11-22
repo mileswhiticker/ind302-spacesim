@@ -39,6 +39,9 @@ public:
 	HabitableObject* GetOrbitingObject();
 	HabitableType GetHabitableType();
 	//
+	//virtual void SelectThis();
+	//virtual void UnselectThis();
+	//
 	std::string GetName();
 	std::string GetCoordsString();
 	float ObjectMass();
@@ -57,6 +60,7 @@ protected:
 	void DailyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
 	void WeeklyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
 	void MonthlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
+	void YearlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
 	//
 	HabitableType mMyHabitableType;
 	std::string mObjName;
@@ -70,17 +74,20 @@ protected:
 	int m_NumLeftDailyUpdate;
 	int m_NumLeftWeeklyUpdate;
 	int m_NumLeftMonthlyUpdate;
+	int m_NumLeftYearlyUpdate;
 	//
 	void GenerateData();
 	//
-	std::map<Resource::ResourceType, float> m_ResourceQ;
-	std::map<Resource::ResourceType, float> m_ResourceNum;
+	std::map<Resource::ResourceType, float> m_PlanetResQ;
+	std::map<Resource::ResourceType, float> m_PlanetResAbundance;
 	//todo: atmospheric composition
 	//
 	StarSystem* m_pOrbitingStarSystem;
 	HabitableObject* m_pOrbitingObject;
 
 	int mCalculatedResourceSpace;
+	std::map<Resource::ResourceType, float> m_StoredResNum;
+	std::map<Resource::ResourceType, float> m_StoredResQ;
 };
 
 #endif	//HABITABLE_OBJECT_HPP

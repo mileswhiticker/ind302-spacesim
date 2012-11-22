@@ -73,11 +73,12 @@
   <ItemGroup>
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="Defines_math.cpp" />
+    <ClCompile Include="MathHelpers.cpp" />
     <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="GameHelpers.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="guicon.cpp" />
+    <ClCompile Include="HabitableObject_Update.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OrionSpur.cpp" />
     <ClCompile Include="Planet.cpp" />
@@ -95,7 +96,7 @@
   <ItemGroup>
     <ClInclude Include="AppManager.hpp" />
     <ClInclude Include="Asteroid.hpp" />
-    <ClInclude Include="Defines_Math.h" />
+    <ClInclude Include="MathHelpers.h" />
     <ClInclude Include="Defines_Time.h" />
     <ClInclude Include="DisplayableObject.hpp" />
     <ClInclude Include="GameHelpers.hpp" />

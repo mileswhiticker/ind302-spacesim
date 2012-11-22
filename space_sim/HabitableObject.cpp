@@ -3,7 +3,7 @@
 #include "GameManager.hpp"
 
 #include "Num2StringHelper.h"
-#include "Defines_Math.h"
+#include "MathHelpers.h"
 #define NULL 0
 
 HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSystem)
@@ -24,13 +24,24 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 ,	m_NumLeftDailyUpdate(HOURS_DAY)
 ,	m_NumLeftWeeklyUpdate(DAYS_WEEK)
 ,	m_NumLeftMonthlyUpdate(WEEKS_MONTH)
+,	m_NumLeftYearlyUpdate(MONTHS_YEAR)
 {
 	//m_pObjName = new std::string("default name");
 	for(int ind = 0; ind < Resource::MAXVAL; ++ind)
 	{
-		m_ResourceQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
-		m_ResourceNum.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
+		m_PlanetResQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
+		m_PlanetResAbundance.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
+		//
+		m_StoredResNum.insert(std::pair<Resource::ResourceType, int>(Resource::ResourceType(ind), 0));
+		m_StoredResQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
 	}
+	
+	//testing
+	m_StoredResNum[Resource::FOOD] = 99999;
+	m_StoredResQ[Resource::FOOD] = 0.5f;
+	m_StoredResNum[Resource::WATER] = 99999;
+	m_StoredResQ[Resource::WATER] = 1.f;
+	mPopulation = 1;
 }
 
 void HabitableObject::GenerateData()
@@ -39,16 +50,16 @@ void HabitableObject::GenerateData()
 	{
 	case(PLANET_DEAD):
 		{
-			m_ResourceNum[Resource::HYDROCARBON] = fRand() * 0.25f;
-			m_ResourceQ[Resource::HYDROCARBON] = fRand();
+			m_PlanetResAbundance[Resource::HYDROCARBON] = fRand() * 0.25f;
+			m_PlanetResQ[Resource::HYDROCARBON] = fRand();
 			mAtmosDensity = 0.5f + fRand();
 			//
-			m_ResourceNum[Resource::SILICACEOUS] = fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = fRand();
-			m_ResourceNum[Resource::SILICACEOUS] = fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = fRand();
-			m_ResourceNum[Resource::METALLIC] = fRand();
-			m_ResourceQ[Resource::METALLIC] = fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::METALLIC] = fRand();
+			m_PlanetResQ[Resource::METALLIC] = fRand();
 			//
 			mObjectDiameter = fRand(10000,100000);
 			mObjectMass = fRand(10000,100000);
@@ -56,16 +67,16 @@ void HabitableObject::GenerateData()
 		}
 	case(PLANET_TERRAN):
 		{
-			m_ResourceNum[Resource::HYDROCARBON] = 0.5f + fRand() * 0.5f;
-			m_ResourceQ[Resource::HYDROCARBON] = 0.25f + fRand() * 0.75f;
+			m_PlanetResAbundance[Resource::HYDROCARBON] = 0.5f + fRand() * 0.5f;
+			m_PlanetResQ[Resource::HYDROCARBON] = 0.25f + fRand() * 0.75f;
 			mAtmosDensity = 0.75f + fRand() * 0.5f;
 			//
-			m_ResourceNum[Resource::SILICACEOUS] = fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = fRand();
-			m_ResourceNum[Resource::CARBONACEOUS] = fRand();
-			m_ResourceQ[Resource::CARBONACEOUS] = fRand();
-			m_ResourceNum[Resource::METALLIC] = fRand();
-			m_ResourceQ[Resource::METALLIC] = fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::CARBONACEOUS] = fRand();
+			m_PlanetResQ[Resource::CARBONACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::METALLIC] = fRand();
+			m_PlanetResQ[Resource::METALLIC] = fRand();
 			//
 			mObjectDiameter = fRand(10000,100000);
 			mObjectMass = fRand(10000,100000);
@@ -73,12 +84,12 @@ void HabitableObject::GenerateData()
 		}
 	case(PLANET_ICE):
 		{
-			m_ResourceNum[Resource::HYDROCARBON] = 0.5f + fRand() * 0.5f;
-			m_ResourceQ[Resource::HYDROCARBON] = 0.25f + fRand() * 0.75f;
+			m_PlanetResAbundance[Resource::HYDROCARBON] = 0.5f + fRand() * 0.5f;
+			m_PlanetResQ[Resource::HYDROCARBON] = 0.25f + fRand() * 0.75f;
 			mAtmosDensity = 5 + fRand() * 10.f;
 			//
-			m_ResourceNum[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.25f * fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
 			//
 			mObjectDiameter = fRand(10000,100000);
 			mObjectMass = fRand(10000,100000);
@@ -93,12 +104,12 @@ void HabitableObject::GenerateData()
 		}
 	case(ASTEROID_CARBONACEOUS):
 		{
-			m_ResourceNum[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_ResourceNum[Resource::CARBONACEOUS] = 0.5f + 0.5f * fRand();
-			m_ResourceQ[Resource::CARBONACEOUS] = 0.5f + 0.5f * fRand();
-			m_ResourceNum[Resource::METALLIC] = 0.25f * fRand();
-			m_ResourceQ[Resource::METALLIC] = 0.25f * fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.25f * fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = 0.25f * fRand();
+			m_PlanetResAbundance[Resource::CARBONACEOUS] = 0.5f + 0.5f * fRand();
+			m_PlanetResQ[Resource::CARBONACEOUS] = 0.5f + 0.5f * fRand();
+			m_PlanetResAbundance[Resource::METALLIC] = 0.25f * fRand();
+			m_PlanetResQ[Resource::METALLIC] = 0.25f * fRand();
 			//
 			mObjectDiameter = fRand(1,100);
 			mObjectMass = fRand(1,100);
@@ -106,12 +117,12 @@ void HabitableObject::GenerateData()
 		}
 	case(ASTEROID_SILICACEOUS):
 		{
-			m_ResourceNum[Resource::SILICACEOUS] = 0.5f + 0.5f * fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = 0.5f + 0.5f * fRand();
-			m_ResourceNum[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_ResourceQ[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_ResourceNum[Resource::METALLIC] = 0.25f * fRand();
-			m_ResourceQ[Resource::METALLIC] = 0.25f * fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.5f + 0.5f * fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = 0.5f + 0.5f * fRand();
+			m_PlanetResAbundance[Resource::CARBONACEOUS] = 0.25f * fRand();
+			m_PlanetResQ[Resource::CARBONACEOUS] = 0.25f * fRand();
+			m_PlanetResAbundance[Resource::METALLIC] = 0.25f * fRand();
+			m_PlanetResQ[Resource::METALLIC] = 0.25f * fRand();
 			//
 			mObjectDiameter = fRand(1,100);
 			mObjectMass = fRand(1,100);
@@ -119,12 +130,12 @@ void HabitableObject::GenerateData()
 		}
 	case(ASTEROID_METALLIC):
 		{
-			m_ResourceNum[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_ResourceQ[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_ResourceNum[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_ResourceQ[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_ResourceNum[Resource::METALLIC] = 0.5f + 0.5f * fRand();
-			m_ResourceQ[Resource::METALLIC] = 0.5f + 0.5f * fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.25f * fRand();
+			m_PlanetResQ[Resource::SILICACEOUS] = 0.25f * fRand();
+			m_PlanetResAbundance[Resource::CARBONACEOUS] = 0.25f * fRand();
+			m_PlanetResQ[Resource::CARBONACEOUS] = 0.25f * fRand();
+			m_PlanetResAbundance[Resource::METALLIC] = 0.5f + 0.5f * fRand();
+			m_PlanetResQ[Resource::METALLIC] = 0.5f + 0.5f * fRand();
 			//
 			mObjectDiameter = fRand(1,100);
 			mObjectMass = fRand(1,100);
@@ -175,12 +186,12 @@ float HabitableObject::AtmosDensity()
 
 float HabitableObject::GetResNum(Resource::ResourceType a_ResType)
 {
-	return m_ResourceNum[a_ResType];
+	return m_PlanetResAbundance[a_ResType];
 }
 
 float HabitableObject::GetResQ(Resource::ResourceType a_ResType)
 {
-	return m_ResourceQ[a_ResType];
+	return m_PlanetResQ[a_ResType];
 }
 
 std::string HabitableObject::GetName()
@@ -197,108 +208,4 @@ void HabitableObject::OnClick()
 {
 	//std::cout << "DisplayableObject::OnClick()" << std::endl;
 	GameManager::GetSingleton().ClickHabitableObject(this);
-}
-
-void HabitableObject::Update(float a_DeltaT, TimeRate a_TimeRate)
-{
-	m_tLeftMainUpdate -= a_DeltaT;
-	if(m_tLeftMainUpdate <= 0)
-	{
-		m_tLeftMainUpdate = 1;
-		switch(a_TimeRate)
-		{
-		case(HOURLY):
-			{
-				HourlyUpdate(true);
-				break;
-			}
-		case(DAILY):
-			{
-				DailyUpdate(true);
-				break;
-			}
-		case(WEEKLY):
-			{
-				WeeklyUpdate(true);
-				break;
-			}
-		case(MONTHLY):
-			{
-				MonthlyUpdate(true);
-				break;
-			}
-		}
-	}
-}
-
-void HabitableObject::HourlyUpdate(bool a_PropogateUpward, int a_Quantity)
-{
-	//hourly logic here
-	//consume food, water, fuel
-
-	if(a_PropogateUpward)
-	{
-		if(--m_NumLeftDailyUpdate <= 0)
-		{
-			DailyUpdate(true);
-			m_NumLeftDailyUpdate = HOURS_DAY;
-		}
-	}
-	else
-	{
-		//nothing?
-	}
-}
-
-void HabitableObject::DailyUpdate(bool a_PropogateUpward, int a_Quantity)
-{
-	//daily logic here
-	//produce raw materials
-
-	if(a_PropogateUpward)
-	{
-		if(--m_NumLeftWeeklyUpdate <= 0)
-		{
-			WeeklyUpdate(true);
-			m_NumLeftDailyUpdate = DAYS_WEEK;
-		}
-	}
-	else
-	{
-		HourlyUpdate(false, a_Quantity * HOURS_DAY);
-	}
-}
-
-void HabitableObject::WeeklyUpdate(bool a_PropogateUpward, int a_Quantity)
-{
-	//weekly logic here
-	//produce finished foods (including food)
-
-	if(a_PropogateUpward)
-	{
-		if(--m_NumLeftMonthlyUpdate <= 0)
-		{
-			MonthlyUpdate(true);
-			m_NumLeftMonthlyUpdate = WEEKS_MONTH;
-		}
-	}
-	else
-	{
-		DailyUpdate(false, a_Quantity * DAYS_WEEK);
-	}
-}
-
-void HabitableObject::MonthlyUpdate(bool a_PropogateUpward, int a_Quantity)
-{
-	//monthly logic here
-	//todo
-
-	if(a_PropogateUpward)
-	{
-		//nothing?
-	}
-	else
-	{
-		WeeklyUpdate(false, a_Quantity * WEEKS_MONTH);
-	}
 }
