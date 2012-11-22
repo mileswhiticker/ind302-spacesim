@@ -1,5 +1,6 @@
 #include "AppManager.hpp"
 
+#include "GameManager.hpp"
 #include "SimManager.hpp"
 #include "SFGManager.hpp"
 #include "SceneManager.hpp"
@@ -39,7 +40,10 @@ bool AppManager::Initialise()
 
 void AppManager::Update(float a_DeltaT)
 {
-	SimManager::GetSingleton().Update(a_DeltaT);
+	//todo: delete this
+	//SimManager::GetSingleton().Update(a_DeltaT);
+
+	GameManager::GetSingleton().GameUpdate(a_DeltaT);
 	SceneManager::GetSingleton().Update(a_DeltaT);
 	SFGManager::GetSingleton().Update(a_DeltaT);
 }

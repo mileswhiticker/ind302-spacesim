@@ -20,10 +20,7 @@ Game::Game()
 ,	m_pBGSprite(NULL)
 {
 	m_SceneType = SIM;
-	//
-	
 	sf::Vector2f windowDims = SFGManager::GetSingleton().GetWindowDimensions();
-
 	sf::FloatRect allocation;
 
 	//right panel
@@ -107,12 +104,56 @@ Game::Game()
 	pTable5->Attach(sfg::Label::Create("Test2"), sf::Rect<sf::Uint32>(1,0,1,1));
 	pTable5->Attach(sfg::Label::Create("Test3"), sf::Rect<sf::Uint32>(0,1,1,1));
 	pBottomPanel->AppendPage(pTable5, sfg::Label::Create("Infrastructure"));
+	
+	//resource storage
+	//
+	m_pRawResStoreTable = sfg::Table::Create();
+	for(int ind = 0; ind < NUM_RAW_MATERIALS; ++ind)
+	{
+		sfg::Label::Ptr pNameLabel = sfg::Label::Create(GetResourceStringname(Resource::ResourceType(ind)));
+		//pNameLabel->SetRequisition(sf::Vector2f(85, 20));
+		sfg::Label::Ptr pValueLabel = sfg::Label::Create("0 (Q ?)");
+		//pValueLabel->SetRequisition(sf::Vector2f(85, 20));
 
-	sfg::Table::Ptr pTable6 = sfg::Table::Create();
-	pTable6->Attach(sfg::Label::Create("Test1"), sf::Rect<sf::Uint32>(0,0,1,1));
-	pTable6->Attach(sfg::Label::Create("Test2"), sf::Rect<sf::Uint32>(1,0,1,1));
-	pTable6->Attach(sfg::Label::Create("Test3"), sf::Rect<sf::Uint32>(0,1,1,1));
-	pBottomPanel->AppendPage(pTable6, sfg::Label::Create("Resource Storage"));
+		mResourceNameLabels.insert(std::pair<Resource::ResourceType, sfg::Label::Ptr>(Resource::ResourceType(ind), pNameLabel));
+		mResourceValueLabels.insert(std::pair<Resource::ResourceType, sfg::Label::Ptr>(Resource::ResourceType(ind), pValueLabel));
+		//
+		int xOffset = ind;
+		int yOffset = 0;
+		if(ind >= NUM_RAW_MATERIALS / 2)
+		{
+			xOffset = ind - NUM_RAW_MATERIALS / 2;
+			yOffset = 2;
+		}
+
+		m_pRawResStoreTable->Attach(pNameLabel, sf::Rect<sf::Uint32>(xOffset, yOffset + 0, 1, 1));
+		m_pRawResStoreTable->Attach(pValueLabel, sf::Rect<sf::Uint32>(xOffset, yOffset + 1 ,1, 1));
+	}
+	pBottomPanel->AppendPage(m_pRawResStoreTable, sfg::Label::Create("Raw materials Storage"));
+	//
+	m_pFinishedResStoreTable = sfg::Table::Create();
+	for(int ind = NUM_RAW_MATERIALS; ind < Resource::MAXVAL; ++ind)
+	{
+		sfg::Label::Ptr pNameLabel = sfg::Label::Create(GetResourceStringname(Resource::ResourceType(ind)));
+		//pNameLabel->SetRequisition(sf::Vector2f(85, 20));
+		sfg::Label::Ptr pValueLabel = sfg::Label::Create("0 (Q ?)");
+		//pValueLabel->SetRequisition(sf::Vector2f(85, 20));
+
+		mResourceNameLabels.insert(std::pair<Resource::ResourceType, sfg::Label::Ptr>(Resource::ResourceType(ind), pNameLabel));
+		mResourceValueLabels.insert(std::pair<Resource::ResourceType, sfg::Label::Ptr>(Resource::ResourceType(ind), pValueLabel));
+		//
+		int xOffset = ind - NUM_RAW_MATERIALS;
+		int yOffset = 0;
+		if(xOffset >= NUM_PRODUCED_GOODS / 2)
+		{
+			xOffset -= NUM_PRODUCED_GOODS / 2;
+			yOffset = 2;
+		}
+
+		m_pFinishedResStoreTable->Attach(pNameLabel, sf::Rect<sf::Uint32>(xOffset, yOffset + 0, 1, 1));
+		m_pFinishedResStoreTable->Attach(pValueLabel, sf::Rect<sf::Uint32>(xOffset, yOffset + 1 ,1, 1));
+	}
+	pBottomPanel->AppendPage(m_pFinishedResStoreTable, sfg::Label::Create("Produced goods Storage"));
 
 	sfg::Table::Ptr pTable7 = sfg::Table::Create();
 	pTable7->Attach(sfg::Label::Create("Test1"), sf::Rect<sf::Uint32>(0,0,1,1));

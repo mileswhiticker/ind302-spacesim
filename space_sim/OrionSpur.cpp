@@ -7,7 +7,7 @@
 
 #include "SFGManager.hpp"
 
-#include "Defines_Math.h"
+#include "MathHelpers.h"
 
 //as the spur cross-section covered is forced at 3500ly by 3500ly, we can assume these approximate quantities for the number of stellar groups
 #define MIN_NUM_STELLARGROUPS 5//70

@@ -1,7 +1,7 @@
 #include "Planet.hpp"
 
 #include "StarSystem.hpp"
-#include "Defines_Math.h"
+#include "MathHelpers.h"
 
 Planet::Planet(StarSystem* a_pParent, HabitableObject::HabitableType a_NewType)
 //:	DisplayableObject(DisplayableObject::PLANET, a_pParent)

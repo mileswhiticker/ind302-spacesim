@@ -19,6 +19,7 @@ DisplayableObject::DisplayableObject(DisplayableType a_Type, DisplayableObject* 
 ,	m_pParentObject(a_pParent)
 ,	m_pButtonImage(NULL)
 ,	mIsHabitableObject(false)
+,	mIsSelected(false)
 {
 	switch(mMyDisplayableType)
 	{
@@ -37,7 +38,7 @@ DisplayableObject::DisplayableObject(DisplayableType a_Type, DisplayableObject* 
 	case(DisplayableObject::STAR):
 		{
 			m_ImageName = "../media/star.png";
-			m_BGImageName = "../media/star2.png";
+			m_BGImageName = "../media/star_bg.png";
 			break;
 		}
 	case(DisplayableObject::ORIONSPUR):
@@ -182,6 +183,7 @@ void DisplayableObject::GenerateButtons()
 
 void DisplayableObject::SelectThis()
 {
+	mIsSelected = true;
 	/*if(m_pButton.get())
 	{
 		m_pButtonImage->loadFromFile(m_SelectedImageName);
@@ -192,6 +194,7 @@ void DisplayableObject::SelectThis()
 
 void DisplayableObject::UnselectThis()
 {
+	mIsSelected = false;
 	/*if(m_pButton.get())
 	{
 		m_pButtonImage->loadFromFile(m_ImageName);

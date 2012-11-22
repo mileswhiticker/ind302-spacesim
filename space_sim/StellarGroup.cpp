@@ -1,6 +1,6 @@
 #include "StellarGroup.hpp"
 
-#include "Defines_Math.h"
+#include "MathHelpers.h"
 
 #include "OrionSpur.hpp"
 #include "StarSystem.hpp"

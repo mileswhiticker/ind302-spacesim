@@ -4,7 +4,7 @@
 #include "SFGManager.hpp"
 #include "StellarGroup.hpp"
 
-#include "Defines_Math.h"
+#include "MathHelpers.h"
 #include "Asteroid.hpp"
 #include "Planet.hpp"
 
@@ -19,7 +19,7 @@ StarSystem::StarSystem(StellarGroup* a_pParent, bool a_IsHomeSystem)
 	{
 		//create the starting planet
 		mContents.push_back(new Planet(this, HabitableObject::PLANET_TERRAN));
-		GameManager::SetHomePlanet((Planet*)mContents.back());
+		GameManager::GetSingleton().SetHomePlanet((Planet*)mContents.back());
 
 		//create this system's planets
 		GenerateContents();
@@ -87,6 +87,8 @@ void StarSystem::GenerateContents()
 			// 60%
 			mContents.push_back(new Planet(this, HabitableObject::PLANET_DEAD));
 		}
+
+		GameManager::GetSingleton().AddHabitableObject((Planet*)mContents.back());
 	}
 	//create the star
 	mContents.push_back(new Star(this));

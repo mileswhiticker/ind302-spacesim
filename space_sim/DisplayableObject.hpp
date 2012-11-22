@@ -7,6 +7,8 @@
 #include <SFGUI\Image.hpp>
 #include <SFML\System\Vector2.hpp>
 
+#include "Defines_Time.h"
+
 class DisplayableObject
 {
 public:
@@ -55,6 +57,7 @@ protected:
 	std::string m_BGImageName;
 	//
 	bool mIsHabitableObject;
+	bool mIsSelected;
 	DisplayableObject* m_pParentObject;
 	//
 private:

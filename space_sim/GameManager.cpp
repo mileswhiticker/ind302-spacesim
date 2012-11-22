@@ -8,8 +8,11 @@
 #include "Scene_Game.hpp"
 
 #include "SFGManager.hpp"
-#include "GameHelpers.hpp"
 #include "SceneManager.hpp"
+
+#include "MathHelpers.h"
+#include "Num2StringHelper.h"
+#include "GameHelpers.hpp"
 
 #include <iostream>
 
@@ -20,6 +23,7 @@ GameManager::GameManager()
 ,	m_pOrionSpur(NULL)
 ,	m_pGameScene(NULL)
 ,	m_pCurSelectedObject(NULL)
+,	m_CurTimeRate(HOURLY)
 {
 	//
 }
@@ -27,6 +31,7 @@ GameManager::GameManager()
 void GameManager::SetHomePlanet(Planet* a_pNewHomePlanet)
 {
 	m_pHomePlanet = a_pNewHomePlanet;
+	AddHabitableObject(a_pNewHomePlanet);
 }
 
 Planet* GameManager::GetHomePlanet()
@@ -144,4 +149,30 @@ void GameManager::ClickHabitableObject(HabitableObject* a_pHabObject)
 	ClickDisplayableObject((DisplayableObject*)a_pHabObject);
 	//
 	m_pGameScene->SelectObject(a_pHabObject);
+}
+
+void GameManager::UpdateStoredResource(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality)
+{
+	GameManager::GetSingleton().GetGameScene()->mResourceValueLabels[a_ResType]->SetText(num2string( round(a_Quantity, 2) ) + " (Q " + num2string( round(a_Quality, 2) ) + ")");
+}
+
+Game* GameManager::GetGameScene()
+{
+	return m_pGameScene;
+}
+
+void GameManager::GameUpdate(float a_DeltaT)
+{
+	if(m_pOrionSpur)
+	{
+		for(auto it = m_HabitableObjects.begin(); it != m_HabitableObjects.end(); ++it)
+		{
+			(*it)->Update(a_DeltaT, m_CurTimeRate);
+		}
+	}
+}
+
+void GameManager::AddHabitableObject(HabitableObject* a_pNewHabObject)
+{
+	m_HabitableObjects.push_back(a_pNewHabObject);
 }

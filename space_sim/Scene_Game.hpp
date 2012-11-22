@@ -1,7 +1,11 @@
 #ifndef SCENE_GAME_HPP
 #define SCENE_GAME_HPP
 
+#include <map>
+
 #include "Scene.hpp"
+#include "Resources.hpp"
+
 #include <SFGUI\Button.hpp>
 #include <SFGUI\Table.hpp>
 #include <SFGUI\Label.hpp>
@@ -24,13 +28,21 @@ public:
 	void ChangeView(DisplayableObject* a_pNewFocus);
 	void SelectObject(HabitableObject* a_pNewSelect);
 	//
+	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceValueLabels;
+	//
 private:
+	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceNameLabels;
+	//
 	sfg::Button::Ptr m_pMainMenuButton;
 	sfg::Table::Ptr m_pStatusTable;
 	sfg::Label::Ptr m_pTitleLabel;
 	//
 	sf::Texture* m_pBGTexture;
 	sf::Sprite* m_pBGSprite;
+
+	//resource storage data
+	sfg::Table::Ptr m_pRawResStoreTable;
+	sfg::Table::Ptr m_pFinishedResStoreTable;
 
 	//object data
 	sfg::Table::Ptr m_pObjectDataTable;
