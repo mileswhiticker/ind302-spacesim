@@ -8,7 +8,7 @@ enum SceneType
 	MAIN_MENU,
 	SIM,
 	//
-	MAXVAL
+	MAXSCENEVAL
 };
 
 

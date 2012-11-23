@@ -218,11 +218,6 @@ std::string GetResourceStringname(Resource::ResourceType a_ResourceType)
 			return "SHEETMETAL";
 			break;
 		}
-	case(Resource::WASTE):
-		{
-			return "WASTE";
-			break;
-		}
 	case(Resource::WATER):
 		{
 			return "WATER";

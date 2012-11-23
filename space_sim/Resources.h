@@ -5,7 +5,7 @@ namespace Resource
 {
 	enum ResourceType
 	{
-		CARBONACEOUS,
+		CARBONACEOUS = 0,
 		SILICACEOUS,
 		METALLIC,
 		HYDROCARBON,
@@ -16,7 +16,6 @@ namespace Resource
 		//
 		ORGANICWASTE,
 		SCRAPWASTE,
-		WASTE,
 		//
 		FOOD,
 		WATER,
@@ -35,7 +34,7 @@ namespace Resource
 	};
 };
 
-#define NUM_RAW_MATERIALS int(Resource::WASTE)
+#define NUM_RAW_MATERIALS int(Resource::SCRAPWASTE)
 #define NUM_PRODUCED_GOODS (int(Resource::MAXVAL) - NUM_RAW_MATERIALS)
 
 #endif	//RESOURCES_HPP

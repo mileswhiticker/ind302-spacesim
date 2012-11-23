@@ -5,8 +5,13 @@
 class StarSystem;
 #include <map>
 #include <string>
-#include "Resources.hpp"
+
+#include "Industry.h"
+#include "Resources.h"
 #include "Defines_Time.h"
+
+#define UPWARD 1
+#define DOWNWARD 2
 
 //abstract base class for all colonisable entities in space (including space stations)
 class HabitableObject
@@ -49,6 +54,7 @@ public:
 	float Diameter();
 	float AtmosDensity();
 	virtual void OnClick();
+	float GetInfrastructureLevel();
 	//
 	float GetResNum(Resource::ResourceType a_ResType);
 	float GetResQ(Resource::ResourceType a_ResType);
@@ -56,11 +62,11 @@ public:
 	void Update(float a_DeltaT, TimeRate a_TimeRate);
 	//
 protected:
-	void HourlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
-	void DailyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
-	void WeeklyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
-	void MonthlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
-	void YearlyUpdate(bool a_PropogateUpward, int a_Quantity = 1);
+	void HourlyUpdate(int a_PropogationDir, int a_Quantity = 1);
+	void DailyUpdate(int a_PropogationDir, int a_Quantity = 1);
+	void WeeklyUpdate(int a_PropogationDir, int a_Quantity = 1);
+	void MonthlyUpdate(int a_PropogationDir, int a_Quantity = 1);
+	void YearlyUpdate(int a_PropogationDir, int a_Quantity = 1);
 	//
 	HabitableType mMyHabitableType;
 	std::string mObjName;
@@ -77,6 +83,7 @@ protected:
 	int m_NumLeftYearlyUpdate;
 	//
 	void GenerateData();
+	bool mGenerated;
 	//
 	std::map<Resource::ResourceType, float> m_PlanetResQ;
 	std::map<Resource::ResourceType, float> m_PlanetResAbundance;
@@ -85,9 +92,12 @@ protected:
 	StarSystem* m_pOrbitingStarSystem;
 	HabitableObject* m_pOrbitingObject;
 
+	void RecalculateIndustryWeighting();
 	int mCalculatedResourceSpace;
+	float mTotalIndWeighting;
 	std::map<Resource::ResourceType, float> m_StoredResNum;
 	std::map<Resource::ResourceType, float> m_StoredResQ;
+	std::map<Industry::IndustryType, float> m_IndustryWeighting;
 };
 
 #endif	//HABITABLE_OBJECT_HPP

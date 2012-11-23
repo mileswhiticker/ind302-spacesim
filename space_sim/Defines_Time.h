@@ -9,6 +9,8 @@ enum TimeRate
 	DAILY,
 	WEEKLY,
 	MONTHLY,
+	//
+	MAXTIMEVAL
 };
 
 #define HOURS_DAY 24

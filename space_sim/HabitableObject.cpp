@@ -11,6 +11,8 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 ,	mMyHabitableType(a_MyType)
 ,	m_pOrbitingStarSystem(NULL)
 ,	m_pOrbitingObject(NULL)
+,	mGenerated(false)
+,	mTotalIndWeighting(0)
 	//
 ,	mPopulation(0)
 ,	mObjectMass(0)
@@ -26,15 +28,23 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 ,	m_NumLeftMonthlyUpdate(WEEKS_MONTH)
 ,	m_NumLeftYearlyUpdate(MONTHS_YEAR)
 {
-	//m_pObjName = new std::string("default name");
+	//initialise maps
 	for(int ind = 0; ind < Resource::MAXVAL; ++ind)
 	{
 		m_PlanetResQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
 		m_PlanetResAbundance.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
 		//
-		m_StoredResNum.insert(std::pair<Resource::ResourceType, int>(Resource::ResourceType(ind), 0));
+		m_StoredResNum.insert(std::pair<Resource::ResourceType, int>(Resource::ResourceType(ind), 0.f));
 		m_StoredResQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
 	}
+	for(int ind = 0; ind < Industry::MAXVAL; ++ind)
+	{
+		m_IndustryWeighting.insert(std::pair<Industry::IndustryType, float>(Industry::IndustryType(ind), 0.f));
+	}
+	m_IndustryWeighting[Industry::POWER_GENERATION] = 1;
+	m_IndustryWeighting[Industry::WASTE_RECYCLING] = 1;
+	m_IndustryWeighting[Industry::SCRAP_RECYCLING] = 1;
+	m_IndustryWeighting[Industry::STORAGE] = 1;
 	
 	//testing
 	m_StoredResNum[Resource::FOOD] = 99999;
@@ -42,106 +52,6 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 	m_StoredResNum[Resource::WATER] = 99999;
 	m_StoredResQ[Resource::WATER] = 1.f;
 	mPopulation = 1;
-}
-
-void HabitableObject::GenerateData()
-{
-	switch(mMyHabitableType)
-	{
-	case(PLANET_DEAD):
-		{
-			m_PlanetResAbundance[Resource::HYDROCARBON] = fRand() * 0.25f;
-			m_PlanetResQ[Resource::HYDROCARBON] = fRand();
-			mAtmosDensity = 0.5f + fRand();
-			//
-			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
-			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
-			m_PlanetResAbundance[Resource::METALLIC] = fRand();
-			m_PlanetResQ[Resource::METALLIC] = fRand();
-			//
-			mObjectDiameter = fRand(10000,100000);
-			mObjectMass = fRand(10000,100000);
-			break;
-		}
-	case(PLANET_TERRAN):
-		{
-			m_PlanetResAbundance[Resource::HYDROCARBON] = 0.5f + fRand() * 0.5f;
-			m_PlanetResQ[Resource::HYDROCARBON] = 0.25f + fRand() * 0.75f;
-			mAtmosDensity = 0.75f + fRand() * 0.5f;
-			//
-			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
-			m_PlanetResAbundance[Resource::CARBONACEOUS] = fRand();
-			m_PlanetResQ[Resource::CARBONACEOUS] = fRand();
-			m_PlanetResAbundance[Resource::METALLIC] = fRand();
-			m_PlanetResQ[Resource::METALLIC] = fRand();
-			//
-			mObjectDiameter = fRand(10000,100000);
-			mObjectMass = fRand(10000,100000);
-			break;
-		}
-	case(PLANET_ICE):
-		{
-			m_PlanetResAbundance[Resource::HYDROCARBON] = 0.5f + fRand() * 0.5f;
-			m_PlanetResQ[Resource::HYDROCARBON] = 0.25f + fRand() * 0.75f;
-			mAtmosDensity = 5 + fRand() * 10.f;
-			//
-			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
-			//
-			mObjectDiameter = fRand(10000,100000);
-			mObjectMass = fRand(10000,100000);
-			break;
-		}
-	case(PLANET_GASGIANT):
-		{
-			mAtmosDensity = 500 + fRand() * 500.f;
-			//
-			mObjectDiameter = fRand(100000,1000000);
-			break;
-		}
-	case(ASTEROID_CARBONACEOUS):
-		{
-			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_PlanetResAbundance[Resource::CARBONACEOUS] = 0.5f + 0.5f * fRand();
-			m_PlanetResQ[Resource::CARBONACEOUS] = 0.5f + 0.5f * fRand();
-			m_PlanetResAbundance[Resource::METALLIC] = 0.25f * fRand();
-			m_PlanetResQ[Resource::METALLIC] = 0.25f * fRand();
-			//
-			mObjectDiameter = fRand(1,100);
-			mObjectMass = fRand(1,100);
-			break;
-		}
-	case(ASTEROID_SILICACEOUS):
-		{
-			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.5f + 0.5f * fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = 0.5f + 0.5f * fRand();
-			m_PlanetResAbundance[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_PlanetResQ[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_PlanetResAbundance[Resource::METALLIC] = 0.25f * fRand();
-			m_PlanetResQ[Resource::METALLIC] = 0.25f * fRand();
-			//
-			mObjectDiameter = fRand(1,100);
-			mObjectMass = fRand(1,100);
-			break;
-		}
-	case(ASTEROID_METALLIC):
-		{
-			m_PlanetResAbundance[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = 0.25f * fRand();
-			m_PlanetResAbundance[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_PlanetResQ[Resource::CARBONACEOUS] = 0.25f * fRand();
-			m_PlanetResAbundance[Resource::METALLIC] = 0.5f + 0.5f * fRand();
-			m_PlanetResQ[Resource::METALLIC] = 0.5f + 0.5f * fRand();
-			//
-			mObjectDiameter = fRand(1,100);
-			mObjectMass = fRand(1,100);
-			break;
-		}
-	}
 }
 
 HabitableObject::~HabitableObject()
@@ -208,4 +118,52 @@ void HabitableObject::OnClick()
 {
 	//std::cout << "DisplayableObject::OnClick()" << std::endl;
 	GameManager::GetSingleton().ClickHabitableObject(this);
+}
+
+void HabitableObject::Update(float a_DeltaT, TimeRate a_TimeRate)
+{
+	if(!mGenerated)
+		return;
+
+	m_tLeftMainUpdate -= a_DeltaT;
+	if(m_tLeftMainUpdate <= 0)
+	{
+		m_tLeftMainUpdate = 1;
+		switch(a_TimeRate)
+		{
+		case(HOURLY):
+			{
+				HourlyUpdate(UPWARD | DOWNWARD);
+				break;
+			}
+		case(DAILY):
+			{
+				DailyUpdate(UPWARD | DOWNWARD);
+				break;
+			}
+		case(WEEKLY):
+			{
+				WeeklyUpdate(UPWARD | DOWNWARD);
+				break;
+			}
+		case(MONTHLY):
+			{
+				MonthlyUpdate(UPWARD | DOWNWARD);
+				break;
+			}
+		}
+	}
+}
+
+void HabitableObject::RecalculateIndustryWeighting()
+{
+	for(int ind = 0; ind < Industry::MAXVAL; ++ind)
+	{
+		mTotalIndWeighting += m_IndustryWeighting[Industry::IndustryType(ind)];
+	}
+}
+
+float HabitableObject::GetInfrastructureLevel()
+{
+	return mInfrastructure;
 }

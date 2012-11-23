@@ -40,6 +40,9 @@ float curt(float input)
 
 float AverageWeight(float a_WeightOne, float a_QuantityOne, float a_WeightTwo, float a_QuantityTwo)
 {
+	if(!a_WeightOne || !a_QuantityOne)
+		return a_WeightTwo;
+	//
 	float weightTowardsOne = a_QuantityOne / (a_QuantityOne + a_QuantityTwo);
 	return weightTowardsOne * a_WeightOne + (1 - weightTowardsOne) * a_WeightTwo;
 }

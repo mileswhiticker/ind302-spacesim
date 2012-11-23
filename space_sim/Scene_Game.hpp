@@ -4,7 +4,7 @@
 #include <map>
 
 #include "Scene.hpp"
-#include "Resources.hpp"
+#include "Resources.h"
 
 #include <SFGUI\Button.hpp>
 #include <SFGUI\Table.hpp>
@@ -30,6 +30,9 @@ public:
 	//
 	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceValueLabels;
 	//
+	void SetDate(std::string a_NewDate);
+	void SetInf(float a_NewInfLevel);
+	//
 private:
 	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceNameLabels;
 	//
@@ -40,6 +43,9 @@ private:
 	sf::Texture* m_pBGTexture;
 	sf::Sprite* m_pBGSprite;
 
+	//misc
+	sfg::Label::Ptr m_pDateLabel;
+
 	//resource storage data
 	sfg::Table::Ptr m_pRawResStoreTable;
 	sfg::Table::Ptr m_pFinishedResStoreTable;
@@ -48,7 +54,7 @@ private:
 	sfg::Table::Ptr m_pObjectDataTable;
 	//
 	sfg::Label::Ptr m_pObjnameLabel;
-	sfg::Label::Ptr m_pObjtypeLabel;
+	sfg::Label::Ptr m_pObjinfLabel;
 	sfg::Label::Ptr m_pObjpopLabel;
 	sfg::Label::Ptr m_pObjcoordsLabel;
 	sfg::Label::Ptr m_pObjmassLabel;

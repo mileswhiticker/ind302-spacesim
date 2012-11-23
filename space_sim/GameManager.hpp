@@ -5,7 +5,7 @@
 #include <SFGUI\Image.hpp>
 
 #include "DisplayableObject.hpp"
-#include "Resources.hpp"
+#include "Resources.h"
 #include "Defines_Time.h"
 
 class OrionSpur;
@@ -33,6 +33,7 @@ public:
 	}
 	//
 	static void UpdateStoredResource(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality);
+	static void UpdateSelectedInfrastructure(float a_NewInf);
 	//
 	/*enum Viewable
 	{
@@ -56,6 +57,7 @@ public:
 	void AddHabitableObject(HabitableObject* a_pNewHabObject);
 	//
 	Game* GetGameScene();
+	void HandleEvent(sf::Event& a_NewEvent);
 	//
 private:
 	GameManager();
@@ -72,6 +74,12 @@ private:
 	//DisplayableObject::DisplayableType m_CurView;
 	DisplayableObject* m_pCurViewedObject;
 	DisplayableObject* m_pCurSelectedObject;
+	//
+	float m_tLeftTimeTick;
+	int mHours;
+	int mDays;
+	int mMonths;
+	int mYears;
 };
 
 #endif	//GAME_MANAGER_HPP

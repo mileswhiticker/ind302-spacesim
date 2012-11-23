@@ -53,30 +53,16 @@ void AppManager::PollEvents()
 	sf::Event curEvent;
 	while(m_pRenderWindow->pollEvent(curEvent))
 	{
-		switch(curEvent.type)
+		bool handled = false;
+
+		if(curEvent.type == sf::Event::Closed || (curEvent.type == sf::Event::KeyPressed && curEvent.key.code == sf::Keyboard::Escape))
 		{
-		case(sf::Event::Closed):
-			{
-				m_QuitNextUpdate = true;
-				break;
-			}
-		case(sf::Event::KeyPressed):
-			{
-				switch(curEvent.key.code)
-				{
-				case(sf::Keyboard::Escape):
-						{
-							m_QuitNextUpdate = true;
-							break;
-						}
-				}
-				break;
-			}
-		default:
-			{
-				SFGManager::GetSingleton().HandleEvent(curEvent);
-				break;
-			}
+			m_QuitNextUpdate = true;
+		}
+		else
+		{
+			GameManager::GetSingleton().HandleEvent(curEvent);
+			SFGManager::GetSingleton().HandleEvent(curEvent);
 		}
 	}
 }

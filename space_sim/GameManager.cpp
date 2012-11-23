@@ -23,7 +23,13 @@ GameManager::GameManager()
 ,	m_pOrionSpur(NULL)
 ,	m_pGameScene(NULL)
 ,	m_pCurSelectedObject(NULL)
+	//
 ,	m_CurTimeRate(HOURLY)
+,	mHours(0)
+,	mDays(0)
+,	mMonths(0)
+,	mYears(2020)
+,	m_tLeftTimeTick(1)
 {
 	//
 }
@@ -151,11 +157,6 @@ void GameManager::ClickHabitableObject(HabitableObject* a_pHabObject)
 	m_pGameScene->SelectObject(a_pHabObject);
 }
 
-void GameManager::UpdateStoredResource(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality)
-{
-	GameManager::GetSingleton().GetGameScene()->mResourceValueLabels[a_ResType]->SetText(num2string( round(a_Quantity, 2) ) + " (Q " + num2string( round(a_Quality, 2) ) + ")");
-}
-
 Game* GameManager::GetGameScene()
 {
 	return m_pGameScene;
@@ -165,6 +166,59 @@ void GameManager::GameUpdate(float a_DeltaT)
 {
 	if(m_pOrionSpur)
 	{
+		//increase the current date
+		m_tLeftTimeTick -= a_DeltaT;
+
+		if(m_tLeftTimeTick <= 0)
+		{
+			m_tLeftTimeTick = 1;
+			//
+			switch(m_CurTimeRate)
+			{
+			case(HOURLY):
+				{
+					mHours++;
+					break;
+				}
+			case(DAILY):
+				{
+					mDays++;
+					break;
+				}
+			case(WEEKLY):
+				{
+					mDays += 7;
+					break;
+				}
+			case(MONTHLY):
+				{
+					mMonths++;
+					break;
+				}
+			default:
+				{
+					std::cout << "Unknown time rate!" << std::endl;
+					break;
+				}
+			}
+			while(mHours >= HOURS_DAY)
+			{
+				mHours -= HOURS_DAY;
+				mDays++;
+			}
+			while(mDays >= DAYS_WEEK * WEEKS_MONTH)
+			{
+				mDays -= DAYS_WEEK * WEEKS_MONTH;
+				mMonths++;
+			}
+			while(mMonths >= MONTHS_YEAR)
+			{
+				mMonths -= MONTHS_YEAR;
+				mYears++;
+			}
+			m_pGameScene->SetDate( num2string(mHours) + ":00, " + num2string(mDays) + "/" + num2string(mMonths) + "/" + num2string(mYears) );
+		}
+
 		for(auto it = m_HabitableObjects.begin(); it != m_HabitableObjects.end(); ++it)
 		{
 			(*it)->Update(a_DeltaT, m_CurTimeRate);
@@ -175,4 +229,31 @@ void GameManager::GameUpdate(float a_DeltaT)
 void GameManager::AddHabitableObject(HabitableObject* a_pNewHabObject)
 {
 	m_HabitableObjects.push_back(a_pNewHabObject);
+}
+
+void GameManager::HandleEvent(sf::Event& a_NewEvent)
+{
+	if(a_NewEvent.type == sf::Event::KeyPressed)
+	{
+		if(a_NewEvent.key.code == sf::Keyboard::Left || a_NewEvent.key.code == sf::Keyboard::Down)
+		{
+			if(int(m_CurTimeRate) - 1 >= PAUSED)
+				m_CurTimeRate = TimeRate(int(m_CurTimeRate) - 1);
+		}
+		else if(a_NewEvent.key.code == sf::Keyboard::Right || a_NewEvent.key.code == sf::Keyboard::Up)
+		{
+			if(int(m_CurTimeRate) + 1 < int(MAXTIMEVAL))
+				m_CurTimeRate = TimeRate(int(m_CurTimeRate) + 1);
+		}
+	}
+}
+
+void GameManager::UpdateStoredResource(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality)
+{
+	GameManager::GetSingleton().GetGameScene()->mResourceValueLabels[a_ResType]->SetText(num2string( round(a_Quantity, 2) ) + " (Q " + num2string( round(a_Quality, 2) ) + ")");
+}
+
+void GameManager::UpdateSelectedInfrastructure(float a_NewInf)
+{
+	GameManager::GetSingleton().GetGameScene()->SetInf(a_NewInf);
 }

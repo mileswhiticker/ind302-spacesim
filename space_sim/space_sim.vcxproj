@@ -73,12 +73,17 @@
   <ItemGroup>
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="HabitableObject_GenerateData.cpp" />
+    <ClCompile Include="HabitableObject_UpdateDaily.cpp" />
+    <ClCompile Include="HabitableObject_UpdateMonthly.cpp" />
+    <ClCompile Include="HabitableObject_UpdateWeekly.cpp" />
+    <ClCompile Include="HabitableObject_UpdateYearly.cpp" />
     <ClCompile Include="MathHelpers.cpp" />
     <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="GameHelpers.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="guicon.cpp" />
-    <ClCompile Include="HabitableObject_Update.cpp" />
+    <ClCompile Include="HabitableObject_UpdateHourly.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OrionSpur.cpp" />
     <ClCompile Include="Planet.cpp" />
@@ -96,6 +101,7 @@
   <ItemGroup>
     <ClInclude Include="AppManager.hpp" />
     <ClInclude Include="Asteroid.hpp" />
+    <ClInclude Include="Industry.h" />
     <ClInclude Include="MathHelpers.h" />
     <ClInclude Include="Defines_Time.h" />
     <ClInclude Include="DisplayableObject.hpp" />
@@ -105,7 +111,7 @@
     <ClInclude Include="Num2StringHelper.h" />
     <ClInclude Include="Planet.hpp" />
     <ClInclude Include="HabitableObject.hpp" />
-    <ClInclude Include="Resources.hpp" />
+    <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneManager.hpp" />
     <ClInclude Include="SceneTypes.h" />

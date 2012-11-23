@@ -8,6 +8,7 @@
 
 #include "Num2StringHelper.h"
 #include "GameHelpers.hpp"
+#include "MathHelpers.h"
 
 #include <SFML\Graphics\Image.hpp>
 #include <SFML\Graphics\Sprite.hpp>
@@ -63,10 +64,10 @@ Game::Game()
 	//
 	m_pObjectDataTable = sfg::Table::Create();
 	pBottomPanel->AppendPage(m_pObjectDataTable, sfg::Label::Create("Object Data"));
-	m_pObjnameLabel = sfg::Label::Create("Object name");
+	m_pObjnameLabel = sfg::Label::Create("Object name (type)");
 	m_pObjectDataTable->Attach(m_pObjnameLabel, sf::Rect<sf::Uint32>(0,0,1,1));
-	m_pObjtypeLabel = sfg::Label::Create("Object type");
-	m_pObjectDataTable->Attach(m_pObjtypeLabel, sf::Rect<sf::Uint32>(0,1,1,1));
+	m_pObjinfLabel = sfg::Label::Create("Object infrastructure");
+	m_pObjectDataTable->Attach(m_pObjinfLabel, sf::Rect<sf::Uint32>(0,1,1,1));
 	m_pObjpopLabel = sfg::Label::Create("Object population");
 	m_pObjectDataTable->Attach(m_pObjpopLabel, sf::Rect<sf::Uint32>(0,2,1,1));
 	m_pObjcoordsLabel = sfg::Label::Create("Object coords");
@@ -169,7 +170,8 @@ Game::Game()
 	allocation.height = windowDims.y / 6;
 	allocation.left = 5 * windowDims.x / 6;
 	allocation.width = windowDims.x / 6;
-	m_pStatusTable->Attach(sfg::Label::Create("The current date is X/Y/ZWVU"), sf::Rect<sf::Uint32>(0,0,1,1));
+	m_pDateLabel = sfg::Label::Create("The current date is X/Y/ZWVU");
+	m_pStatusTable->Attach(m_pDateLabel, sf::Rect<sf::Uint32>(0,0,1,1));
 	m_pTitleLabel = sfg::Label::Create("Orion Spur");
 	m_pStatusTable->Attach(m_pTitleLabel, sf::Rect<sf::Uint32>(0,1,1,1));
 	m_pStatusTable->SetAllocation(allocation);
@@ -209,7 +211,6 @@ void Game::ChangeView(DisplayableObject* a_pNewFocus)
 	if(!a_pNewFocus)
 		return;
 
-	//std::cout << "Game::ChangeView()" << std::endl;
 	if(a_pNewFocus->GetParent())
 		m_pMainMenuButton->SetLabel(GetDisplayStringname(a_pNewFocus->GetParent()->GetDisplayableType()));
 	else
@@ -218,41 +219,12 @@ void Game::ChangeView(DisplayableObject* a_pNewFocus)
 	
 	//
 	m_pBGTexture->loadFromFile(a_pNewFocus->GetBGName());
-	/*switch(GameManager::GetSingleton().GetCurrentlyViewedType())
-	{
-	default:
-	case(DisplayableObject::ORIONSPUR):
-		{
-			m_pBGTexture->loadFromFile("../media/orionspur_bg.png");
-			break;
-		}
-	case(DisplayableObject::STELLARGROUP):
-		{
-			m_pBGTexture->loadFromFile("../media/stellargroup_bg.png");
-			break;
-		}
-	case(DisplayableObject::STARSYSTEM):
-		{
-			m_pBGTexture->loadFromFile("../media/starsystem_bg.png");
-			break;
-		}
-	case(DisplayableObject::STAR):
-		{
-			m_pBGTexture->loadFromFile("../media/star_bg.png");
-			break;
-		}
-	case(DisplayableObject::PLANET):
-		{
-			m_pBGTexture->loadFromFile("../media/planet_bg.png");
-			break;
-		}
-	}*/
 }
 
 void Game::SelectObject(HabitableObject* a_pNewSelect)
 {
-	m_pObjnameLabel->SetText(a_pNewSelect->GetName());
-	m_pObjtypeLabel->SetText(GetHabitableStringname(a_pNewSelect->GetHabitableType()));
+	m_pObjnameLabel->SetText(a_pNewSelect->GetName() + "(" + GetHabitableStringname(a_pNewSelect->GetHabitableType()) + ")");
+	m_pObjinfLabel->SetText("Infrastructure level: " + num2string( round(a_pNewSelect->GetInfrastructureLevel(), 2) ));
 	m_pObjpopLabel->SetText("Population: " + num2string(a_pNewSelect->Population()));
 	m_pObjcoordsLabel->SetText("Coords (AU): " + a_pNewSelect->GetCoordsString());
 	m_pObjdiameterLabel->SetText("Diameter: " + num2string(a_pNewSelect->Diameter()));
@@ -270,4 +242,14 @@ void Game::SelectObject(HabitableObject* a_pNewSelect)
 	//
 	m_pAtmosDensityLabel->SetText("Atmosphere density: " + num2string(a_pNewSelect->AtmosDensity()));
 	m_pAtmosCompPlaceholderLabel->SetText("---");
+}
+
+void Game::SetDate(std::string a_NewDate)
+{
+	m_pDateLabel->SetText(a_NewDate);
+}
+
+void Game::SetInf(float a_NewInfLevel)
+{
+	m_pObjinfLabel->SetText("Infrastructure level: " + num2string( round(a_NewInfLevel, 2) ));
 }
