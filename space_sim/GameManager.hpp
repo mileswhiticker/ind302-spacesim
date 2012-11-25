@@ -7,6 +7,7 @@
 #include "DisplayableObject.hpp"
 #include "Resources.h"
 #include "Defines_Time.h"
+#include "HabitableObject.hpp"
 
 class OrionSpur;
 class Planet;
@@ -20,6 +21,9 @@ namespace sf
 	class Texture;
 };
 
+typedef std::map<Infrastructure::InfrastructureType, float> IndustryWeightMap;
+typedef std::pair<Infrastructure::InfrastructureType, float> IndustryWeightPair;
+
 class GameManager
 {
 public:
@@ -31,19 +35,13 @@ public:
 		static GameManager instance;
 		return instance;
 	}
+	
+	static void UpdateDisplayedResStore(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality);
+	static void UpdateDisplayedResInf(Resource::ResourceType a_ResType, float a_InfLevel);
+	static void UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfType, float a_InfLevel);
 	//
-	static void UpdateStoredResource(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality);
 	static void UpdateSelectedInfrastructure(float a_NewInf);
-	//
-	/*enum Viewable
-	{
-		ORIONSPUR,
-		STARSYSTEM,
-		STELLARGROUP,
-		PLANET,
-		//
-		MAXVAL
-	};*/
+	
 	void Initialise(Game* a_pGameScene);
 	void Uninitialise();
 	void GameUpdate(float a_DeltaT);
@@ -58,6 +56,9 @@ public:
 	//
 	Game* GetGameScene();
 	void HandleEvent(sf::Event& a_NewEvent);
+	//
+	static float GetInfWeighting(HabitableObject::HabitableType a_MyHabType, Infrastructure::InfrastructureType a_MyInfType);
+	std::map<HabitableObject::HabitableType, IndustryWeightMap> DefaultIndustryWeightingPerObject;
 	//
 private:
 	GameManager();
