@@ -163,9 +163,9 @@ std::string GetResourceStringname(Resource::ResourceType a_ResourceType)
 			return "GIRDERS";
 			break;
 		}
-	case(Resource::HYDROCARBON):
+	case(Resource::WATERCRYSTALS):
 		{
-			return "HYDROCARBON";
+			return "WATERCRYSTALS";
 			break;
 		}
 	case(Resource::HYDROGEN):
@@ -198,11 +198,11 @@ std::string GetResourceStringname(Resource::ResourceType a_ResourceType)
 			return "OXYGEN";
 			break;
 		}
-	case(Resource::PERFLUOROCARBONS):
+	/*case(Resource::PERFLUOROCARBONS):
 		{
 			return "PERFLUOROCARBONS";
 			break;
-		}
+		}*/
 	case(Resource::SCRAPWASTE):
 		{
 			return "SCRAPWASTE";
@@ -222,6 +222,184 @@ std::string GetResourceStringname(Resource::ResourceType a_ResourceType)
 		{
 			return "WATER";
 			break;
+		}
+	}
+}
+
+std::string GetInfrastructureStringname(Infrastructure::InfrastructureType a_InfType)
+{
+	switch(a_InfType)
+	{
+	default:
+		{
+			return "unknown";
+			break;
+		}
+	case(Infrastructure::MAXVAL):
+		{
+			return "uninitialised";
+			break;
+		}
+	case(Infrastructure::ATMOSPHERICS):
+		{
+			return "ATMOSPHERICS";
+			break;
+		}
+	case(Infrastructure::COMMERCIAL):
+		{
+			return "COMMERCIAL";
+			break;
+		}
+	case(Infrastructure::DISPOSAL):
+		{
+			return "DISPOSAL";
+			break;
+		}
+	case(Infrastructure::DOCKING):
+		{
+			return "DOCKING";
+			break;
+		}
+	case(Infrastructure::DOMESTICGOODS_PRODUCTION):
+		{
+			return "DOMESTICGOODS_PRODUCTION";
+			break;
+		}
+	case(Infrastructure::ELECTRONICS_PRODUCTION):
+		{
+			return "ELECTRONICS_PRODUCTION";
+			break;
+		}
+	case(Infrastructure::FOOD_PROCESSING):
+		{
+			return "FOOD_PROCESSING";
+			break;
+		}
+	case(Infrastructure::FUEL_PROCESSING):
+		{
+			return "FUEL_PROCESSING";
+			break;
+		}
+	case(Infrastructure::GAS_PROCESSING):
+		{
+			return "GAS_PROCESSING";
+			break;
+		}
+	case(Infrastructure::LUXURYGOODS_PRODUCTION):
+		{
+			return "LUXURYGOODS_PRODUCTION";
+			break;
+		}
+	case(Infrastructure::MACHINERY_PRODUCTION):
+		{
+			return "MACHINERY_PRODUCTION";
+			break;
+		}
+	case(Infrastructure::MATERIALS_PRODUCTION):
+		{
+			return "MATERIALS_PRODUCTION";
+			break;
+		}
+	case(Infrastructure::MINING):
+		{
+			return "MINING";
+			break;
+		}
+	case(Infrastructure::POWER_GENERATION):
+		{
+			return "POWER_GENERATION";
+			break;
+		}
+	case(Infrastructure::RESIDENTIAL):
+		{
+			return "RESIDENTIAL";
+			break;
+		}
+	case(Infrastructure::SCRAP_RECYCLING):
+		{
+			return "SCRAP_RECYCLING";
+			break;
+		}
+	case(Infrastructure::SHIP_PRODUCTION):
+		{
+			return "SHIP_PRODUCTION";
+			break;
+		}
+	case(Infrastructure::STORAGE):
+		{
+			return "STORAGE";
+			break;
+		}
+	case(Infrastructure::WASTE_RECYCLING):
+		{
+			return "WASTE_RECYCLING";
+			break;
+		}
+	case(Infrastructure::WATER_PURIFICATION):
+		{
+			return "WATER_PURIFICATION";
+			break;
+		}
+	}
+}
+
+Infrastructure::InfrastructureType GetIndustryFromResource(Resource::ResourceType a_ResType)
+{
+	switch(a_ResType)
+	{
+	default:
+	case(Resource::MAXVAL):
+	case(Resource::ORGANICWASTE):
+	case(Resource::SCRAPWASTE):
+		{
+			return Infrastructure::MAXVAL;
+		}
+	case(Resource::WATERCRYSTALS):
+	case(Resource::METALLIC):
+	case(Resource::SILICACEOUS):
+	case(Resource::CARBONACEOUS):
+		{
+			return Infrastructure::MINING;
+		}
+	case(Resource::CIRCUITRY):
+	case(Resource::COMPONENTS):
+		{
+			return Infrastructure::ELECTRONICS_PRODUCTION;
+		}
+	case(Resource::DOMESTICGOODS):
+		{
+			return Infrastructure::DOMESTICGOODS_PRODUCTION;
+		}
+	case(Resource::FOOD):
+		{
+			return Infrastructure::FOOD_PROCESSING;
+		}
+	case(Resource::FUEL):
+		{
+			return Infrastructure::FUEL_PROCESSING;
+		}
+	case(Resource::GIRDERS):
+	case(Resource::SHEETMETAL):
+		{
+			return Infrastructure::MATERIALS_PRODUCTION;
+		}
+	case(Resource::WATER):
+		{
+			return Infrastructure::WATER_PURIFICATION;
+		}
+	case(Resource::OXYGEN):
+	case(Resource::HYDROGEN):
+	//case(Resource::PERFLUOROCARBONS):
+		{
+			return Infrastructure::GAS_PROCESSING;
+		}
+	case(Resource::LUXURYGOODS):
+		{
+			return Infrastructure::LUXURYGOODS_PRODUCTION;
+		}
+	case(Resource::MACHINERY):
+		{
+			return Infrastructure::MACHINERY_PRODUCTION;
 		}
 	}
 }

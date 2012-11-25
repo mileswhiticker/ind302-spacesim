@@ -33,6 +33,16 @@ int iRand(int a_Max)
 	return int(fRand() * a_Max);
 }
 
+bool prob(int a_PercentChance)
+{
+	if(a_PercentChance >= 100)
+		return true;
+	//
+	if(fRand() < float(a_PercentChance) / 100.f)
+		return true;
+	return false;
+}
+
 float curt(float input)
 {
 	return pow(input, 1.f/3.f);
@@ -53,4 +63,14 @@ double round(double a_InitialValue, int a_MaxNumDecimals)
 	double modValue = a_InitialValue * power;
 	modValue = double(int(modValue));
 	return modValue / power;
+}
+
+float max(float a_ValueOne, float a_ValueTwo)
+{
+	return a_ValueOne > a_ValueTwo ? a_ValueOne : a_ValueTwo;
+}
+
+float min(float a_ValueOne, float a_ValueTwo)
+{
+	return a_ValueOne < a_ValueTwo ? a_ValueOne : a_ValueTwo;
 }
