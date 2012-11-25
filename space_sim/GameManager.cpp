@@ -22,7 +22,7 @@ GameManager::GameManager()
 :	m_pCurViewedObject(NULL)
 ,	m_pOrionSpur(NULL)
 ,	m_pGameScene(NULL)
-,	m_pCurSelectedObject(NULL)
+,	m_pCurSelectedDispObject(NULL)
 	//
 ,	m_CurTimeRate(HOURLY)
 ,	mHours(0)
@@ -87,7 +87,7 @@ void GameManager::Initialise(Game* a_pGameScene)
 		//
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_TERRAN][Infrastructure::MATERIALS_PRODUCTION] = 1;
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_TERRAN][Infrastructure::ELECTRONICS_PRODUCTION] = 1;
-		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_TERRAN][Infrastructure::MACHINERY_PRODUCTION] = 1;
+		//DefaultIndustryWeightingPerObject[HabitableObject::PLANET_TERRAN][Infrastructure::MACHINERY_PRODUCTION] = 1;
 		//
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_TERRAN][Infrastructure::DOMESTICGOODS_PRODUCTION] = 1;
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_TERRAN][Infrastructure::LUXURYGOODS_PRODUCTION] = 1;
@@ -99,7 +99,7 @@ void GameManager::Initialise(Game* a_pGameScene)
 		//
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_DEAD][Infrastructure::MATERIALS_PRODUCTION] = 1;
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_DEAD][Infrastructure::ELECTRONICS_PRODUCTION] = 1;
-		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_DEAD][Infrastructure::MACHINERY_PRODUCTION] = 1;
+		//DefaultIndustryWeightingPerObject[HabitableObject::PLANET_DEAD][Infrastructure::MACHINERY_PRODUCTION] = 1;
 		//
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_DEAD][Infrastructure::DOMESTICGOODS_PRODUCTION] = 1;
 		DefaultIndustryWeightingPerObject[HabitableObject::PLANET_DEAD][Infrastructure::LUXURYGOODS_PRODUCTION] = 1;
@@ -116,7 +116,8 @@ void GameManager::Initialise(Game* a_pGameScene)
 		DefaultIndustryWeightingPerObject[HabitableObject::ASTEROID_SILICACEOUS][Infrastructure::GAS_PROCESSING] = 0;
 	}
 
-	if(!Resource::Requirements.size())
+	//unused
+	/*if(!Resource::Requirements.size())
 	{
 		for(Resource::ResourceType curResType = Resource::ResourceType(0); curResType < Resource::MAXVAL; curResType = Resource::ResourceType(1 + int(curResType)))
 		{
@@ -150,6 +151,39 @@ void GameManager::Initialise(Game* a_pGameScene)
 		Resource::Requirements[Resource::LUXURYGOODS].push_back(Resource::ResRequirement(Resource::GIRDERS, 1.f));
 		Resource::Requirements[Resource::LUXURYGOODS].push_back(Resource::ResRequirement(Resource::CIRCUITRY, 1.f));
 		Resource::Requirements[Resource::LUXURYGOODS].push_back(Resource::ResRequirement(Resource::COMPONENTS, 1.f));
+	}*/
+	
+	//ordered by priority
+	if(!PersonnelAllocationWeighting.size())
+	{
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::ATMOSPHERICS, 0.01f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::POWER_GENERATION, 0.1f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::STORAGE, 0.01f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::FOOD_PROCESSING, 0.01f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::WATER_PURIFICATION, 0.01f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::DOCKING, 1.f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::FUEL_PROCESSING, 1.f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::GAS_PROCESSING, 1.f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::MINING, 10.f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::WASTE_RECYCLING, 0.1f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::SCRAP_RECYCLING, 0.1f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::DISPOSAL, 0.1f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::MATERIALS_PRODUCTION, 1.f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::ELECTRONICS_PRODUCTION, 1.f));
+		//
+		//PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::MACHINERY_PRODUCTION, 1.f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::DOMESTICGOODS_PRODUCTION, 1.f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::LUXURYGOODS_PRODUCTION, 1.f));
+		//
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::RESIDENTIAL, 0.1f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::COMMERCIAL, 1.f));
+		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::SHIP_PRODUCTION, 1.f));
 	}
 }
 
@@ -220,19 +254,20 @@ DisplayableObject::DisplayableType GameManager::GetCurrentlyViewedType()
 
 void GameManager::ClickDisplayableObject(DisplayableObject* a_pDisplayObject)
 {
-	if(m_pCurSelectedObject)
+	if(m_pCurSelectedDispObject)
 	{
-		if(m_pCurSelectedObject == a_pDisplayObject)
+		if(m_pCurSelectedDispObject == a_pDisplayObject)
 		{
-			ViewDisplayableObject(m_pCurSelectedObject);
+			ViewDisplayableObject(m_pCurSelectedDispObject);
 			return;
 		}
-		m_pCurSelectedObject->UnselectThis();
-		m_pCurSelectedObject = NULL;
+		m_pCurSelectedDispObject->UnselectThis();
+		m_pCurSelectedDispObject = NULL;
+		m_pCurSelectedHabObject = NULL;
 	}
 	//
 	a_pDisplayObject->SelectThis();
-	m_pCurSelectedObject = a_pDisplayObject;
+	m_pCurSelectedDispObject = a_pDisplayObject;
 	//
 	m_pSelectCircle->Show(true);
 	m_pSelectCircle->SetPosition(a_pDisplayObject->GetClickableWidget()->GetAbsolutePosition());
@@ -244,6 +279,7 @@ void GameManager::ClickHabitableObject(HabitableObject* a_pHabObject)
 	ClickDisplayableObject((DisplayableObject*)a_pHabObject);
 	//
 	m_pGameScene->SelectObject(a_pHabObject);
+	m_pCurSelectedHabObject = a_pHabObject;
 }
 
 Game* GameManager::GetGameScene()
@@ -332,21 +368,27 @@ void GameManager::HandleEvent(sf::Event& a_NewEvent)
 	}
 }
 
-void GameManager::UpdateDisplayedResStore(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality)
+/*void GameManager::UpdateDisplayedResStore(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality)
 {
-	GameManager::GetSingleton().GetGameScene()->mResourceValueLabels[a_ResType]->SetText(num2string( round(a_Quantity, 2) ) + " (Q " + num2string( round(a_Quality, 2) ) + ")");
+	if(GameManager::GetSingleton().GetSelectedHabObj())
+		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
+	//GameManager::GetSingleton().GetGameScene()->mResourceValueLabels[a_ResType]->SetText(num2string( round(a_Quantity, 2) ) + " (Q " + num2string( round(a_Quality, 2) ) + ")");
 }
 
 void GameManager::UpdateDisplayedResInf(Resource::ResourceType a_ResType, float a_InfLevel)
 {
-	GameManager::GetSingleton().GetGameScene()->mResourceNameLabels[a_ResType]->SetText(GetResourceStringname(a_ResType) + " (" + num2string(round(a_InfLevel, 2)) + ")");
+	if(GameManager::GetSingleton().GetSelectedHabObj())
+		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
+	//GameManager::GetSingleton().GetGameScene()->mResourceNameLabels[a_ResType]->SetText(GetResourceStringname(a_ResType) + " (" + num2string(round(a_InfLevel, 2)) + ")");
 }
 
 void GameManager::UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfType, float a_InfLevel)
 {
+	if(GameManager::GetSingleton().GetSelectedHabObj())
+		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
 	if(a_InfType <= Infrastructure::DISPOSAL)
 	{
-		GameManager::GetSingleton().GetGameScene()->mInfrastructureLabels[a_InfType]->SetText(GetInfrastructureStringname(a_InfType) + " (" + num2string(round(a_InfLevel, 2)) + ")");
+		//GameManager::GetSingleton().GetGameScene()->mInfrastructureLabels[a_InfType]->SetText(GetInfrastructureStringname(a_InfType) + " (" + num2string(round(a_InfLevel, 2)) + ")");
 	}
 	else
 	{
@@ -356,10 +398,17 @@ void GameManager::UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfTyp
 
 void GameManager::UpdateSelectedInfrastructure(float a_NewInf)
 {
-	GameManager::GetSingleton().GetGameScene()->SetInf(a_NewInf);
-}
+	if(GameManager::GetSingleton().GetSelectedHabObj())
+		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
+	//GameManager::GetSingleton().GetGameScene()->SetInf(a_NewInf);
+}*/
 
 float GameManager::GetInfWeighting(HabitableObject::HabitableType a_MyHabType, Infrastructure::InfrastructureType a_MyInfType)
 {
 	return GameManager::GetSingleton().DefaultIndustryWeightingPerObject[a_MyHabType][a_MyInfType];
+}
+
+HabitableObject* GameManager::GetSelectedHabObj()
+{
+	return m_pCurSelectedHabObject;
 }

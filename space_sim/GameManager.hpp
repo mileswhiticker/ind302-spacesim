@@ -36,15 +36,16 @@ public:
 		return instance;
 	}
 	
-	static void UpdateDisplayedResStore(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality);
-	static void UpdateDisplayedResInf(Resource::ResourceType a_ResType, float a_InfLevel);
-	static void UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfType, float a_InfLevel);
+	//static void UpdateDisplayedResStore(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality);
+	//static void UpdateDisplayedResInf(Resource::ResourceType a_ResType, float a_InfLevel);
+	//static void UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfType, float a_InfLevel);
 	//
 	static void UpdateSelectedInfrastructure(float a_NewInf);
 	
 	void Initialise(Game* a_pGameScene);
 	void Uninitialise();
 	void GameUpdate(float a_DeltaT);
+	void HandleEvent(sf::Event& a_NewEvent);
 	//
 	DisplayableObject::DisplayableType GetCurrentlyViewedType();
 	void ViewDisplayableObject(DisplayableObject* a_pDisplayObject);
@@ -55,10 +56,12 @@ public:
 	void AddHabitableObject(HabitableObject* a_pNewHabObject);
 	//
 	Game* GetGameScene();
-	void HandleEvent(sf::Event& a_NewEvent);
-	//
+	HabitableObject* GetSelectedHabObj();
+
 	static float GetInfWeighting(HabitableObject::HabitableType a_MyHabType, Infrastructure::InfrastructureType a_MyInfType);
 	std::map<HabitableObject::HabitableType, IndustryWeightMap> DefaultIndustryWeightingPerObject;
+	//
+	IndustryWeightMap PersonnelAllocationWeighting;
 	//
 private:
 	GameManager();
@@ -74,7 +77,8 @@ private:
 	//
 	//DisplayableObject::DisplayableType m_CurView;
 	DisplayableObject* m_pCurViewedObject;
-	DisplayableObject* m_pCurSelectedObject;
+	DisplayableObject* m_pCurSelectedDispObject;
+	HabitableObject* m_pCurSelectedHabObject;
 	//
 	float m_tLeftTimeTick;
 	int mHours;
