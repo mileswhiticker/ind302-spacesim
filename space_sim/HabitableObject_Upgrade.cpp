@@ -165,11 +165,11 @@ void HabitableObject::UpgradeInfrastructure(float a_TotalUpgrades)
 							GameManager::UpdateDisplayedResInf(Resource::FOOD, mInfrastructureLevel[mLastIndUpgrade]);
 							break;
 						}
-					case(Infrastructure::MACHINERY_PRODUCTION):
+					/*case(Infrastructure::MACHINERY_PRODUCTION):
 						{
 							GameManager::UpdateDisplayedResInf(Resource::MACHINERY, mInfrastructureLevel[mLastIndUpgrade]);
 							break;
-						}
+						}*/
 					case(Infrastructure::LUXURYGOODS_PRODUCTION):
 						{
 							GameManager::UpdateDisplayedResInf(Resource::LUXURYGOODS, mInfrastructureLevel[mLastIndUpgrade]);

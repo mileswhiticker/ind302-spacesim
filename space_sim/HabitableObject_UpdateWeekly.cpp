@@ -18,6 +18,8 @@ void HabitableObject::WeeklyUpdate(int a_PropogationDir, int a_Quantity)
 			amountProduced = maxUsableMetal;
 		if(amountProduced > m_StoredResNum[Resource::SILICACEOUS])
 			amountProduced = m_StoredResNum[Resource::SILICACEOUS];
+		
+		amountProduced *= GetPersonnelMultiplier(Infrastructure::ELECTRONICS_PRODUCTION);
 
 		if(amountProduced > 0)
 		{
@@ -58,6 +60,8 @@ void HabitableObject::WeeklyUpdate(int a_PropogationDir, int a_Quantity)
 		if(amountProduced > m_StoredResNum[Resource::CARBONACEOUS])
 			amountProduced = m_StoredResNum[Resource::CARBONACEOUS];
 		
+		amountProduced *= GetPersonnelMultiplier(Infrastructure::MATERIALS_PRODUCTION);
+
 		if(amountProduced > 0)
 		{
 			float producedQ = AverageWeight(m_StoredResQ[Resource::METALLIC], 1, m_StoredResQ[Resource::CARBONACEOUS], 1);
@@ -102,7 +106,9 @@ void HabitableObject::WeeklyUpdate(int a_PropogationDir, int a_Quantity)
 				amountProduced = m_StoredResNum[Resource::COMPONENTS] * 4;
 			if(amountProduced > m_StoredResNum[Resource::CIRCUITRY] * 4)
 				amountProduced = m_StoredResNum[Resource::CIRCUITRY] * 4;
-		
+
+			amountProduced *= GetPersonnelMultiplier(Infrastructure::DOMESTICGOODS_PRODUCTION);
+
 			if(amountProduced > 0)
 			{
 				float q1 = AverageWeight(m_StoredResQ[Resource::GIRDERS], 1, m_StoredResQ[Resource::SHEETMETAL], 1);

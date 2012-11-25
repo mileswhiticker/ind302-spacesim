@@ -290,11 +290,11 @@ std::string GetInfrastructureStringname(Infrastructure::InfrastructureType a_Inf
 			return "LUXURYGOODS_PRODUCTION";
 			break;
 		}
-	case(Infrastructure::MACHINERY_PRODUCTION):
+	/*case(Infrastructure::MACHINERY_PRODUCTION):
 		{
 			return "MACHINERY_PRODUCTION";
 			break;
-		}
+		}*/
 	case(Infrastructure::MATERIALS_PRODUCTION):
 		{
 			return "MATERIALS_PRODUCTION";
@@ -397,9 +397,9 @@ Infrastructure::InfrastructureType GetIndustryFromResource(Resource::ResourceTyp
 		{
 			return Infrastructure::LUXURYGOODS_PRODUCTION;
 		}
-	case(Resource::MACHINERY):
+	/*case(Resource::MACHINERY):
 		{
 			return Infrastructure::MACHINERY_PRODUCTION;
-		}
+		}*/
 	}
 }

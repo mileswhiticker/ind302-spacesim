@@ -144,6 +144,9 @@
     <ClCompile Include="HabitableObject_UpgradeSpecial.cpp">
       <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
     </ClCompile>
+    <ClCompile Include="HabitableObject_AllocatePersonnel.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp">

@@ -29,7 +29,7 @@ namespace Resource
 		COMPONENTS,
 		CIRCUITRY,
 		//
-		MACHINERY,
+		//MACHINERY,
 		DOMESTICGOODS,
 		LUXURYGOODS,
 		//

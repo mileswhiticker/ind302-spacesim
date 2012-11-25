@@ -22,7 +22,9 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 				amountProduced = m_StoredResNum[Resource::COMPONENTS] * 4;
 			if(amountProduced > m_StoredResNum[Resource::CIRCUITRY] * 4)
 				amountProduced = m_StoredResNum[Resource::CIRCUITRY] * 4;
-		
+
+			amountProduced *= GetPersonnelMultiplier(Infrastructure::LUXURYGOODS_PRODUCTION);
+
 			if(amountProduced)
 			{
 				float q1 = AverageWeight(m_StoredResQ[Resource::GIRDERS], 1, m_StoredResQ[Resource::SHEETMETAL], 1);
@@ -71,6 +73,8 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 			//todo
 			maxAmountProduceable = m_StoredResNum[Resource::WATER];
 		}
+		
+		maxAmountProduceable *= GetPersonnelMultiplier(Infrastructure::FOOD_PROCESSING);
 
 		if(maxAmountProduceable)
 		{
@@ -170,6 +174,9 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 			maxMaintenancePossible = m_StoredResNum[Resource::COMPONENTS] * 4;
 		if(maxMaintenancePossible > m_StoredResNum[Resource::CIRCUITRY] * 4)
 			maxMaintenancePossible = m_StoredResNum[Resource::CIRCUITRY] * 4;
+		
+		if(!m_ConstructionAllocatedPersonnel)
+			maxMaintenancePossible = 0;
 
 		if(maxMaintenancePossible > 0)
 		{
@@ -223,7 +230,8 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 		}
 	}
 
-	//upgrade infrastructure
+	//upgrade infrastructure, if we don't have a worker shortage
+	if(mPopulation >= mTotalWorkersNeeded)
 	{
 		float maxGrowthPossible = (m_TotalInfrastructureLevel > 0 ? m_TotalInfrastructureLevel : 1) * 0.25f * a_Quantity;
 		if(maxGrowthPossible > m_StoredResNum[Resource::GIRDERS] * 4)
@@ -234,6 +242,9 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 			maxGrowthPossible = m_StoredResNum[Resource::COMPONENTS] * 4;
 		if(maxGrowthPossible > m_StoredResNum[Resource::CIRCUITRY] * 4)
 			maxGrowthPossible = m_StoredResNum[Resource::CIRCUITRY] * 4;
+
+		if(!m_ConstructionAllocatedPersonnel)
+			maxGrowthPossible = 0;
 
 		if(maxGrowthPossible > 0)
 		{
@@ -276,6 +287,8 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 		}
 	}
 	
+	ReallocateAllPersonnel();
+
 	//two-way recursion
 	if(a_PropogationDir & UPWARD)
 	{

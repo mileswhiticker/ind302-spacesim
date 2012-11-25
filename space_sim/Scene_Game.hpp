@@ -5,7 +5,6 @@
 
 #include "Scene.hpp"
 #include "Resources.h"
-#include "Industry.h"
 
 #include <SFGUI\Button.hpp>
 #include <SFGUI\Table.hpp>
@@ -30,14 +29,12 @@ public:
 	void SelectObject(HabitableObject* a_pNewSelect);
 	//
 	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceValueLabels;
-	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceNameLabels;
-	std::map<Infrastructure::InfrastructureType, sfg::Label::Ptr> mInfrastructureLabels;
 	//
 	void SetDate(std::string a_NewDate);
 	void SetInf(float a_NewInfLevel);
-	void SetPop(int a_NewPop);
 	//
 private:
+	std::map<Resource::ResourceType, sfg::Label::Ptr> mResourceNameLabels;
 	//
 	sfg::Button::Ptr m_pMainMenuButton;
 	sfg::Table::Ptr m_pStatusTable;
@@ -48,9 +45,6 @@ private:
 
 	//misc
 	sfg::Label::Ptr m_pDateLabel;
-
-	//general infrastructure
-	sfg::Table::Ptr m_pInfTable;
 
 	//resource storage data
 	sfg::Table::Ptr m_pRawResStoreTable;

@@ -100,31 +100,18 @@ Game::Game()
 	m_pAtmosCompPlaceholderLabel = sfg::Label::Create("m_pAtmosCompPlaceholderLabel");
 	m_pObjectDataTable->Attach(m_pAtmosCompPlaceholderLabel, sf::Rect<sf::Uint32>(3,1,1,1));
 	
-	//infrastructure
-	//std::map<Infrastructure::InfrastructureType, sfg::Label::Ptr> mInfrastructureLabels;
-	sfg::Table::Ptr m_pInfTable = sfg::Table::Create();
-	for(int ind = 0; ind <= Infrastructure::DISPOSAL; ++ind)
-	{
-		sfg::Label::Ptr pInfLabel = sfg::Label::Create(::GetInfrastructureStringname(Infrastructure::InfrastructureType(ind)) + " (0)");
-		mInfrastructureLabels.insert(std::pair<Infrastructure::InfrastructureType, sfg::Label::Ptr>(Infrastructure::InfrastructureType(ind), pInfLabel));
-		//
-		int xOffset = ind;
-		int yOffset = 0;
-		if(ind > NUM_RAW_MATERIALS / 2.f)
-		{
-			xOffset -= NUM_RAW_MATERIALS / 2 + 1;
-			yOffset = 1;
-		}
-
-		m_pInfTable->Attach(pInfLabel, sf::Rect<sf::Uint32>(xOffset, yOffset + 0, 1, 1));
-	}
-	pBottomPanel->AppendPage(m_pInfTable, sfg::Label::Create("Infrastructure"));
+	sfg::Table::Ptr pTable5 = sfg::Table::Create();
+	pTable5->Attach(sfg::Label::Create("Test1"), sf::Rect<sf::Uint32>(0,0,1,1));
+	pTable5->Attach(sfg::Label::Create("Test2"), sf::Rect<sf::Uint32>(1,0,1,1));
+	pTable5->Attach(sfg::Label::Create("Test3"), sf::Rect<sf::Uint32>(0,1,1,1));
+	pBottomPanel->AppendPage(pTable5, sfg::Label::Create("Infrastructure"));
 	
 	//resource storage
+	//
 	m_pRawResStoreTable = sfg::Table::Create();
 	for(int ind = 0; ind < NUM_RAW_MATERIALS; ++ind)
 	{
-		sfg::Label::Ptr pNameLabel = sfg::Label::Create(GetResourceStringname(Resource::ResourceType(ind)) + " (0)");
+		sfg::Label::Ptr pNameLabel = sfg::Label::Create(GetResourceStringname(Resource::ResourceType(ind)));
 		//pNameLabel->SetRequisition(sf::Vector2f(85, 20));
 		sfg::Label::Ptr pValueLabel = sfg::Label::Create("0 (Q ?)");
 		//pValueLabel->SetRequisition(sf::Vector2f(85, 20));
@@ -136,7 +123,7 @@ Game::Game()
 		int yOffset = 0;
 		if(ind >= NUM_RAW_MATERIALS / 2)
 		{
-			xOffset -= NUM_RAW_MATERIALS / 2;
+			xOffset = ind - NUM_RAW_MATERIALS / 2;
 			yOffset = 2;
 		}
 
@@ -246,12 +233,12 @@ void Game::SelectObject(HabitableObject* a_pNewSelect)
 	m_pCarbNumLabel->SetText("Carb#: " + num2string(a_pNewSelect->GetResNum(Resource::CARBONACEOUS)));
 	m_pSiliNumLabel->SetText("Sili#: " + num2string(a_pNewSelect->GetResNum(Resource::SILICACEOUS)));
 	m_pMetalNumLabel->SetText("Metal#: " + num2string(a_pNewSelect->GetResNum(Resource::METALLIC)));
-	m_pHydroNumLabel->SetText("Hydrocarbs#: " + num2string(a_pNewSelect->GetResNum(Resource::WATERCRYSTALS)));
+	m_pHydroNumLabel->SetText("Hydrocarbs#: " + num2string(a_pNewSelect->GetResNum(Resource::HYDROCARBON)));
 	//
 	m_pCarbQLabel->SetText("CarbQ: " + num2string(a_pNewSelect->GetResQ(Resource::CARBONACEOUS)));
 	m_pSiliQLabel->SetText("SiliQ: " + num2string(a_pNewSelect->GetResQ(Resource::SILICACEOUS)));
 	m_pMetalQLabel->SetText("MetalQ: " + num2string(a_pNewSelect->GetResQ(Resource::METALLIC)));
-	m_pHydroQLabel->SetText("HydrocarbsQ: " + num2string(a_pNewSelect->GetResQ(Resource::WATERCRYSTALS)));
+	m_pHydroQLabel->SetText("HydrocarbsQ: " + num2string(a_pNewSelect->GetResQ(Resource::HYDROCARBON)));
 	//
 	m_pAtmosDensityLabel->SetText("Atmosphere density: " + num2string(a_pNewSelect->AtmosDensity()));
 	m_pAtmosCompPlaceholderLabel->SetText("---");
@@ -265,9 +252,4 @@ void Game::SetDate(std::string a_NewDate)
 void Game::SetInf(float a_NewInfLevel)
 {
 	m_pObjinfLabel->SetText("Infrastructure level: " + num2string( round(a_NewInfLevel, 2) ));
-}
-
-void Game::SetPop(int a_NewPop)
-{
-	m_pObjpopLabel->SetText("Population: " + num2string(a_NewPop));
 }

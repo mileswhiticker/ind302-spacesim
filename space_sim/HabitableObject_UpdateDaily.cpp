@@ -9,6 +9,11 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 	//mining
 	{
 		float newMinerals = mInfrastructureLevel[Infrastructure::MINING] * a_Quantity * MINING_MULTI;
+		int workersNeeded = int(mInfrastructureLevel[Infrastructure::MINING] * GameManager::GetSingleton().PersonnelAllocationWeighting[Infrastructure::MINING]);
+		if(!workersNeeded && mInfrastructureLevel[Infrastructure::MINING])
+			workersNeeded = 1;
+		float personnelMulti = float(m_InfrastructureAllocatedPersonnel[Infrastructure::MINING]) / float(workersNeeded);
+		newMinerals *= personnelMulti;
 		
 		if(newMinerals > 0)
 		{
@@ -51,6 +56,8 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 		if(mMyHabitableType != HabitableObject::PLANET_TERRAN && waterProduced > m_StoredResNum[Resource::WATERCRYSTALS])
 			waterProduced = m_StoredResNum[Resource::WATERCRYSTALS];
 		
+		waterProduced *= GetPersonnelMultiplier(Infrastructure::WATER_PURIFICATION);
+
 		if(waterProduced > 0)
 		{
 			if(mMyHabitableType == HabitableObject::PLANET_TERRAN)
@@ -82,6 +89,8 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 	//gas processing
 	{
 		float gasProduced = mInfrastructureLevel[Infrastructure::GAS_PROCESSING] * mAtmosDensity * a_Quantity;
+			
+		gasProduced *= GetPersonnelMultiplier(Infrastructure::GAS_PROCESSING);
 		
 		if(gasProduced > 0)
 		{
@@ -112,6 +121,8 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 		if(fuelProduced > m_StoredResNum[Resource::HYDROGEN])
 			fuelProduced = m_StoredResNum[Resource::HYDROGEN];
 		
+		fuelProduced *= GetPersonnelMultiplier(Infrastructure::FUEL_PROCESSING);
+
 		if(fuelProduced > 0)
 		{
 			//m_StoredResQ[Resource::FUEL] = AverageWeight(m_StoredResQ[Resource::FUEL], m_StoredResNum[Resource::FUEL], m_StoredResQ[Resource::HYDROGEN], m_StoredResNum[Resource::HYDROGEN]);
@@ -186,6 +197,8 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 		if(amountWasteProcessed > m_StoredResNum[Resource::ORGANICWASTE])
 			amountWasteProcessed = m_StoredResNum[Resource::ORGANICWASTE];
 		
+		amountWasteProcessed *= GetPersonnelMultiplier(Infrastructure::FUEL_PROCESSING);
+
 		if(amountWasteProcessed > 0)
 		{
 			//m_StoredResQ[Resource::WATER] = AverageWeight(m_StoredResQ[Resource::WATER], m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::ORGANICWASTE], amountWasteProcessed / WASTE_PROCESSING_MULTIPLIER);
@@ -207,6 +220,8 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 		if(amountWasteProcessed > m_StoredResNum[Resource::SCRAPWASTE])
 			amountWasteProcessed = m_StoredResNum[Resource::SCRAPWASTE];
 		
+		amountWasteProcessed *= GetPersonnelMultiplier(Infrastructure::FUEL_PROCESSING);
+
 		if(amountWasteProcessed > 0)
 		{
 			//float metalProcessed = (amountWasteProcessed / 3.f) * fRand();

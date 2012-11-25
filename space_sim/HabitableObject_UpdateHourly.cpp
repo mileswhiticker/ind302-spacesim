@@ -32,7 +32,7 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 		if(mIsSelected)
 		{
 			GameManager::UpdateDisplayedResStore(Resource::FOOD, m_StoredResNum[Resource::FOOD], m_StoredResQ[Resource::FOOD]);
-			GameManager::GetSingleton().GetGameScene()->SetPop(mPopulation);
+			//GameManager::GetSingleton().GetGameScene()->SetPop(mPopulation);
 		}
 	}
 
@@ -54,7 +54,7 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 		if(mIsSelected)
 		{
 			GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
-			GameManager::GetSingleton().GetGameScene()->SetPop(mPopulation);
+			//GameManager::GetSingleton().GetGameScene()->SetPop(mPopulation);
 		}
 	}
 

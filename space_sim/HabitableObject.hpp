@@ -54,11 +54,22 @@ public:
 	float Diameter();
 	float AtmosDensity();
 	virtual void OnClick();
+
 	float GetInfrastructureLevel();
+	float GetInfrastructureLevel(Infrastructure::InfrastructureType a_InfType);
+	float GetUsedStorageSpace();
+	float GetMonthlyFuelUsage();
+	float GetMonthlyOxyUsage();
+	float GetYearlyProduction();
+	int GetNumJobs();
+	float GetSoilQ();
+	float GetSoilAmount();
 	//
-	float GetResNum(Resource::ResourceType a_ResType);
-	float GetResQ(Resource::ResourceType a_ResType);
-	//
+	float GetPlanetResNum(Resource::ResourceType a_ResType);
+	float GetPlanetResQ(Resource::ResourceType a_ResType);
+	float GetStoredResNum(Resource::ResourceType a_ResType);
+	float GetStoredResQ(Resource::ResourceType a_ResType);
+
 	void Update(float a_DeltaT, TimeRate a_TimeRate);
 	//
 protected:
@@ -130,7 +141,16 @@ protected:
 	//
 	Infrastructure::InfrastructureType DecideNextSpecialUpgrade(float& a_AmountToUpgrade);
 	Infrastructure::InfrastructureType mLastSpecialUpgrade;
+
+	void AllocateNewPersonnel(int a_NumNewPersonnel);
+	void ReallocateAllPersonnel();
+	float GetPersonnelMultiplier(Infrastructure::InfrastructureType a_InfType);
 	//
+	std::map<Infrastructure::InfrastructureType, int> m_InfrastructureAllocatedPersonnel;
+	int m_ConstructionAllocatedPersonnel;
+	int m_UnallocatedPersonnel;
+	void RecalculateWorkersNeeded();
+	int mTotalWorkersNeeded;
 };
 
 #endif	//HABITABLE_OBJECT_HPP

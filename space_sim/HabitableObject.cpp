@@ -37,8 +37,12 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 ,	mTargetStorageSpace(0)
 ,	mLastCriticalUpgrade(Infrastructure::MAXVAL)
 ,	mLastUtilUpgrade(Infrastructure::MAXVAL)
+	//
+,	m_UnallocatedPersonnel(0)
+,	m_ConstructionAllocatedPersonnel(0)
+,	mTotalWorkersNeeded(0)
 {
-	//initialise maps
+	//initialise std::maps
 	for(int ind = 0; ind < Resource::MAXVAL; ++ind)
 	{
 		m_PlanetResQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
@@ -50,6 +54,7 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 	for(int ind = 0; ind < Infrastructure::MAXVAL; ++ind)
 	{
 		mInfrastructureLevel.insert(std::pair<Infrastructure::InfrastructureType, float>(Infrastructure::InfrastructureType(ind), 0.f));
+		m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::InfrastructureType(ind), 0));
 	}
 
 	//----- testing values - delete these later
@@ -118,14 +123,24 @@ float HabitableObject::AtmosDensity()
 	return mAtmosDensity;
 }
 
-float HabitableObject::GetResNum(Resource::ResourceType a_ResType)
+float HabitableObject::GetPlanetResNum(Resource::ResourceType a_ResType)
 {
 	return m_PlanetResAbundance[a_ResType];
 }
 
-float HabitableObject::GetResQ(Resource::ResourceType a_ResType)
+float HabitableObject::GetPlanetResQ(Resource::ResourceType a_ResType)
 {
 	return m_PlanetResQ[a_ResType];
+}
+
+float HabitableObject::GetStoredResNum(Resource::ResourceType a_ResType)
+{
+	return m_StoredResNum[a_ResType];
+}
+
+float HabitableObject::GetStoredResQ(Resource::ResourceType a_ResType)
+{
+	return m_StoredResQ[a_ResType];
 }
 
 std::string HabitableObject::GetName()
@@ -135,7 +150,7 @@ std::string HabitableObject::GetName()
 
 std::string HabitableObject::GetCoordsString()
 {
-	return num2string(mRelPosition.x - 0.5f) + "," + num2string(mRelPosition.y - 0.5f);
+	return num2string( round(mRelPosition.x - 0.5f, 2) ) + ", " + num2string( round(mRelPosition.y - 0.5f, 2) );
 }
 
 void HabitableObject::OnClick()
@@ -213,7 +228,7 @@ void HabitableObject::RecalculateStorageNeeded()
 	expectedProduction += mInfrastructureLevel[Infrastructure::DOMESTICGOODS_PRODUCTION] * WEEKS_MONTH;
 	
 	expectedProduction += mTargetFoodProduction * FOOD_PRODUCTION_MULTI;
-	expectedProduction += mInfrastructureLevel[Infrastructure::MACHINERY_PRODUCTION];
+	//expectedProduction += mInfrastructureLevel[Infrastructure::MACHINERY_PRODUCTION];
 	expectedProduction += mInfrastructureLevel[Infrastructure::LUXURYGOODS_PRODUCTION];
 
 	expectedProduction *= MONTHS_YEAR;
@@ -273,4 +288,58 @@ void HabitableObject::AddResources(Resource::ResourceType a_NewType, float a_Qua
 	m_StoredResNum[a_NewType] += a_Quantity;
 
 	RecalculateUsedStorage();
+}
+
+float HabitableObject::GetPersonnelMultiplier(Infrastructure::InfrastructureType a_InfType)
+{
+	int workersNeeded = int(mInfrastructureLevel[a_InfType] * GameManager::GetSingleton().PersonnelAllocationWeighting[a_InfType]);
+	if(!workersNeeded)
+	{
+		if(mInfrastructureLevel[a_InfType])
+			workersNeeded = 1;
+		else
+			return 0;
+	}
+	return float(m_InfrastructureAllocatedPersonnel[a_InfType]) / float(workersNeeded);
+}
+
+float HabitableObject::GetInfrastructureLevel(Infrastructure::InfrastructureType a_InfType)
+{
+	return mInfrastructureLevel[a_InfType];
+}
+
+float HabitableObject::GetUsedStorageSpace()
+{
+	return mUsedStorageSpace;
+}
+
+float HabitableObject::GetMonthlyFuelUsage()
+{
+	return m_TotalInfrastructureLevel * POWERUSE_PER_INF * POWER_FUEL_CONSUMPTION * DAYS_WEEK * WEEKS_MONTH;
+}
+
+float HabitableObject::GetMonthlyOxyUsage()
+{
+	return mPopulation * OXY_PERPERSON_PERDAY * DAYS_WEEK * WEEKS_MONTH;
+}
+
+int HabitableObject::GetNumJobs()
+{
+	return mTotalWorkersNeeded;
+}
+
+float HabitableObject::GetYearlyProduction()
+{
+	//todo
+	return 0.f;
+}
+
+float HabitableObject::GetSoilQ()
+{
+	return mQSoilForFarming;
+}
+
+float HabitableObject::GetSoilAmount()
+{
+	return mStoredSoilForFarming;
 }

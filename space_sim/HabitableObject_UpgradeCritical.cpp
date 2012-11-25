@@ -8,13 +8,25 @@ Infrastructure::InfrastructureType HabitableObject::DecideNextCriticalUpgrade(fl
 		switch(mLastCriticalUpgrade)
 		{
 		default:
+			/*{
+				//new cycle, first check if we desperately need some housing
+				if(mInfrastructureLevel[Infrastructure::RESIDENTIAL] < 0.)
+				{
+					a_AmountToUpgrade = 1 - mInfrastructureLevel[Infrastructure::RESIDENTIAL];
+				}
+				
+				mLastCriticalUpgrade = Infrastructure::RESIDENTIAL;
+				break;
+			}
+		case(Infrastructure::RESIDENTIAL):*/
 			{
-				//new cycle, do POWER_GENERATION now
+				//did RESIDENTIAL last, do POWER_GENERATION now
 				float target = POWERUSE_PER_INF * m_TotalInfrastructureLevel * (1 + CRITICAL_SAFETY_MARGIN);
 				if(target > mInfrastructureLevel[Infrastructure::POWER_GENERATION])
 				{
 					a_AmountToUpgrade = target - mInfrastructureLevel[Infrastructure::POWER_GENERATION];
 				}
+
 				mLastCriticalUpgrade = Infrastructure::POWER_GENERATION;
 				break;
 			}

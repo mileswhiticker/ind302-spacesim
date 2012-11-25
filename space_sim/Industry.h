@@ -17,6 +17,7 @@
 #define POP_GROWTH_ROOM	0.1f		//extra housing room
 #define FOOD_PERPERSON_PERDAY 1.f	//units of food each person consumes in a day
 #define WATER_PERPERSON_PERDAY 2.f	//units of food each person consumes in a day
+#define OXY_PERPERSON_PERDAY 1.f
 #define POP_GROWTH_CEILING 0.05f
 #define POP_GROWTH_FLOOR 0.1f
 #define NATDEATH_GROWTH_CEILING 0.01f
@@ -38,7 +39,7 @@
 #define LUXURYGOODS_CONSUMPTION_PPERSON 0.0001f
 #define DOMESTICGOODS_CONSUMPTION_PPERSON 0.001f
 
-#define MINING_MULTI 0.1f
+#define MINING_MULTI 0.01f
 
 namespace Infrastructure
 {
@@ -72,7 +73,7 @@ namespace Infrastructure
 
 		//advanced goods production (monthly)
 		FOOD_PROCESSING,
-		MACHINERY_PRODUCTION,
+		//MACHINERY_PRODUCTION,
 		LUXURYGOODS_PRODUCTION,
 
 		MAXVAL
