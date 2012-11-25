@@ -20,6 +20,7 @@
 *.ipch
 *.user
 *.lastbuildstate
+*.unsuccessfulbuild
 
 # Misc
 *.exe
