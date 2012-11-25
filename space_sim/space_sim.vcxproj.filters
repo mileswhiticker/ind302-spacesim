@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Economy">
       <UniqueIdentifier>{e700698c-286a-4bb9-a281-c4b89ada10ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Galaxy\HabitableObject\Update">
+      <UniqueIdentifier>{265cd571-9375-4f07-88c3-fe88bdd48293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Galaxy\HabitableObject\Upgrade">
+      <UniqueIdentifier>{7729926d-58bf-4a9e-8561-6d76780aedf8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppManager.cpp">
@@ -105,23 +111,38 @@
     <ClCompile Include="MathHelpers.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="HabitableObject_UpdateHourly.cpp">
+    <ClCompile Include="HabitableObject_GenerateData.cpp">
       <Filter>Source Files\Galaxy\HabitableObject</Filter>
     </ClCompile>
     <ClCompile Include="HabitableObject_UpdateDaily.cpp">
-      <Filter>Source Files\Galaxy\HabitableObject</Filter>
-    </ClCompile>
-    <ClCompile Include="HabitableObject_UpdateMonthly.cpp">
-      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+      <Filter>Source Files\Galaxy\HabitableObject\Update</Filter>
     </ClCompile>
     <ClCompile Include="HabitableObject_UpdateYearly.cpp">
-      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+      <Filter>Source Files\Galaxy\HabitableObject\Update</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UpdateHourly.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Update</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UpdateMonthly.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Update</Filter>
     </ClCompile>
     <ClCompile Include="HabitableObject_UpdateWeekly.cpp">
-      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+      <Filter>Source Files\Galaxy\HabitableObject\Update</Filter>
     </ClCompile>
-    <ClCompile Include="HabitableObject_GenerateData.cpp">
-      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+    <ClCompile Include="HabitableObject_Upgrade.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UpgradeUtility.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UpgradeCritical.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UpgradeNormal.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UpgradeSpecial.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,14 +209,14 @@
     <ClInclude Include="MathHelpers.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="HabitableObject.hpp">
-      <Filter>Header Files\Galaxy</Filter>
-    </ClInclude>
     <ClInclude Include="Industry.h">
       <Filter>Header Files\Economy</Filter>
     </ClInclude>
     <ClInclude Include="Resources.h">
       <Filter>Header Files\Economy</Filter>
+    </ClInclude>
+    <ClInclude Include="HabitableObject.hpp">
+      <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

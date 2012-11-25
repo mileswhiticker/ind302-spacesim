@@ -78,6 +78,11 @@
     <ClCompile Include="HabitableObject_UpdateMonthly.cpp" />
     <ClCompile Include="HabitableObject_UpdateWeekly.cpp" />
     <ClCompile Include="HabitableObject_UpdateYearly.cpp" />
+    <ClCompile Include="HabitableObject_Upgrade.cpp" />
+    <ClCompile Include="HabitableObject_UpgradeCritical.cpp" />
+    <ClCompile Include="HabitableObject_UpgradeNormal.cpp" />
+    <ClCompile Include="HabitableObject_UpgradeSpecial.cpp" />
+    <ClCompile Include="HabitableObject_UpgradeUtility.cpp" />
     <ClCompile Include="MathHelpers.cpp" />
     <ClCompile Include="DisplayableObject.cpp" />
     <ClCompile Include="GameHelpers.cpp" />

@@ -71,7 +71,6 @@ protected:
 	HabitableType mMyHabitableType;
 	std::string mObjName;
 	int mPopulation;
-	float mInfrastructure;
 	float mObjectMass;				//absolute mass (assume constant density)
 	float mObjectDiameter;			//absolute diameter (assume perfectly spherical)
 	float mAtmosDensity;			//liquid volume per meter^3
@@ -92,12 +91,46 @@ protected:
 	StarSystem* m_pOrbitingStarSystem;
 	HabitableObject* m_pOrbitingObject;
 
-	void RecalculateIndustryWeighting();
-	int mCalculatedResourceSpace;
-	float mTotalIndWeighting;
+	void UpgradeInfrastructure(float a_TotalUpgrades);
+	void DowngradeInfrastructure(float a_TotalDowngrades);
+	bool mLastUpgradeSuccessful;
+	//
+	void RecalculateInfrastructureLevel();
+	void RecalculateStorageNeeded();
+	void RecalculateTargetFoodProduction();
+	void RecalculateUsedStorage();
+	
+	void AddResources(Resource::ResourceType a_NewType, float a_Quality, float a_Quantity);
+	void RemoveResources(Resource::ResourceType a_NewType, float a_Quantity);
+	//
+	float mCalculatedResourceSpace;
+	float mUsedStorageSpace;
+	float m_TotalInfrastructureLevel;
+	float mTargetStorageSpace;
+	float mTargetFoodProduction;
+	//
+	float mCriticalGrowthTarget;
+	float mGrowthTarget;
+	//
+	float mStoredSoilForFarming;
+	float mQSoilForFarming;
+
 	std::map<Resource::ResourceType, float> m_StoredResNum;
 	std::map<Resource::ResourceType, float> m_StoredResQ;
-	std::map<Industry::IndustryType, float> m_IndustryWeighting;
+	std::map<Infrastructure::InfrastructureType, float> mInfrastructureLevel;
+
+	Infrastructure::InfrastructureType DecideNextCriticalUpgrade(float& a_AmountToUpgrade);
+	Infrastructure::InfrastructureType mLastCriticalUpgrade;
+	//
+	Infrastructure::InfrastructureType DecideNextUtilUpgrade(float& a_AmountToUpgrade);
+	Infrastructure::InfrastructureType mLastUtilUpgrade;
+	//
+	Infrastructure::InfrastructureType DecideNextIndUpgrade(float& a_AmountToUpgrade);
+	Infrastructure::InfrastructureType mLastIndUpgrade;
+	//
+	Infrastructure::InfrastructureType DecideNextSpecialUpgrade(float& a_AmountToUpgrade);
+	Infrastructure::InfrastructureType mLastSpecialUpgrade;
+	//
 };
 
 #endif	//HABITABLE_OBJECT_HPP
