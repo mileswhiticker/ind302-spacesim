@@ -34,17 +34,17 @@
     <Filter Include="Source Files\Galaxy\HabitableObject">
       <UniqueIdentifier>{3cc19e66-0a22-439a-a093-5585472c86b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Economy">
-      <UniqueIdentifier>{a18a816f-aff8-4866-aa5e-6527679483a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Economy">
-      <UniqueIdentifier>{e700698c-286a-4bb9-a281-c4b89ada10ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Galaxy\HabitableObject\Update">
       <UniqueIdentifier>{265cd571-9375-4f07-88c3-fe88bdd48293}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Galaxy\HabitableObject\Upgrade">
       <UniqueIdentifier>{7729926d-58bf-4a9e-8561-6d76780aedf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Traders">
+      <UniqueIdentifier>{ddaa7df4-f41e-45fb-be21-4d6cdf8154f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Traders">
+      <UniqueIdentifier>{05d477b4-b3bf-4261-b447-18045535ecc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="DisplayableObject.cpp">
       <Filter>Source Files\Galaxy</Filter>
-    </ClCompile>
-    <ClCompile Include="Traders.cpp">
-      <Filter>Source Files\Economy</Filter>
     </ClCompile>
     <ClCompile Include="Asteroid.cpp">
       <Filter>Source Files\Galaxy</Filter>
@@ -147,6 +144,9 @@
     <ClCompile Include="HabitableObject_UI.cpp">
       <Filter>Source Files\Galaxy\HabitableObject</Filter>
     </ClCompile>
+    <ClCompile Include="Traders.cpp">
+      <Filter>Source Files\Traders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp">
@@ -194,9 +194,6 @@
     <ClInclude Include="DisplayableObject.hpp">
       <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
-    <ClInclude Include="Traders.hpp">
-      <Filter>Header Files\Economy</Filter>
-    </ClInclude>
     <ClInclude Include="Asteroid.hpp">
       <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
@@ -212,14 +209,17 @@
     <ClInclude Include="MathHelpers.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Industry.h">
-      <Filter>Header Files\Economy</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Header Files\Economy</Filter>
-    </ClInclude>
     <ClInclude Include="HabitableObject.hpp">
       <Filter>Header Files\Galaxy</Filter>
+    </ClInclude>
+    <ClInclude Include="Industry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Traders.hpp">
+      <Filter>Header Files\Traders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
