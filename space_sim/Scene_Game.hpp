@@ -35,6 +35,7 @@ public:
 	std::map<Infrastructure::InfrastructureType, sfg::Label::Ptr> mInfrastructureLabels;
 	//
 	void SetDate(std::string a_NewDate);
+	void BottomPanelClick();
 	//
 private:
 	sfg::Notebook::Ptr m_pBottomPanel;
@@ -49,7 +50,11 @@ private:
 	sf::Texture* m_pBGTexture;
 	sf::Sprite* m_pBGSprite;
 	//
+	HabitableObject* m_pCurSelect;
+	//
 public:
+	void DisplayInf(HabitableObject* a_pNewSelect);
+	//
 	void DisplayPower(HabitableObject* a_pNewSelect);
 	void DisplayAtmos(HabitableObject* a_pNewSelect);
 	void DisplayStorage(HabitableObject* a_pNewSelect);

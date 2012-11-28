@@ -19,6 +19,7 @@ Game::Game()
 :	Scene()
 ,	m_pBGTexture(NULL)
 ,	m_pBGSprite(NULL)
+,	m_pCurSelect(NULL)
 {
 	m_SceneType = SIM;
 	sf::Vector2f windowDims = SFGManager::GetSingleton().GetWindowDimensions();
@@ -60,7 +61,7 @@ Game::Game()
 	allocation.left = 0;
 	allocation.width = 5 * windowDims.x / 6;
 	m_pBottomPanel->SetAllocation(allocation);
-	//m_pBottomPanel->SetScrollable(true);
+	m_pBottomPanel->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::BottomPanelClick, this);
 	m_pWidgets.push_back(m_pBottomPanel);
 	
 	//planetary info
@@ -280,15 +281,17 @@ void Game::ChangeView(DisplayableObject* a_pNewFocus)
 
 void Game::SelectObject(HabitableObject* a_pNewSelect)
 {
+	m_pCurSelect = a_pNewSelect;
+
 	//OBJECT INFO
 	m_pObjnameLabel->SetText(a_pNewSelect->GetName());
 	m_pObjtypeLabel->SetText(GetHabitableStringname(a_pNewSelect->GetHabitableType()));
 	m_pObjlocLabel->SetText("obj location");
-	m_pObjinfLabel->SetText("Infrastructure level: " + num2string( round(a_pNewSelect->GetInfrastructureLevel(), 2) ));
+	m_pObjinfLabel->SetText("Total infrastructure: " + num2string( round(a_pNewSelect->GetInfrastructureLevel(), 2) ));
 	//
 	m_pObjcoordsLabel->SetText("Coords: " + a_pNewSelect->GetCoordsString());
-	m_pObjdiameterLabel->SetText("Diameter: " + num2string(a_pNewSelect->Diameter()));
 	m_pObjmassLabel->SetText("Mass: " + num2string(a_pNewSelect->ObjectMass()));
+	m_pObjdiameterLabel->SetText("Diameter: " + num2string(a_pNewSelect->Diameter()));
 	//
 	m_pCarbLabel->SetText("Carbon matter: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::CARBONACEOUS), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::CARBONACEOUS), 2)) + ")");
 	m_pSiliLabel->SetText("Silicon matter: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::SILICACEOUS), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::SILICACEOUS), 2)) + ")");
@@ -447,6 +450,14 @@ void Game::DisplayStorage(HabitableObject* a_pNewSelect)
 	}
 }
 
+void Game::DisplayInf(HabitableObject* a_pNewSelect)
+{
+	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pObjectDataTable"))
+	{
+		m_pObjinfLabel->SetText("Total infrastructure: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(), 2)));
+	}
+}
+
 void Game::DisplayYearlyProd(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pColonyTable"))
@@ -578,5 +589,54 @@ void Game::DisplayFuel(HabitableObject* a_pNewSelect)
 	{
 		m_pFuelInfLabel->SetText("Fuel processing: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FUEL_PROCESSING), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::FUEL_PROCESSING), 2)) + "%employ)");
 		m_pResFuelLabel->SetText("Fuel: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FUEL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FUEL), 2)));
+	}
+}
+
+void Game::BottomPanelClick()
+{
+	if(m_pCurSelect)
+	{
+		if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pObjectDataTable"))
+		{
+			DisplayInf(m_pCurSelect);
+		}
+		else if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pColonyTable"))
+		{
+			DisplayPower(m_pCurSelect);
+			DisplayAtmos(m_pCurSelect);
+			DisplayStorage(m_pCurSelect);
+			DisplayYearlyProd(m_pCurSelect);
+			DisplayEmploy(m_pCurSelect);
+			DisplayComm(m_pCurSelect);
+			DisplayResidential(m_pCurSelect);
+		}
+		else if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
+		{
+			DisplayMining(m_pCurSelect);
+			DisplayGasCollection(m_pCurSelect);
+			DisplayWasteRec(m_pCurSelect);
+			DisplayScrapRec(m_pCurSelect);
+		}
+		else if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
+		{
+			DisplayElectronic(m_pCurSelect);
+			DisplayMaterials(m_pCurSelect);
+			DisplayDomesticG(m_pCurSelect);
+			DisplayLuxuryG(m_pCurSelect);
+		}
+		else if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
+		{
+			DisplayFood(m_pCurSelect);
+			DisplayWater(m_pCurSelect);
+			DisplayFuel(m_pCurSelect);
+		}
+		else if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pShipProdTable"))
+		{
+			//
+		}
+		else if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pDockedTradersTable"))
+		{
+			//
+		}
 	}
 }

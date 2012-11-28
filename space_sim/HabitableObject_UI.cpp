@@ -69,6 +69,7 @@ void HabitableObject::UpdateUIRes(Resource::ResourceType a_ResType)
 			break;
 		}
 	}
+	GameManager::GetSingleton().GetGameScene()->DisplayInf(this);
 }
 
 void HabitableObject::UpdateUIInf(Infrastructure::InfrastructureType a_InfType)
@@ -171,4 +172,5 @@ void HabitableObject::UpdateUIInf(Infrastructure::InfrastructureType a_InfType)
 			break;
 		}*/
 	}
+	GameManager::GetSingleton().GetGameScene()->DisplayInf(this);
 }
