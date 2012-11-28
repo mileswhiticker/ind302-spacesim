@@ -15,11 +15,11 @@ void HabitableObject::GenerateData()
 			}
 			mAtmosDensity = 0.5f + fRand();
 			//
-			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::SILICACEOUS] = 1 + fRand();
 			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
-			m_PlanetResAbundance[Resource::SILICACEOUS] = fRand();
-			m_PlanetResQ[Resource::SILICACEOUS] = fRand();
-			m_PlanetResAbundance[Resource::METALLIC] = fRand();
+			m_PlanetResAbundance[Resource::CARBONACEOUS] = 1 + fRand();
+			m_PlanetResQ[Resource::CARBONACEOUS] = fRand();
+			m_PlanetResAbundance[Resource::METALLIC] = 1.25f + 0.75f * fRand();
 			m_PlanetResQ[Resource::METALLIC] = fRand();
 			//
 			m_PlanetResAbundance[Resource::HYDROGEN] = 0.25f + 0.75f * fRand();

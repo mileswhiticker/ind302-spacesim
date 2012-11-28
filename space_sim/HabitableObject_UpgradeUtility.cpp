@@ -20,17 +20,6 @@ Infrastructure::InfrastructureType HabitableObject::DecideNextUtilUpgrade(float&
 			}
 		case(Infrastructure::STORAGE):
 			{
-				//did storage last cycle, do residential now
-				float target = (float(mPopulation) / float(POP_PER_RESIDENTIAL)) * (1.f + POP_GROWTH_ROOM);
-				if(target > mInfrastructureLevel[Infrastructure::RESIDENTIAL])
-				{
-					a_AmountToUpgrade = target - mInfrastructureLevel[Infrastructure::RESIDENTIAL];
-				}
-				mLastUtilUpgrade = Infrastructure::RESIDENTIAL;
-				break;
-			}
-		case(Infrastructure::RESIDENTIAL):
-			{
 				//did residential last cycle, do docking now
 				float target = mTargetStorageSpace * DOCKING_PER_STORE;
 				if(target > mInfrastructureLevel[Infrastructure::DOCKING])

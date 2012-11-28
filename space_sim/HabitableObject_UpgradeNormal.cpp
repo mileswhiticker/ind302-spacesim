@@ -97,32 +97,15 @@ Infrastructure::InfrastructureType HabitableObject::DecideNextIndUpgrade(float& 
 		case(Infrastructure::MATERIALS_PRODUCTION):
 			{
 				//did MATERIALS_PRODUCTION last, do GAS_PROCESSING next
-				//if the amount of curResType stored is less than the default benchmark, build some more of that industry
-				if(mMyHabitableType == HabitableObject::PLANET_TERRAN || mMyHabitableType == HabitableObject::PLANET_DEAD || mMyHabitableType == HabitableObject::PLANET_ICE || mMyHabitableType == HabitableObject::PLANET_GASGIANT)
+				//if we have space for a resource and can collect it, build up
+
+				if(m_PlanetResAbundance[Resource::OXYGEN] && m_StoredResNum[Resource::OXYGEN] < mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL)))
 				{
-					float totalRes = m_StoredResNum[Resource::OXYGEN] + m_StoredResNum[Resource::HYDROGEN];
-					//m_StoredResNum[Resource::PERFLUOROCARBONS]
-					float limit = mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL));
-					bool needMore = false;
-					if(totalRes < limit)
-						needMore = true;
-					if(m_StoredResNum[Resource::OXYGEN] < limit)
-						needMore = true;
-					if(m_StoredResNum[Resource::HYDROGEN] < limit && m_StoredResNum[Resource::FUEL] < limit)
-						needMore = true;
-					if(needMore)
-					{
-						if(mInfrastructureLevel[Infrastructure::GAS_PROCESSING] > 1)
-						{
-							a_AmountToUpgrade = mInfrastructureLevel[Infrastructure::GAS_PROCESSING] * 0.1f;
-							/*if(m_StoredResNum[Resource::HYDROGEN] == 0)
-								a_AmountToUpgrade *= 2.f;*/
-						}
-						else
-						{
-							a_AmountToUpgrade = 1;
-						}
-					}
+					a_AmountToUpgrade += 1;
+				}
+				if(m_PlanetResAbundance[Resource::HYDROGEN] && m_StoredResNum[Resource::HYDROGEN] < mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL)))
+				{
+					a_AmountToUpgrade += 1;
 				}
 				
 				mLastIndUpgrade = Infrastructure::GAS_PROCESSING;
@@ -159,8 +142,25 @@ Infrastructure::InfrastructureType HabitableObject::DecideNextIndUpgrade(float& 
 		case(Infrastructure::WASTE_RECYCLING):
 			{
 				//did WASTE_RECYCLING last, do MINING next
-
-				if(mMyHabitableType == HabitableObject::PLANET_TERRAN || mMyHabitableType == HabitableObject::PLANET_DEAD || mMyHabitableType == HabitableObject::PLANET_ICE || mMyHabitableType == HabitableObject::ASTEROID_CARBONACEOUS || mMyHabitableType == HabitableObject::ASTEROID_SILICACEOUS || mMyHabitableType == HabitableObject::ASTEROID_METALLIC)
+				
+				if(m_PlanetResAbundance[Resource::SILICACEOUS] && m_StoredResNum[Resource::SILICACEOUS] < mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL)))
+				{
+					a_AmountToUpgrade += 1;
+				}
+				if(m_PlanetResAbundance[Resource::CARBONACEOUS] && m_StoredResNum[Resource::CARBONACEOUS] < mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL)))
+				{
+					a_AmountToUpgrade += 1;
+				}
+				if(m_PlanetResAbundance[Resource::METALLIC] && m_StoredResNum[Resource::METALLIC] < mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL)))
+				{
+					a_AmountToUpgrade += 1;
+				}
+				if(m_PlanetResAbundance[Resource::WATERCRYSTALS] && m_StoredResNum[Resource::WATERCRYSTALS] < mCalculatedResourceSpace * (3.f / float(Resource::MAXVAL)))
+				{
+					a_AmountToUpgrade += 1;
+				}
+				
+				/*if(mMyHabitableType == HabitableObject::PLANET_TERRAN || mMyHabitableType == HabitableObject::PLANET_DEAD || mMyHabitableType == HabitableObject::PLANET_ICE || mMyHabitableType == HabitableObject::ASTEROID_CARBONACEOUS || mMyHabitableType == HabitableObject::ASTEROID_SILICACEOUS || mMyHabitableType == HabitableObject::ASTEROID_METALLIC)
 				{
 					//work out how much will be consumed over the next year, and whether we have enough for that
 					float yearlyConsumption = (mInfrastructureLevel[Infrastructure::ELECTRONICS_PRODUCTION] + mInfrastructureLevel[Infrastructure::MATERIALS_PRODUCTION]) * WEEKS_MONTH * MONTHS_YEAR;
@@ -178,7 +178,7 @@ Infrastructure::InfrastructureType HabitableObject::DecideNextIndUpgrade(float& 
 						else
 							a_AmountToUpgrade = 1;
 					}
-				}
+				}*/
 					
 				mLastIndUpgrade = Infrastructure::MINING;
 				break;

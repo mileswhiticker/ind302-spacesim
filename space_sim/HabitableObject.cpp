@@ -53,10 +53,34 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 	}
 	for(int ind = 0; ind < Infrastructure::MAXVAL; ++ind)
 	{
-		mInfrastructureLevel.insert(std::pair<Infrastructure::InfrastructureType, float>(Infrastructure::InfrastructureType(ind), 0.f));
 		m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::InfrastructureType(ind), 0));
 	}
-
+	
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::ATMOSPHERICS, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::POWER_GENERATION, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::STORAGE, 0));
+	//
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::FOOD_PROCESSING, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::WATER_PURIFICATION, 0));
+	//
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::DOCKING, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::FUEL_PROCESSING, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::GAS_PROCESSING, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::MINING, 0));
+	//
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::WASTE_RECYCLING, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::SCRAP_RECYCLING, 0));
+	//
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::MATERIALS_PRODUCTION, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::ELECTRONICS_PRODUCTION, 0));
+	//
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::DOMESTICGOODS_PRODUCTION, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::LUXURYGOODS_PRODUCTION, 0));
+	//
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::RESIDENTIAL, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::COMMERCIAL, 0));
+	m_InfrastructureAllocatedPersonnel.insert(std::pair<Infrastructure::InfrastructureType, int>(Infrastructure::SHIP_PRODUCTION, 0));
+	
 	//----- testing values - delete these later
 
 	//mInfrastructureLevel[Infrastructure::POWER_GENERATION] = 1.f;
@@ -66,11 +90,13 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 	//mCalculatedResourceSpace = mInfrastructureLevel[Infrastructure::STORAGE] * SPACE_PER_STORAGE;
 	
 	m_StoredResNum[Resource::FOOD] = 100000;
-	m_StoredResQ[Resource::FOOD] = 0.5f;
-	m_StoredResNum[Resource::WATER] = 100000;
-	m_StoredResQ[Resource::WATER] = 0.5f;
-	m_StoredResNum[Resource::FUEL] = 10000;
-	m_StoredResQ[Resource::FUEL] = 0.5f;
+	m_StoredResQ[Resource::FOOD] = 1.f;
+	m_StoredResNum[Resource::WATER] = 1000000;
+	m_StoredResQ[Resource::WATER] = 1.f;
+	m_StoredResNum[Resource::FUEL] = 100000;
+	m_StoredResQ[Resource::FUEL] = 1.f;
+	//m_StoredResNum[Resource::OXYGEN] = 100000;
+	//m_StoredResQ[Resource::OXYGEN] = 1.f;
 	m_StoredResNum[Resource::COMPONENTS] = 1000;
 	m_StoredResQ[Resource::COMPONENTS] = 0.5f;
 	m_StoredResNum[Resource::CIRCUITRY] = 1000;

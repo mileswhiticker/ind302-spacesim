@@ -26,7 +26,7 @@ void HabitableObject::UpgradeInfrastructure(float a_TotalUpgrades)
 
 			if(targetUpgrade > 0)
 			{
-				std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastCriticalUpgrade) << " upgrades." << std::endl;
+				//std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastCriticalUpgrade) << " upgrades." << std::endl;
 				mInfrastructureLevel[mLastCriticalUpgrade] += targetUpgrade;
 				a_TotalUpgrades -= targetUpgrade;
 
@@ -56,7 +56,7 @@ void HabitableObject::UpgradeInfrastructure(float a_TotalUpgrades)
 				
 			if(targetUpgrade > 0)
 			{
-				std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastUtilUpgrade) << " upgrades." << std::endl;
+				//std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastUtilUpgrade) << " upgrades." << std::endl;
 				mInfrastructureLevel[mLastUtilUpgrade] += targetUpgrade;
 				a_TotalUpgrades -= targetUpgrade;
 
@@ -84,7 +84,7 @@ void HabitableObject::UpgradeInfrastructure(float a_TotalUpgrades)
 			
 			if(targetUpgrade > 0)
 			{
-				std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastIndUpgrade) << " upgrades." << std::endl;
+				//std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastIndUpgrade) << " upgrades." << std::endl;
 				mInfrastructureLevel[mLastIndUpgrade] += targetUpgrade;
 				a_TotalUpgrades -= targetUpgrade;
 
@@ -108,7 +108,7 @@ void HabitableObject::UpgradeInfrastructure(float a_TotalUpgrades)
 				
 			if(targetUpgrade > 0)
 			{
-				std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastSpecialUpgrade) << " upgrades." << std::endl;
+				//std::cout << targetUpgrade << " " << GetInfrastructureStringname(mLastSpecialUpgrade) << " upgrades." << std::endl;
 				mInfrastructureLevel[mLastSpecialUpgrade] += targetUpgrade;
 				a_TotalUpgrades -= targetUpgrade;
 

@@ -9,11 +9,7 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 	//mining
 	{
 		float newMinerals = mInfrastructureLevel[Infrastructure::MINING] * a_Quantity * MINING_MULTI;
-		int workersNeeded = int(mInfrastructureLevel[Infrastructure::MINING] * GameManager::GetSingleton().PersonnelAllocationWeighting[Infrastructure::MINING]);
-		if(!workersNeeded && mInfrastructureLevel[Infrastructure::MINING])
-			workersNeeded = 1;
-		float personnelMulti = float(m_InfrastructureAllocatedPersonnel[Infrastructure::MINING]) / float(workersNeeded);
-		newMinerals *= personnelMulti;
+		newMinerals *= GetPersonnelMultiplier(Infrastructure::MINING);
 		
 		if(newMinerals > 0)
 		{

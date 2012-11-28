@@ -4,8 +4,8 @@
 #define BASICGOODS_PRODUCTION_MULTI 10.f
 //#define METAL_USAGE_RATIO 0.8f
 
-#define POWERUSE_PER_INF 0.1f		//1 unit of powergen provides for 10 units of total inf
-#define ATMOSUSE_PER_INF 0.1f		//1 unit of atmos processing provides for 10 units of total inf
+#define POWERUSE_PER_INF 0.05f		//1 unit of powergen provides for 10 units of total inf
+#define ATMOSUSE_PER_INF 0.05f		//1 unit of atmos processing provides for 10 units of total inf
 #define POWER_FUEL_CONSUMPTION 0.1f	//1 unit of fuel provides 10 ticks of 1 unit of power
 #define CRITICAL_SAFETY_MARGIN 0.1f	//extra breathing room for infrastructure and planning
 
@@ -39,7 +39,7 @@
 #define LUXURYGOODS_CONSUMPTION_PPERSON 0.0001f
 #define DOMESTICGOODS_CONSUMPTION_PPERSON 0.001f
 
-#define MINING_MULTI 0.01f
+#define MINING_MULTI 0.005f
 
 namespace Infrastructure
 {

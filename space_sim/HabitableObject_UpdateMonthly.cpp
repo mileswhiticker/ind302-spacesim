@@ -246,66 +246,79 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 	}
 
 	//upgrade infrastructure, if we don't have a worker shortage
-	if(mPopulation >= mTotalWorkersNeeded)
+	float maxGrowthPossible = (m_TotalInfrastructureLevel > 0 ? m_TotalInfrastructureLevel : 1) * 0.25f * a_Quantity;
+	if(maxGrowthPossible > m_StoredResNum[Resource::GIRDERS] * 4)
+		maxGrowthPossible = m_StoredResNum[Resource::GIRDERS] * 4;
+	if(maxGrowthPossible > m_StoredResNum[Resource::SHEETMETAL] * 4)
+		maxGrowthPossible = m_StoredResNum[Resource::SHEETMETAL] * 4;
+	if(maxGrowthPossible > m_StoredResNum[Resource::COMPONENTS] * 4)
+		maxGrowthPossible = m_StoredResNum[Resource::COMPONENTS] * 4;
+	if(maxGrowthPossible > m_StoredResNum[Resource::CIRCUITRY] * 4)
+		maxGrowthPossible = m_StoredResNum[Resource::CIRCUITRY] * 4;
+
+	if(!m_ConstructionAllocatedPersonnel)
+		maxGrowthPossible = 0;
+
+	if(maxGrowthPossible > 0)
 	{
-		float maxGrowthPossible = (m_TotalInfrastructureLevel > 0 ? m_TotalInfrastructureLevel : 1) * 0.25f * a_Quantity;
-		if(maxGrowthPossible > m_StoredResNum[Resource::GIRDERS] * 4)
-			maxGrowthPossible = m_StoredResNum[Resource::GIRDERS] * 4;
-		if(maxGrowthPossible > m_StoredResNum[Resource::SHEETMETAL] * 4)
-			maxGrowthPossible = m_StoredResNum[Resource::SHEETMETAL] * 4;
-		if(maxGrowthPossible > m_StoredResNum[Resource::COMPONENTS] * 4)
-			maxGrowthPossible = m_StoredResNum[Resource::COMPONENTS] * 4;
-		if(maxGrowthPossible > m_StoredResNum[Resource::CIRCUITRY] * 4)
-			maxGrowthPossible = m_StoredResNum[Resource::CIRCUITRY] * 4;
+		//higher quality materials result in faster development
+		float q1 = AverageWeight(m_StoredResQ[Resource::GIRDERS], 1, m_StoredResQ[Resource::SHEETMETAL], 1);
+		float q2 = AverageWeight(m_StoredResQ[Resource::CIRCUITRY], 1, m_StoredResQ[Resource::COMPONENTS], 1);
+		float avgQ = AverageWeight(q1, 1, q2, 1);
 
-		if(!m_ConstructionAllocatedPersonnel)
-			maxGrowthPossible = 0;
+		float infGained = maxGrowthPossible * (0.5f + avgQ);
 
-		if(maxGrowthPossible > 0)
+		//if we have enough workers, upgrade normally
+		if(mPopulation >= mTotalWorkersNeeded)
 		{
-			//higher quality materials result in faster development
-			float q1 = AverageWeight(m_StoredResQ[Resource::GIRDERS], 1, m_StoredResQ[Resource::SHEETMETAL], 1);
-			float q2 = AverageWeight(m_StoredResQ[Resource::CIRCUITRY], 1, m_StoredResQ[Resource::COMPONENTS], 1);
-			float avgQ = AverageWeight(q1, 1, q2, 1);
-
-			float infGained = maxGrowthPossible * (0.5f + avgQ);
 			UpgradeInfrastructure(infGained);
-			
-			//a bit of scrap waste from materials left over
-			//m_StoredResQ[Resource::SCRAPWASTE] = AverageWeight(m_StoredResQ[Resource::SCRAPWASTE], m_StoredResNum[Resource::SCRAPWASTE], fRand(), infGained / 4);
-			//m_StoredResNum[Resource::SCRAPWASTE] += infGained / 4;
-			AddResources(Resource::SCRAPWASTE, fRand(), infGained / 4);
-
-			//m_StoredResNum[Resource::GIRDERS] -= infGained / 4.f;
-			//m_StoredResNum[Resource::SHEETMETAL] -= infGained / 4.f;
-			//m_StoredResNum[Resource::COMPONENTS] -= infGained / 4.f;
-			//m_StoredResNum[Resource::CIRCUITRY] -= infGained / 4.f;
-			RemoveResources(Resource::GIRDERS, infGained / 4.f);
-			RemoveResources(Resource::SHEETMETAL, infGained / 4.f);
-			RemoveResources(Resource::COMPONENTS, infGained / 4.f);
-			RemoveResources(Resource::CIRCUITRY, infGained / 4.f);
-			
-			if(mIsSelected)
-			{
-				UpdateUIRes(Resource::COMPONENTS);
-				//UpdateUIRes(Resource::CIRCUITRY);
-				UpdateUIRes(Resource::SHEETMETAL);
-				//UpdateUIRes(Resource::GIRDERS);
-				UpdateUIRes(Resource::SCRAPWASTE);
-				GameManager::GetSingleton().GetGameScene()->DisplayEmploy(this);
-				/*GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
-				GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
-				GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
-				GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
-				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
-				//
-			}
-			mLastUpgradeSuccessful = true;
 		}
 		else
 		{
-			mLastUpgradeSuccessful = false;
+			//check if we desperately need more housing room
+			float targetRes = (float(mPopulation) / float(POP_PER_RESIDENTIAL)) * (1.f + POP_GROWTH_ROOM);
+			float resNeeded = targetRes - mInfrastructureLevel[Infrastructure::RESIDENTIAL];
+			if(resNeeded > 0)
+			{
+				infGained = resNeeded;
+				mInfrastructureLevel[Infrastructure::RESIDENTIAL] += infGained;
+			}
+			else
+			{
+				infGained = 0;
+			}
 		}
+			
+		//a bit of scrap waste from materials left over
+		//m_StoredResQ[Resource::SCRAPWASTE] = AverageWeight(m_StoredResQ[Resource::SCRAPWASTE], m_StoredResNum[Resource::SCRAPWASTE], fRand(), infGained / 4);
+		//m_StoredResNum[Resource::SCRAPWASTE] += infGained / 4;
+		AddResources(Resource::SCRAPWASTE, fRand(), infGained / 4);
+
+		//m_StoredResNum[Resource::GIRDERS] -= infGained / 4.f;
+		//m_StoredResNum[Resource::SHEETMETAL] -= infGained / 4.f;
+		//m_StoredResNum[Resource::COMPONENTS] -= infGained / 4.f;
+		//m_StoredResNum[Resource::CIRCUITRY] -= infGained / 4.f;
+		RemoveResources(Resource::GIRDERS, infGained / 4.f);
+		RemoveResources(Resource::SHEETMETAL, infGained / 4.f);
+		RemoveResources(Resource::COMPONENTS, infGained / 4.f);
+		RemoveResources(Resource::CIRCUITRY, infGained / 4.f);
+			
+		if(mIsSelected)
+		{
+			UpdateUIRes(Resource::COMPONENTS);
+			//UpdateUIRes(Resource::CIRCUITRY);
+			UpdateUIRes(Resource::SHEETMETAL);
+			//UpdateUIRes(Resource::GIRDERS);
+			UpdateUIRes(Resource::SCRAPWASTE);
+			GameManager::GetSingleton().GetGameScene()->DisplayEmploy(this);
+			/*GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
+			GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
+			GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
+			GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
+			GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
+			//
+		}
+		mLastUpgradeSuccessful = true;
 	}
 	else if(mIsSelected)
 	{
