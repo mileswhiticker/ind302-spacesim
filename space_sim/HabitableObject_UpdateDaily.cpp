@@ -40,11 +40,16 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 			
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::CARBONACEOUS, m_StoredResNum[Resource::CARBONACEOUS], m_StoredResQ[Resource::CARBONACEOUS]);
+				UpdateUIRes(Resource::CARBONACEOUS);
+				UpdateUIRes(Resource::METALLIC);
+				UpdateUIRes(Resource::SILICACEOUS);
+				UpdateUIRes(Resource::WATERCRYSTALS);
+				UpdateUIRes(Resource::SCRAPWASTE);
+				/*GameManager::UpdateDisplayedResStore(Resource::CARBONACEOUS, m_StoredResNum[Resource::CARBONACEOUS], m_StoredResQ[Resource::CARBONACEOUS]);
 				GameManager::UpdateDisplayedResStore(Resource::METALLIC, m_StoredResNum[Resource::METALLIC], m_StoredResQ[Resource::METALLIC]);
 				GameManager::UpdateDisplayedResStore(Resource::SILICACEOUS, m_StoredResNum[Resource::SILICACEOUS], m_StoredResQ[Resource::SILICACEOUS]);
 				GameManager::UpdateDisplayedResStore(Resource::WATERCRYSTALS, m_StoredResNum[Resource::WATERCRYSTALS], m_StoredResQ[Resource::WATERCRYSTALS]);
-				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
 			}
 		}
 	}
@@ -80,8 +85,10 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
-				GameManager::UpdateDisplayedResStore(Resource::WATERCRYSTALS, m_StoredResNum[Resource::WATERCRYSTALS], m_StoredResQ[Resource::WATERCRYSTALS]);
+				UpdateUIRes(Resource::WATER);
+				UpdateUIRes(Resource::WATERCRYSTALS);
+				//GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
+				//GameManager::UpdateDisplayedResStore(Resource::WATERCRYSTALS, m_StoredResNum[Resource::WATERCRYSTALS], m_StoredResQ[Resource::WATERCRYSTALS]);
 			}
 		}
 	}
@@ -107,8 +114,10 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 		
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::OXYGEN, m_StoredResNum[Resource::OXYGEN], m_StoredResQ[Resource::OXYGEN]);
-				GameManager::UpdateDisplayedResStore(Resource::HYDROGEN, m_StoredResNum[Resource::HYDROGEN], m_StoredResQ[Resource::HYDROGEN]);
+				UpdateUIRes(Resource::OXYGEN);
+				UpdateUIRes(Resource::HYDROGEN);
+				//GameManager::UpdateDisplayedResStore(Resource::OXYGEN, m_StoredResNum[Resource::OXYGEN], m_StoredResQ[Resource::OXYGEN]);
+				//GameManager::UpdateDisplayedResStore(Resource::HYDROGEN, m_StoredResNum[Resource::HYDROGEN], m_StoredResQ[Resource::HYDROGEN]);
 				//GameManager::UpdateDisplayedResStore(Resource::PERFLUOROCARBONS, m_StoredResNum[Resource::PERFLUOROCARBONS], m_StoredResQ[Resource::PERFLUOROCARBONS]);
 			}
 		}
@@ -134,8 +143,10 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::FUEL, m_StoredResNum[Resource::FUEL], m_StoredResQ[Resource::FUEL]);
-				GameManager::UpdateDisplayedResStore(Resource::HYDROGEN, m_StoredResNum[Resource::HYDROGEN], m_StoredResQ[Resource::HYDROGEN]);
+				UpdateUIRes(Resource::FUEL);
+				UpdateUIRes(Resource::HYDROGEN);
+				//GameManager::UpdateDisplayedResStore(Resource::FUEL, m_StoredResNum[Resource::FUEL], m_StoredResQ[Resource::FUEL]);
+				//GameManager::UpdateDisplayedResStore(Resource::HYDROGEN, m_StoredResNum[Resource::HYDROGEN], m_StoredResQ[Resource::HYDROGEN]);
 			}
 		}
 	}
@@ -185,6 +196,7 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 				//m_StoredResNum[Resource::ORGANICWASTE] -= maxNewSoil;
 				RemoveResources(Resource::ORGANICWASTE, maxNewSoil);
 			}
+			UpdateUIRes(Resource::ORGANICWASTE);
 		}
 	}
 	
@@ -210,8 +222,10 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::ORGANICWASTE, m_StoredResNum[Resource::ORGANICWASTE], m_StoredResQ[Resource::ORGANICWASTE]);
-				GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
+				UpdateUIRes(Resource::ORGANICWASTE);
+				UpdateUIRes(Resource::WATER);
+				//GameManager::UpdateDisplayedResStore(Resource::ORGANICWASTE, m_StoredResNum[Resource::ORGANICWASTE], m_StoredResQ[Resource::ORGANICWASTE]);
+				//GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
 			}
 		}
 		
@@ -244,10 +258,14 @@ void HabitableObject::DailyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+				UpdateUIRes(Resource::SCRAPWASTE);
+				UpdateUIRes(Resource::METALLIC);
+				//UpdateUIRes(Resource::SILICACEOUS);
+				//UpdateUIRes(Resource::CARBONACEOUS);
+				/*GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
 				GameManager::UpdateDisplayedResStore(Resource::METALLIC, m_StoredResNum[Resource::METALLIC], m_StoredResQ[Resource::METALLIC]);
 				GameManager::UpdateDisplayedResStore(Resource::SILICACEOUS, m_StoredResNum[Resource::SILICACEOUS], m_StoredResQ[Resource::SILICACEOUS]);
-				GameManager::UpdateDisplayedResStore(Resource::CARBONACEOUS, m_StoredResNum[Resource::CARBONACEOUS], m_StoredResQ[Resource::CARBONACEOUS]);
+				GameManager::UpdateDisplayedResStore(Resource::CARBONACEOUS, m_StoredResNum[Resource::CARBONACEOUS], m_StoredResQ[Resource::CARBONACEOUS]);*/
 			}
 		}
 	}

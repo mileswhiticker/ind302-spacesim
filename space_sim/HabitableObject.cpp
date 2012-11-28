@@ -265,7 +265,7 @@ void HabitableObject::AddResources(Resource::ResourceType a_NewType, float a_Qua
 {
 	if(mUsedStorageSpace + a_Quantity > mCalculatedResourceSpace)
 	{
-		std::cout << "Dumping " << m_StoredResNum[Resource::ORGANICWASTE] + m_StoredResNum[Resource::SCRAPWASTE] << " of accumulated waste!" << std::endl;
+		//std::cout << "Dumping " << m_StoredResNum[Resource::ORGANICWASTE] + m_StoredResNum[Resource::SCRAPWASTE] << " of accumulated waste!" << std::endl;
 		RemoveResources(Resource::ORGANICWASTE, m_StoredResNum[Resource::ORGANICWASTE]);
 		RemoveResources(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE]);
 	}
@@ -277,7 +277,7 @@ void HabitableObject::AddResources(Resource::ResourceType a_NewType, float a_Qua
 	else
 	{
 		//not enough room, have to dump something
-		std::cout << "	Short of " << mUsedStorageSpace + a_Quantity - mCalculatedResourceSpace << " storage space!" << std::endl;
+		//std::cout << "	Short of " << mUsedStorageSpace + a_Quantity - mCalculatedResourceSpace << " storage space!" << std::endl;
 		a_Quantity = mCalculatedResourceSpace - mUsedStorageSpace;
 		if(a_Quantity < 0)
 			a_Quantity = 0;
@@ -288,19 +288,6 @@ void HabitableObject::AddResources(Resource::ResourceType a_NewType, float a_Qua
 	m_StoredResNum[a_NewType] += a_Quantity;
 
 	RecalculateUsedStorage();
-}
-
-float HabitableObject::GetPersonnelMultiplier(Infrastructure::InfrastructureType a_InfType)
-{
-	int workersNeeded = int(mInfrastructureLevel[a_InfType] * GameManager::GetSingleton().PersonnelAllocationWeighting[a_InfType]);
-	if(!workersNeeded)
-	{
-		if(mInfrastructureLevel[a_InfType])
-			workersNeeded = 1;
-		else
-			return 0;
-	}
-	return float(m_InfrastructureAllocatedPersonnel[a_InfType]) / float(workersNeeded);
 }
 
 float HabitableObject::GetInfrastructureLevel(Infrastructure::InfrastructureType a_InfType)

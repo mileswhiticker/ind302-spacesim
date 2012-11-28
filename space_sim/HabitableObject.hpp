@@ -65,6 +65,8 @@ public:
 	float GetSoilQ();
 	float GetSoilAmount();
 	//
+	float GetPersonnelMultiplier(Infrastructure::InfrastructureType a_InfType);
+	//
 	float GetPlanetResNum(Resource::ResourceType a_ResType);
 	float GetPlanetResQ(Resource::ResourceType a_ResType);
 	float GetStoredResNum(Resource::ResourceType a_ResType);
@@ -78,6 +80,8 @@ protected:
 	void WeeklyUpdate(int a_PropogationDir, int a_Quantity = 1);
 	void MonthlyUpdate(int a_PropogationDir, int a_Quantity = 1);
 	void YearlyUpdate(int a_PropogationDir, int a_Quantity = 1);
+	void UpdateUIRes(Resource::ResourceType a_ResType);
+	void UpdateUIInf(Infrastructure::InfrastructureType a_InfType);
 	//
 	HabitableType mMyHabitableType;
 	std::string mObjName;
@@ -144,7 +148,6 @@ protected:
 
 	void AllocateNewPersonnel(int a_NumNewPersonnel);
 	void ReallocateAllPersonnel();
-	float GetPersonnelMultiplier(Infrastructure::InfrastructureType a_InfType);
 	//
 	std::map<Infrastructure::InfrastructureType, int> m_InfrastructureAllocatedPersonnel;
 	int m_ConstructionAllocatedPersonnel;

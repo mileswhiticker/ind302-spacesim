@@ -48,12 +48,15 @@ private:
 	//
 	sf::Texture* m_pBGTexture;
 	sf::Sprite* m_pBGSprite;
-	
+	//
 public:
 	void DisplayPower(HabitableObject* a_pNewSelect);
 	void DisplayAtmos(HabitableObject* a_pNewSelect);
 	void DisplayStorage(HabitableObject* a_pNewSelect);
 	void DisplayYearlyProd(HabitableObject* a_pNewSelect);
+	void DisplayEmploy(HabitableObject* a_pNewSelect);
+	void DisplayComm(HabitableObject* a_pNewSelect);
+	void DisplayResidential(HabitableObject* a_pNewSelect);
 	//
 	void DisplayMining(HabitableObject* a_pNewSelect);
 	void DisplayGasCollection(HabitableObject* a_pNewSelect);

@@ -75,6 +75,7 @@
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="HabitableObject_AllocatePersonnel.cpp" />
     <ClCompile Include="HabitableObject_GenerateData.cpp" />
+    <ClCompile Include="HabitableObject_UI.cpp" />
     <ClCompile Include="HabitableObject_UpdateDaily.cpp" />
     <ClCompile Include="HabitableObject_UpdateMonthly.cpp" />
     <ClCompile Include="HabitableObject_UpdateWeekly.cpp" />

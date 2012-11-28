@@ -31,9 +31,6 @@
     <Filter Include="Source Files\Galaxy">
       <UniqueIdentifier>{91f0ec2d-a172-4812-a40f-b9a1352cb5a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Galaxy\HabitableObject">
-      <UniqueIdentifier>{cd85398a-40d3-431c-b669-c6639e432583}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Galaxy\HabitableObject">
       <UniqueIdentifier>{3cc19e66-0a22-439a-a093-5585472c86b5}</UniqueIdentifier>
     </Filter>
@@ -145,6 +142,9 @@
       <Filter>Source Files\Galaxy\HabitableObject\Upgrade</Filter>
     </ClCompile>
     <ClCompile Include="HabitableObject_AllocatePersonnel.cpp">
+      <Filter>Source Files\Galaxy\HabitableObject</Filter>
+    </ClCompile>
+    <ClCompile Include="HabitableObject_UI.cpp">
       <Filter>Source Files\Galaxy\HabitableObject</Filter>
     </ClCompile>
   </ItemGroup>

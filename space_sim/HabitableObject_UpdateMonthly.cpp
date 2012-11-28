@@ -1,6 +1,7 @@
 #include "HabitableObject.hpp"
 
 #include "GameManager.hpp"
+#include "Scene_Game.hpp"
 #include "MathHelpers.h"
 
 void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
@@ -52,12 +53,18 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 
 				if(mIsSelected)
 				{
-					GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
+					UpdateUIRes(Resource::COMPONENTS);
+					//UpdateUIRes(Resource::CIRCUITRY);
+					UpdateUIRes(Resource::SHEETMETAL);
+					//UpdateUIRes(Resource::GIRDERS);
+					UpdateUIRes(Resource::LUXURYGOODS);
+					UpdateUIRes(Resource::SCRAPWASTE);
+					/*GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
 					GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
 					GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
 					GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
 					GameManager::UpdateDisplayedResStore(Resource::LUXURYGOODS, m_StoredResNum[Resource::LUXURYGOODS], m_StoredResQ[Resource::LUXURYGOODS]);
-					GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+					GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
 				}
 			}
 		}
@@ -99,8 +106,10 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::FOOD, m_StoredResNum[Resource::FOOD], m_StoredResQ[Resource::FOOD]);
-				GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
+				UpdateUIRes(Resource::FOOD);
+				UpdateUIRes(Resource::WATER);
+				//GameManager::UpdateDisplayedResStore(Resource::FOOD, m_StoredResNum[Resource::FOOD], m_StoredResQ[Resource::FOOD]);
+				//GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
 			}
 		}
 	}
@@ -116,12 +125,13 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 			mPopulation += newBorns;
 			if(mPopulation > popRoom)
 			{
-				std::cout << mPopulation - popRoom << " people are homeless " << "(" << newBorns << " are newborns)!" << std::endl;
+				//std::cout << mPopulation - popRoom << " people are homeless " << "(" << newBorns << " are newborns)!" << std::endl;
 			}
 		}
 
 		//some people die of old age
 		mPopulation -= int(mPopulation * fRand(NATDEATH_GROWTH_FLOOR, NATDEATH_GROWTH_CEILING));
+		UpdateUIInf(Infrastructure::RESIDENTIAL);
 	}
 
 	//the colony citizens buy stuff
@@ -214,13 +224,18 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 			{
 				if(mIsSelected)
 				{
-					GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
-					GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
-					GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
-					GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
-					GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+					UpdateUIRes(Resource::COMPONENTS);
+					//UpdateUIRes(Resource::CIRCUITRY);
+					UpdateUIRes(Resource::SHEETMETAL);
+					//UpdateUIRes(Resource::GIRDERS);
+					UpdateUIRes(Resource::SCRAPWASTE);
+					//GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
+					//GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
+					//GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
+					//GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
+					//GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
 					//
-					GameManager::UpdateSelectedInfrastructure(m_TotalInfrastructureLevel);
+					//GameManager::UpdateSelectedInfrastructure(m_TotalInfrastructureLevel);
 				}
 			}
 		}
@@ -272,11 +287,17 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 			
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
+				UpdateUIRes(Resource::COMPONENTS);
+				//UpdateUIRes(Resource::CIRCUITRY);
+				UpdateUIRes(Resource::SHEETMETAL);
+				//UpdateUIRes(Resource::GIRDERS);
+				UpdateUIRes(Resource::SCRAPWASTE);
+				GameManager::GetSingleton().GetGameScene()->DisplayEmploy(this);
+				/*GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
 				GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
 				GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
 				GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
-				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
 				//
 			}
 			mLastUpgradeSuccessful = true;
@@ -285,6 +306,10 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 		{
 			mLastUpgradeSuccessful = false;
 		}
+	}
+	else if(mIsSelected)
+	{
+		GameManager::GetSingleton().GetGameScene()->DisplayEmploy(this);
 	}
 	
 	ReallocateAllPersonnel();

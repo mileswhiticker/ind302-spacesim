@@ -22,7 +22,7 @@ void HabitableObject::ReallocateAllPersonnel()
 	//we have enough, and there's probably a few unemployed
 	for(auto it = m_InfrastructureAllocatedPersonnel.begin(); it != m_InfrastructureAllocatedPersonnel.end(); ++it)
 	{
-		int workersNeeded = int(it->second * GameManager::GetSingleton().PersonnelAllocationWeighting[it->first]);
+		int workersNeeded = int(mInfrastructureLevel[it->first] * GameManager::GetSingleton().PersonnelAllocationWeighting[it->first]);
 		//
 		if(!workersNeeded && mInfrastructureLevel[it->first])
 			workersNeeded = 1;
@@ -42,9 +42,22 @@ void HabitableObject::RecalculateWorkersNeeded()
 	mTotalWorkersNeeded = 1;
 	for(auto it = mInfrastructureLevel.begin(); it != mInfrastructureLevel.end(); ++it)
 	{
-		int workersNeeded = int(it->second * GameManager::GetSingleton().PersonnelAllocationWeighting[it->first]);
+		int workersNeeded = int(mInfrastructureLevel[it->first] * GameManager::GetSingleton().PersonnelAllocationWeighting[it->first]);
 		if(!workersNeeded)
 			workersNeeded = 1;
 		mTotalWorkersNeeded += workersNeeded;
 	}
+}
+
+float HabitableObject::GetPersonnelMultiplier(Infrastructure::InfrastructureType a_InfType)
+{
+	int workersNeeded = int(mInfrastructureLevel[a_InfType] * GameManager::GetSingleton().PersonnelAllocationWeighting[a_InfType]);
+	if(!workersNeeded)
+	{
+		if(mInfrastructureLevel[a_InfType])
+			workersNeeded = 1;
+		else
+			return 0;
+	}
+	return float(m_InfrastructureAllocatedPersonnel[a_InfType]) / float(workersNeeded);
 }

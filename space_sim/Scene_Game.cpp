@@ -290,14 +290,14 @@ void Game::SelectObject(HabitableObject* a_pNewSelect)
 	m_pObjdiameterLabel->SetText("Diameter: " + num2string(a_pNewSelect->Diameter()));
 	m_pObjmassLabel->SetText("Mass: " + num2string(a_pNewSelect->ObjectMass()));
 	//
-	m_pCarbLabel->SetText("Carbon matter: " + num2string( round(a_pNewSelect->GetStoredResNum(Resource::CARBONACEOUS), 2)) + " (" + num2string( round(a_pNewSelect->GetStoredResQ(Resource::CARBONACEOUS), 2)) + ")");
-	m_pSiliLabel->SetText("Silicon matter: " + num2string( round(a_pNewSelect->GetStoredResNum(Resource::SILICACEOUS), 2)) + " (" + num2string( round(a_pNewSelect->GetStoredResQ(Resource::SILICACEOUS), 2)) + ")");
-	m_pMetalLabel->SetText("Metallic matter: " + num2string( round(a_pNewSelect->GetStoredResNum(Resource::METALLIC), 2)) + " (" + num2string( round(a_pNewSelect->GetStoredResQ(Resource::METALLIC), 2)) + ")");
-	m_pWaterCLabel->SetText("Water: " + num2string( round(a_pNewSelect->GetStoredResNum(Resource::WATERCRYSTALS), 2)) + " (" + num2string( round(a_pNewSelect->GetStoredResQ(Resource::WATERCRYSTALS), 2)) + ")");
+	m_pCarbLabel->SetText("Carbon matter: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::CARBONACEOUS), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::CARBONACEOUS), 2)) + ")");
+	m_pSiliLabel->SetText("Silicon matter: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::SILICACEOUS), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::SILICACEOUS), 2)) + ")");
+	m_pMetalLabel->SetText("Metallic matter: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::METALLIC), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::METALLIC), 2)) + ")");
+	m_pWaterCLabel->SetText("Water: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::WATERCRYSTALS), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::WATERCRYSTALS), 2)) + ")");
 	//
 	m_pAtmosDensityLabel->SetText("Atmo density: " + num2string( round(a_pNewSelect->AtmosDensity(), 2)));
-	m_pOxyLabel->SetText("Oxygen: " + num2string( round(a_pNewSelect->GetStoredResNum(Resource::OXYGEN), 2)) + " (" + num2string( round(a_pNewSelect->GetStoredResQ(Resource::OXYGEN), 2)) + ")");
-	m_pHydroLabel->SetText("Hydrogen: " + num2string( round(a_pNewSelect->GetStoredResNum(Resource::HYDROGEN), 2)) + " (" + num2string( round(a_pNewSelect->GetStoredResQ(Resource::HYDROGEN), 2)) + ")");
+	m_pOxyLabel->SetText("Oxygen: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::OXYGEN), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::OXYGEN), 2)) + ")");
+	m_pHydroLabel->SetText("Hydrogen: " + num2string( round(a_pNewSelect->GetPlanetResNum(Resource::HYDROGEN), 2)) + " (" + num2string( round(a_pNewSelect->GetPlanetResQ(Resource::HYDROGEN), 2)) + ")");
 
 	//COLONY DATA
 	m_pPowerLabel->SetText("Power generation: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::POWER_GENERATION), 2)) );
@@ -398,7 +398,7 @@ void Game::DisplayPower(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pColonyTable"))
 	{
-		m_pPowerLabel->SetText("Power generation: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::POWER_GENERATION), 2)) );
+		m_pPowerLabel->SetText("Power generation: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::POWER_GENERATION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::POWER_GENERATION), 2)) + "%employ)");
 		m_pMonthlyFuelLabel->SetText(num2string(round(a_pNewSelect->GetMonthlyFuelUsage(), 0)) + " fuel/month");
 	}
 }
@@ -414,9 +414,21 @@ void Game::DisplayAtmos(HabitableObject* a_pNewSelect)
 		}
 		else
 		{
-			m_pAtmosLabel->SetText("Atmos circulation: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::ATMOSPHERICS), 2)) );
+			m_pAtmosLabel->SetText("Atmos circulation: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::ATMOSPHERICS), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::ATMOSPHERICS), 2)) + "%employ)" );
 			m_pMonthlyOxyLabel->SetText(num2string(round(a_pNewSelect->GetMonthlyOxyUsage(), 2)) + " oxy/month");
 		}
+	}
+}
+
+void Game::DisplayResidential(HabitableObject* a_pNewSelect)
+{
+	if(a_pNewSelect->GetInfrastructureLevel(Infrastructure::RESIDENTIAL))
+	{
+		m_pObjpopLabel->SetText("Population: " + num2string(a_pNewSelect->Population()) + " (" + num2string(100 * round( a_pNewSelect->Population() / (a_pNewSelect->GetInfrastructureLevel(Infrastructure::RESIDENTIAL) * POP_PER_RESIDENTIAL), 2)) + "%housed) (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::RESIDENTIAL), 2)) + "%employ)");
+	}
+	else
+	{
+		m_pObjpopLabel->SetText("Population: " + num2string(a_pNewSelect->Population()) + " (NA%)");
 	}
 }
 
@@ -426,7 +438,7 @@ void Game::DisplayStorage(HabitableObject* a_pNewSelect)
 	{
 		if(a_pNewSelect->GetInfrastructureLevel(Infrastructure::STORAGE))
 		{
-			m_pStorageLabel->SetText("Storage: " + num2string(round(a_pNewSelect->GetUsedStorageSpace(), 2)) + " (" + num2string(100 * round( a_pNewSelect->GetUsedStorageSpace() / (a_pNewSelect->GetInfrastructureLevel(Infrastructure::STORAGE) * SPACE_PER_STORAGE), 2)) + "%)");
+			m_pStorageLabel->SetText("Storage: " + num2string(round(a_pNewSelect->GetUsedStorageSpace(), 2)) + " (" + num2string(100 * round( a_pNewSelect->GetUsedStorageSpace() / (a_pNewSelect->GetInfrastructureLevel(Infrastructure::STORAGE) * SPACE_PER_STORAGE), 2)) + "%stored) (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::STORAGE), 2)) + "%employ)");
 		}
 		else
 		{
@@ -443,11 +455,24 @@ void Game::DisplayYearlyProd(HabitableObject* a_pNewSelect)
 	}
 }
 
+void Game::DisplayEmploy(HabitableObject* a_pNewSelect)
+{
+	if(!a_pNewSelect->GetNumJobs() || !a_pNewSelect->Population())
+		m_pEmployLabel->SetText("Jobs filled: NA%");
+	else
+		m_pEmployLabel->SetText("Jobs filled: " + num2string(100 * round(float(a_pNewSelect->Population()) / float(a_pNewSelect->GetNumJobs()), 2) ) + "%");
+}
+
+void Game::DisplayComm(HabitableObject* a_pNewSelect)
+{
+	m_pCommLabel->SetText("Commercial development: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::COMMERCIAL), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::COMMERCIAL), 2)) + "%employ)");
+}
+
 void Game::DisplayMining(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
-		m_pMiningInfLabel->SetText("Mining operations: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::MINING)));
+		m_pMiningInfLabel->SetText("Mining operations: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::MINING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::MINING), 2)) + "%employ)");
 		m_pResCarbLabel->SetText("Carbon matter: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::CARBONACEOUS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::CARBONACEOUS), 2)));
 		m_pResSiliLabel->SetText("Silicon matter: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SILICACEOUS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SILICACEOUS), 2)));
 		m_pResMetalLabel->SetText("Metal ore: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::METALLIC), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::METALLIC), 2)));
@@ -458,7 +483,7 @@ void Game::DisplayGasCollection(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
-		m_pGasInfLabel->SetText("Gas collection: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::GAS_PROCESSING)));
+		m_pGasInfLabel->SetText("Gas collection: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::GAS_PROCESSING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::GAS_PROCESSING), 2)) + "%employ)");
 		m_pResOxyLabel->SetText("Oxygen: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::OXYGEN), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::OXYGEN), 2)));
 		m_pResHydroLabel->SetText("Hydrogen: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::HYDROGEN), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::HYDROGEN), 2)));
 		m_pResWaterCLabel->SetText("H20: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATERCRYSTALS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATERCRYSTALS), 2)));
@@ -469,7 +494,7 @@ void Game::DisplayWasteRec(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
-		m_pWasteInfLabel->SetText("Waste recycling: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WASTE_RECYCLING)));
+		m_pWasteInfLabel->SetText("Waste recycling: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WASTE_RECYCLING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::WASTE_RECYCLING), 2)) + "%employ)");
 		m_pResWasteLabel->SetText("Organic waste: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::ORGANICWASTE), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::ORGANICWASTE), 2)));
 	}
 }
@@ -478,7 +503,7 @@ void Game::DisplayScrapRec(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
-		m_pScrapInfLabel->SetText("Scrap recycling: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::SCRAP_RECYCLING)));
+		m_pScrapInfLabel->SetText("Scrap recycling: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::SCRAP_RECYCLING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::SCRAP_RECYCLING), 2)) + "%employ)");
 		m_pResScrapLabel->SetText("Scrap waste: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SCRAPWASTE), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SCRAPWASTE), 2)));
 	}
 }
@@ -487,7 +512,7 @@ void Game::DisplayElectronic(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
-		m_pElecInfLabel->SetText("Electronics production: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::ELECTRONICS_PRODUCTION)));
+		m_pElecInfLabel->SetText("Electronics production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::ELECTRONICS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::ELECTRONICS_PRODUCTION), 2)) + "%employ)");
 		m_pResCompLabel->SetText("Circuitry: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::CIRCUITRY), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::CIRCUITRY), 2)));
 		m_pResCircLabel->SetText("Components: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::COMPONENTS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::COMPONENTS), 2)));
 	}
@@ -497,7 +522,7 @@ void Game::DisplayMaterials(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
-		m_pMatInfLabel->SetText("Materials production: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::MATERIALS_PRODUCTION)));
+		m_pMatInfLabel->SetText("Materials production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::MATERIALS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::MATERIALS_PRODUCTION), 2)) + "%employ)");
 		m_pResSheetLabel->SetText("Sheet metal: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SHEETMETAL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SHEETMETAL), 2)));
 		m_pResGirderLabel->SetText("Girders: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::GIRDERS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::GIRDERS), 2)));
 	}
@@ -507,7 +532,7 @@ void Game::DisplayDomesticG(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
-		m_pDomGInfLabel->SetText("Domestic production: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::DOMESTICGOODS_PRODUCTION)));
+		m_pDomGInfLabel->SetText("Domestic production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::DOMESTICGOODS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::DOMESTICGOODS_PRODUCTION), 2)) + "%employ)");
 		m_pResDomGLabel->SetText("Domestic goods: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::DOMESTICGOODS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::DOMESTICGOODS), 2)));
 	}
 }
@@ -516,7 +541,7 @@ void Game::DisplayLuxuryG(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
-		m_pLuxGInfLabel->SetText("Luxury production: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::LUXURYGOODS_PRODUCTION)));
+		m_pLuxGInfLabel->SetText("Luxury production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::LUXURYGOODS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::LUXURYGOODS_PRODUCTION), 2)) + "%employ)");
 		m_pResLuxGLabel->SetText("Luxury goods: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::LUXURYGOODS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::LUXURYGOODS), 2)));
 	}
 }
@@ -525,7 +550,7 @@ void Game::DisplayFood(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
 	{
-		m_pFoodInfLabel->SetText("Farming: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FOOD_PROCESSING)));
+		m_pFoodInfLabel->SetText("Farming: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FOOD_PROCESSING), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::FOOD_PROCESSING), 2)) + "%employ)");
 		m_pResFoodLabel->SetText("Food: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FOOD), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FOOD), 2)));
 		if(!a_pNewSelect->GetSoilAmount() || !a_pNewSelect->GetInfrastructureLevel(Infrastructure::FOOD_PROCESSING))
 		{
@@ -538,20 +563,20 @@ void Game::DisplayFood(HabitableObject* a_pNewSelect)
 	}
 }
 
-void Game::DisplayFuel(HabitableObject* a_pNewSelect)
-{
-	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
-	{
-		m_pFuelInfLabel->SetText("Fuel processing: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FUEL_PROCESSING)));
-		m_pResFuelLabel->SetText("Fuel: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FUEL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FUEL), 2)));
-	}
-}
-
 void Game::DisplayWater(HabitableObject* a_pNewSelect)
 {
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
 	{
-		m_pWaterInfLabel->SetText("Water purifying: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WATER_PURIFICATION)));
+		m_pWaterInfLabel->SetText("Water purifying: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WATER_PURIFICATION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::WATER_PURIFICATION), 2)) + "%employ)");
 		m_pResWaterLabel->SetText("Water: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATER), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATER), 2)));
+	}
+}
+
+void Game::DisplayFuel(HabitableObject* a_pNewSelect)
+{
+	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
+	{
+		m_pFuelInfLabel->SetText("Fuel processing: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FUEL_PROCESSING), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::FUEL_PROCESSING), 2)) + "%employ)");
+		m_pResFuelLabel->SetText("Fuel: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FUEL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FUEL), 2)));
 	}
 }

@@ -44,11 +44,16 @@ void HabitableObject::WeeklyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::METALLIC, m_StoredResNum[Resource::METALLIC], m_StoredResQ[Resource::METALLIC]);
+				UpdateUIRes(Resource::METALLIC);
+				//UpdateUIRes(Resource::SILICACEOUS);
+				UpdateUIRes(Resource::COMPONENTS);
+				//UpdateUIRes(Resource::CIRCUITRY);
+				UpdateUIRes(Resource::SCRAPWASTE);
+				/*GameManager::UpdateDisplayedResStore(Resource::METALLIC, m_StoredResNum[Resource::METALLIC], m_StoredResQ[Resource::METALLIC]);
 				GameManager::UpdateDisplayedResStore(Resource::SILICACEOUS, m_StoredResNum[Resource::SILICACEOUS], m_StoredResQ[Resource::SILICACEOUS]);
 				GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
 				GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
-				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
 			}
 		}
 
@@ -85,11 +90,16 @@ void HabitableObject::WeeklyUpdate(int a_PropogationDir, int a_Quantity)
 
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::METALLIC, m_StoredResNum[Resource::METALLIC], m_StoredResQ[Resource::METALLIC]);
+				UpdateUIRes(Resource::METALLIC);
+				//UpdateUIRes(Resource::CARBONACEOUS);
+				UpdateUIRes(Resource::SHEETMETAL);
+				//UpdateUIRes(Resource::GIRDERS);
+				UpdateUIRes(Resource::SCRAPWASTE);
+				/*GameManager::UpdateDisplayedResStore(Resource::METALLIC, m_StoredResNum[Resource::METALLIC], m_StoredResQ[Resource::METALLIC]);
 				GameManager::UpdateDisplayedResStore(Resource::CARBONACEOUS, m_StoredResNum[Resource::CARBONACEOUS], m_StoredResQ[Resource::CARBONACEOUS]);
 				GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
 				GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
-				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+				GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
 			}
 		}
 		
@@ -135,12 +145,18 @@ void HabitableObject::WeeklyUpdate(int a_PropogationDir, int a_Quantity)
 
 				if(mIsSelected)
 				{
-					GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
+					UpdateUIRes(Resource::COMPONENTS);
+					//UpdateUIRes(Resource::CIRCUITRY);
+					UpdateUIRes(Resource::SHEETMETAL);
+					//UpdateUIRes(Resource::GIRDERS);
+					UpdateUIRes(Resource::DOMESTICGOODS);
+					UpdateUIRes(Resource::SCRAPWASTE);
+					/*GameManager::UpdateDisplayedResStore(Resource::COMPONENTS, m_StoredResNum[Resource::COMPONENTS], m_StoredResQ[Resource::COMPONENTS]);
 					GameManager::UpdateDisplayedResStore(Resource::CIRCUITRY, m_StoredResNum[Resource::CIRCUITRY], m_StoredResQ[Resource::CIRCUITRY]);
 					GameManager::UpdateDisplayedResStore(Resource::SHEETMETAL, m_StoredResNum[Resource::SHEETMETAL], m_StoredResQ[Resource::SHEETMETAL]);
 					GameManager::UpdateDisplayedResStore(Resource::GIRDERS, m_StoredResNum[Resource::GIRDERS], m_StoredResQ[Resource::GIRDERS]);
 					GameManager::UpdateDisplayedResStore(Resource::DOMESTICGOODS, m_StoredResNum[Resource::DOMESTICGOODS], m_StoredResQ[Resource::DOMESTICGOODS]);
-					GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);
+					GameManager::UpdateDisplayedResStore(Resource::SCRAPWASTE, m_StoredResNum[Resource::SCRAPWASTE], m_StoredResQ[Resource::SCRAPWASTE]);*/
 				}
 			}
 		}

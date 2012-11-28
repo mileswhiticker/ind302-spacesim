@@ -25,13 +25,15 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 			std::cout << int(float(mPopulation) * m_StoredResNum[Resource::FOOD] / foodNeeded) << " died of starvation!" << std::endl;
 			mPopulation = int(float(mPopulation) *m_StoredResNum[Resource::FOOD] / foodNeeded);
 			foodNeeded = m_StoredResNum[Resource::FOOD];
+			UpdateUIInf(Infrastructure::RESIDENTIAL);
 		}
 		//m_StoredResNum[Resource::FOOD] -= foodNeeded;
 		RemoveResources(Resource::FOOD, foodNeeded);
 		
 		if(mIsSelected)
 		{
-			GameManager::UpdateDisplayedResStore(Resource::FOOD, m_StoredResNum[Resource::FOOD], m_StoredResQ[Resource::FOOD]);
+			UpdateUIRes(Resource::FOOD);
+			//GameManager::UpdateDisplayedResStore(Resource::FOOD, m_StoredResNum[Resource::FOOD], m_StoredResQ[Resource::FOOD]);
 			//GameManager::GetSingleton().GetGameScene()->SetPop(mPopulation);
 		}
 	}
@@ -47,13 +49,15 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 			std::cout << mPopulation - int(mPopulation * m_StoredResNum[Resource::WATER] / waterNeeded) << " people died of thirst!" << std::endl;
 			mPopulation = int(mPopulation * m_StoredResNum[Resource::WATER] / waterNeeded);
 			waterNeeded = m_StoredResNum[Resource::WATER];
+			UpdateUIInf(Infrastructure::RESIDENTIAL);
 		}
 		//m_StoredResNum[Resource::WATER] -= waterNeeded;
 		RemoveResources(Resource::WATER, waterNeeded);
 		
 		if(mIsSelected)
 		{
-			GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
+			UpdateUIRes(Resource::WATER);
+			//GameManager::UpdateDisplayedResStore(Resource::WATER, m_StoredResNum[Resource::WATER], m_StoredResQ[Resource::WATER]);
 			//GameManager::GetSingleton().GetGameScene()->SetPop(mPopulation);
 		}
 	}
@@ -78,7 +82,8 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 		
 		if(mIsSelected)
 		{
-			GameManager::UpdateDisplayedResStore(Resource::FUEL, m_StoredResNum[Resource::FUEL], m_StoredResQ[Resource::FUEL]);
+			UpdateUIRes(Resource::FUEL);
+			//GameManager::UpdateDisplayedResStore(Resource::FUEL, m_StoredResNum[Resource::FUEL], m_StoredResQ[Resource::FUEL]);
 		}
 	}
 
@@ -95,13 +100,15 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 			float missingOxy = oxyNeeded - m_StoredResNum[Resource::OXYGEN];
 			std::cout << missingOxy << " units of oxygen short!" << std::endl;
 			oxyNeeded = m_StoredResNum[Resource::OXYGEN];
+			UpdateUIInf(Infrastructure::RESIDENTIAL);
 		}
 		//m_StoredResNum[Resource::OXYGEN] -= oxyNeeded;
 		RemoveResources(Resource::OXYGEN, oxyNeeded);
 		
 		if(mIsSelected)
 		{
-			GameManager::UpdateDisplayedResStore(Resource::OXYGEN, m_StoredResNum[Resource::OXYGEN], m_StoredResQ[Resource::OXYGEN]);
+			UpdateUIRes(Resource::OXYGEN);
+			//GameManager::UpdateDisplayedResStore(Resource::OXYGEN, m_StoredResNum[Resource::OXYGEN], m_StoredResQ[Resource::OXYGEN]);
 		}
 	}
 
@@ -118,7 +125,8 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 			
 			if(mIsSelected)
 			{
-				GameManager::UpdateDisplayedResStore(Resource::ORGANICWASTE, m_StoredResNum[Resource::ORGANICWASTE], m_StoredResQ[Resource::ORGANICWASTE]);
+				UpdateUIRes(Resource::ORGANICWASTE);
+				//GameManager::UpdateDisplayedResStore(Resource::ORGANICWASTE, m_StoredResNum[Resource::ORGANICWASTE], m_StoredResQ[Resource::ORGANICWASTE]);
 			}
 		}
 	}
