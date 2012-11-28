@@ -59,7 +59,7 @@ namespace Infrastructure
 		//low level infrastructure (daily processing)
 		WASTE_RECYCLING,
 		SCRAP_RECYCLING,
-		DISPOSAL,
+		//DISPOSAL,
 		//
 		MINING,
 		FUEL_PROCESSING,

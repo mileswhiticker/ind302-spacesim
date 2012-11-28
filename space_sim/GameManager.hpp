@@ -40,7 +40,7 @@ public:
 	//static void UpdateDisplayedResInf(Resource::ResourceType a_ResType, float a_InfLevel);
 	//static void UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfType, float a_InfLevel);
 	//
-	static void UpdateSelectedInfrastructure(float a_NewInf);
+	//static void UpdateSelectedInfrastructure(float a_NewInf);
 	
 	void Initialise(Game* a_pGameScene);
 	void Uninitialise();

@@ -171,7 +171,7 @@ void GameManager::Initialise(Game* a_pGameScene)
 		//
 		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::WASTE_RECYCLING, 0.1f));
 		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::SCRAP_RECYCLING, 0.1f));
-		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::DISPOSAL, 0.1f));
+		//PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::DISPOSAL, 0.1f));
 		//
 		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::MATERIALS_PRODUCTION, 1.f));
 		PersonnelAllocationWeighting.insert(IndustryWeightPair(Infrastructure::ELECTRONICS_PRODUCTION, 1.f));

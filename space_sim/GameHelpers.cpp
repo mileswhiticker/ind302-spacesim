@@ -178,11 +178,11 @@ std::string GetResourceStringname(Resource::ResourceType a_ResourceType)
 			return "LUXURYGOODS";
 			break;
 		}
-	case(Resource::MACHINERY):
+	/*case(Resource::MACHINERY):
 		{
 			return "MACHINERY";
 			break;
-		}
+		}*/
 	case(Resource::METALLIC):
 		{
 			return "METALLIC";
@@ -250,11 +250,11 @@ std::string GetInfrastructureStringname(Infrastructure::InfrastructureType a_Inf
 			return "COMMERCIAL";
 			break;
 		}
-	case(Infrastructure::DISPOSAL):
+	/*case(Infrastructure::DISPOSAL):
 		{
 			return "DISPOSAL";
 			break;
-		}
+		}*/
 	case(Infrastructure::DOCKING):
 		{
 			return "DOCKING";
