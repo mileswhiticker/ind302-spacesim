@@ -325,6 +325,7 @@ void HabitableObject::MonthlyUpdate(int a_PropogationDir, int a_Quantity)
 		GameManager::GetSingleton().GetGameScene()->DisplayEmploy(this);
 	}
 	
+	RecalculatePrices();
 	ReallocateAllPersonnel();
 
 	//two-way recursion

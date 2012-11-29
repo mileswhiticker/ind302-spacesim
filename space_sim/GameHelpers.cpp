@@ -1,5 +1,8 @@
 #include "GameHelpers.hpp"
 
+#include "Num2StringHelper.h"
+#include "MathHelpers.h"
+
 std::string GetDisplayStringname(DisplayableObject::DisplayableType a_DisplayType)
 {
 	switch(a_DisplayType)
@@ -402,4 +405,134 @@ Infrastructure::InfrastructureType GetIndustryFromResource(Resource::ResourceTyp
 			return Infrastructure::MACHINERY_PRODUCTION;
 		}*/
 	}
+}
+
+std::string GetRandomName(DisplayableObject::DisplayableType a_DispType)
+{
+	//for some reason, the random characters is borking horribly
+	//std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//std::string out = "" + alphabet[iRand(alphabet.size())] + alphabet[iRand(alphabet.size())] + alphabet[iRand(alphabet.size())] + std::string("-") + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10));
+	std::string out = num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10));
+	return GetDisplayStringname(a_DispType) + " " + out;
+}
+
+std::string GetRandomTraderName()
+{
+	std::string out = "";
+	//first name
+	switch(iRand(11))
+	{
+	case(0):
+		{
+			out += "Dash ";
+			break;
+		}
+	case(1):
+		{
+			out += "Smiley ";
+			break;
+		}
+	case(2):
+		{
+			out += "Kitten ";
+			break;
+		}
+	case(3):
+		{
+			out += "Hans ";
+			break;
+		}
+	case(4):
+		{
+			out += "Vladimir ";
+			break;
+		}
+	case(5):
+		{
+			out += "Antimony ";
+			break;
+		}
+	case(6):
+		{
+			out += "Mal ";
+			break;
+		}
+	case(7):
+		{
+			out += "Guybrush ";
+			break;
+		}
+	case(8):
+		{
+			out += "Malcolm ";
+			break;
+		}
+	case(9):
+		{
+			out += "Derpimillian ";
+			break;
+		}
+	case(10):
+		{
+			out += "Leito ";
+			break;
+		}
+	}
+
+	//last name
+	switch(iRand(10))
+	{
+	case(0):
+		{
+			out += "Rendar";
+			break;
+		}
+	case(1):
+		{
+			out += "Solo";
+			break;
+		}
+	case(2):
+		{
+			out += "Scalov";
+			break;
+		}
+	case(3):
+		{
+			out += "Harkonnen";
+			break;
+		}
+	case(4):
+		{
+			out += "Atreides";
+			break;
+		}
+	case(5):
+		{
+			out += "of Corriban";
+			break;
+		}
+	case(6):
+		{
+			out += "Reynolds";
+			break;
+		}
+	case(7):
+		{
+			out += "of Antimar";
+			break;
+		}
+	case(8):
+		{
+			out += "the Jester";
+			break;
+		}
+	case(9):
+		{
+			out += "the Affluent";
+			break;
+		}
+	}
+
+	return out;
 }

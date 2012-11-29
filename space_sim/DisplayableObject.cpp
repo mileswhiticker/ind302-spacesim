@@ -4,6 +4,9 @@
 #include "SFGManager.hpp"
 #include "AppManager.hpp"
 
+#include "Misc.h"
+#include "Traders.hpp"
+
 #include <SFML\Graphics\Image.hpp>
 #include <SFML\Graphics\Texture.hpp>
 #include <SFML\Graphics\Sprite.hpp>
@@ -17,52 +20,17 @@ DisplayableObject::DisplayableObject(DisplayableType a_Type, DisplayableObject* 
 ,	mGeneratedContents(false)
 ,	mGeneratedButtons(false)
 ,	m_pParentObject(a_pParent)
-,	m_pButtonImage(NULL)
 ,	mIsHabitableObject(false)
 ,	mIsSelected(false)
+,	m_pSFImage(NULL)
 {
-	switch(mMyDisplayableType)
-	{
-	case(DisplayableObject::STELLARGROUP):
-		{
-			m_ImageName = "../media/group.png";
-			m_BGImageName = "../media/stellargroup_bg.png";
-			break;
-		}
-	case(DisplayableObject::STARSYSTEM):
-		{
-			m_ImageName = "../media/system.png";
-			m_BGImageName = "../media/starsystem_bg.png";
-			break;
-		}
-	case(DisplayableObject::STAR):
-		{
-			m_ImageName = "../media/star.png";
-			m_BGImageName = "../media/star_bg.png";
-			break;
-		}
-	case(DisplayableObject::ORIONSPUR):
-		{
-			m_ImageName = "../media/broke.png";
-			m_BGImageName = "../media/orionspur_bg.png";
-			break;
-		}
-	default:
-		{
-			m_ImageName = "../media/broke.png";
-			m_BGImageName = "../media/starry.jpg";
-			break;
-		}
-	}
+	//these should be overridden in the various constructors
+	m_ImageName = "../media/broke.png";
+	m_BGImageName = "../media/starry.jpg";
 }
 
 DisplayableObject::~DisplayableObject()
 {
-	if(m_pButton.get())
-	{
-		ClearWidget(m_pButton->GetImage());
-		ClearWidget(m_pButton);
-	}
 	if(m_pSFGImage.get())
 	{
 		ClearWidget(m_pSFGImage);
@@ -89,21 +57,23 @@ void DisplayableObject::ShowContents(bool a_Visible)
 {
 	if(!mGeneratedContents && a_Visible)
 		GenerateContents();
-	//
+
 	for(auto it = mContents.begin(); it != mContents.end(); ++it)
 	{
-		(*it)->ShowButton(a_Visible);
+		(*it)->ShowDisplayIcon(a_Visible);
+	}
+	for(auto it = m_HeldTraders.begin(); it != m_HeldTraders.end(); ++it)
+	{
+		(*it)->ShowDisplayIcon();
 	}
 }
 
-DisplayableObject* DisplayableObject::GetParent()
+DisplayableObject* DisplayableObject::GetParentDisplayableObject()
 {
 	return m_pParentObject;
 }
 
-#define SPRITE_DIM 32
-
-void DisplayableObject::CreateButton()
+void DisplayableObject::CreateDisplayIcon()
 {
 	sf::Vector2f windowDims = SFGManager::GetSingleton().GetWindowDimensions();
 	windowDims.x = windowDims.x * (5.f/6.f) - SPRITE_DIM;
@@ -125,10 +95,10 @@ void DisplayableObject::CreateButton()
 	AddWidget(m_pGLCanvasButton);*/
 
 	//image
-	m_pButtonImage = new sf::Image();
-	m_pButtonImage->loadFromFile(m_ImageName);
+	m_pSFImage = new sf::Image();
+	m_pSFImage->loadFromFile(m_ImageName);
 
-	m_pSFGImage = sfg::Image::Create(*m_pButtonImage);
+	m_pSFGImage = sfg::Image::Create(*m_pSFImage);
 	m_pSFGImage->GetSignal(sfg::Widget::OnLeftClick).Connect(&DisplayableObject::OnClick, (DisplayableObject*)this);
 	//
 	sf::FloatRect allocation;
@@ -139,7 +109,7 @@ void DisplayableObject::CreateButton()
 	m_pSFGImage->SetAllocation(allocation);
 	m_pSFGImage->Show(false);
 	AddWidget(m_pSFGImage);
-
+	
 	//buttons
 	/*m_pButton = sfg::Button::Create("");
 	m_pButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&DisplayableObject::OnClick, (DisplayableObject*)this);
@@ -162,20 +132,18 @@ void DisplayableObject::CreateButton()
 	m_pButton->Show(false);*/
 }
 
-void DisplayableObject::ShowButton(bool a_Visible)
+void DisplayableObject::ShowDisplayIcon(bool a_Visible)
 {
 	if(!m_pSFGImage.get())
-		CreateButton();
+		CreateDisplayIcon();
 	m_pSFGImage->Show(a_Visible);
 }
 
 void DisplayableObject::GenerateButtons()
 {
-	#pragma omp for
 	for(auto it = mContents.begin(); it != mContents.end(); ++it)
 	{
-		#pragma omp atomic
-		(*it)->CreateButton();
+		(*it)->CreateDisplayIcon();
 	}
 	//
 	mGeneratedButtons = true;

@@ -43,7 +43,7 @@ void AppManager::Update(float a_DeltaT)
 	//todo: delete this
 	//SimManager::GetSingleton().Update(a_DeltaT);
 
-	GameManager::GetSingleton().GameUpdate(a_DeltaT);
+	GameManager::GetSingleton().Update(a_DeltaT);
 	SceneManager::GetSingleton().Update(a_DeltaT);
 	SFGManager::GetSingleton().Update(a_DeltaT);
 }

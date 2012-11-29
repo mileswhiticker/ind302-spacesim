@@ -4,6 +4,7 @@
 #include "OrionSpur.hpp"
 #include "Planet.hpp"
 #include "StarSystem.hpp"
+#include "Traders.hpp"
 
 #include "Scene_Game.hpp"
 
@@ -37,7 +38,7 @@ GameManager::GameManager()
 void GameManager::SetHomePlanet(Planet* a_pNewHomePlanet)
 {
 	m_pHomePlanet = a_pNewHomePlanet;
-	AddHabitableObject(a_pNewHomePlanet);
+	GameManager::GetSingleton().AddHabitableObject(a_pNewHomePlanet);
 }
 
 Planet* GameManager::GetHomePlanet()
@@ -62,9 +63,69 @@ void GameManager::Initialise(Game* a_pGameScene)
 	ViewDisplayableObject(m_pOrionSpur);
 	//
 
+	RecalculateAveragePrices();
+	
+	for(int index = 0; index < 10; ++index)
+	{
+		m_Traders.push_back(new Trader(m_pHomePlanet));
+		m_pGameScene->AddTrader(m_Traders.back());
+	}
+	
+	if(!m_AveragePrices.size())
+	{
+		for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+		{
+			m_AveragePrices.insert( std::pair<Resource::ResourceType, float>(Resource::ResourceType(resInd), 0.f) );
+		}
+	}
+	
+	if(!m_MaxGloballyStored.size())
+	{
+		for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+		{
+			m_MaxGloballyStored.insert( std::pair<Resource::ResourceType, float>(Resource::ResourceType(resInd), 0.f) );
+			m_MaxGlobalStorees.insert( std::pair<Resource::ResourceType, HabitableObject*>(Resource::ResourceType(resInd), (HabitableObject*)NULL) );
+		}
+	}
+	
+	if(!m_LowestGlobalPrices.size())
+	{
+		for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+		{
+			m_LowestGlobalPrices.insert( std::pair<Resource::ResourceType, HabitableObject*>(Resource::ResourceType(resInd), (HabitableObject*)NULL) );
+		}
+	}
+	
+	if(!m_BasePrices.size())
+	{
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::CARBONACEOUS, 30.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::SILICACEOUS, 30.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::METALLIC, 40.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::WATERCRYSTALS, 30.f) );
+		//
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::CIRCUITRY, 50.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::COMPONENTS, 50.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::SHEETMETAL, 50.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::GIRDERS, 50.f) );
+		//
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::ORGANICWASTE, 10.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::SCRAPWASTE, 10.f) );
+		//
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::FUEL, 35.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::WATER, 30.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::FOOD, 30.f) );
+		//
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::DOMESTICGOODS, 75.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::LUXURYGOODS, 100.f) );
+		//
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::OXYGEN, 30.f) );
+		m_BasePrices.insert( std::pair<Resource::ResourceType, float>(Resource::HYDROGEN, 30.f) );
+	}
+	
+	//unused
 	//calculate upgrade weightings for different infrastructure types
 	//deciding to upgrade critical and utility infrastructure is done using a separate system
-	if(!DefaultIndustryWeightingPerObject.size())
+	/*if(!DefaultIndustryWeightingPerObject.size())
 	{
 		for(int habInd = 0; habInd < HabitableObject::MAXVAL; ++habInd)
 		{
@@ -114,7 +175,7 @@ void GameManager::Initialise(Game* a_pGameScene)
 		DefaultIndustryWeightingPerObject[HabitableObject::ASTEROID_METALLIC][Infrastructure::GAS_PROCESSING] = 0;
 		DefaultIndustryWeightingPerObject[HabitableObject::ASTEROID_SILICACEOUS][Infrastructure::MINING] = 5.f;
 		DefaultIndustryWeightingPerObject[HabitableObject::ASTEROID_SILICACEOUS][Infrastructure::GAS_PROCESSING] = 0;
-	}
+	}*/
 
 	//unused
 	/*if(!Resource::Requirements.size())
@@ -215,6 +276,15 @@ void GameManager::ViewDisplayableObject(DisplayableObject* a_pDisplayObject)
 	//std::cout << "	" << GetDisplayStringname(m_pCurViewedObject->GetDisplayableType()) << " displaying contents" << std::endl;
 	m_pGameScene->ChangeView(m_pCurViewedObject);
 	m_pSelectCircle->Show(false);
+	
+	//display any traders on this level
+	for(auto it = m_Traders.begin(); it != m_Traders.end(); ++it)
+	{
+		if((*it)->GetParentDisplayableObject() == a_pDisplayObject)
+		{
+			(*it)->ShowDisplayIcon();
+		}
+	}
 }
 
 void GameManager::ClearCurView()
@@ -231,12 +301,19 @@ void GameManager::ClearCurView()
 			break;
 		}
 	}*/
+	
+	for(auto it = m_Traders.begin(); it != m_Traders.end(); ++it)
+	{
+		(*it)->ShowDisplayIcon(false);
+	}
+
 	m_pCurViewedObject->ShowContents(false);
 }
 
 void GameManager::UpOneLevel()
 {
-	DisplayableObject* pParent = m_pCurViewedObject->GetParent();
+	DisplayableObject* pParent = m_pCurViewedObject->GetParentDisplayableObject();
+	m_pCurSelectedDispObject = NULL;
 	if(pParent)
 	{
 		ViewDisplayableObject(pParent);
@@ -247,9 +324,14 @@ void GameManager::UpOneLevel()
 	}
 }
 
+DisplayableObject* GameManager::GetCurrentlyViewedObject()
+{
+	return GameManager::GetSingleton().m_pCurViewedObject;
+}
+
 DisplayableObject::DisplayableType GameManager::GetCurrentlyViewedType()
 {
-	return m_pCurViewedObject->GetDisplayableType();
+	return GameManager::GetSingleton().m_pCurViewedObject->GetDisplayableType();
 }
 
 void GameManager::ClickDisplayableObject(DisplayableObject* a_pDisplayObject)
@@ -287,7 +369,7 @@ Game* GameManager::GetGameScene()
 	return m_pGameScene;
 }
 
-void GameManager::GameUpdate(float a_DeltaT)
+void GameManager::Update(float a_DeltaT)
 {
 	if(m_pOrionSpur)
 	{
@@ -318,6 +400,8 @@ void GameManager::GameUpdate(float a_DeltaT)
 			case(MONTHLY):
 				{
 					mMonths++;
+					//
+					RecalculateAveragePrices();
 					break;
 				}
 			}
@@ -330,6 +414,8 @@ void GameManager::GameUpdate(float a_DeltaT)
 			{
 				mDays -= DAYS_WEEK * WEEKS_MONTH;
 				mMonths++;
+				//
+				RecalculateAveragePrices();
 			}
 			while(mMonths >= MONTHS_YEAR)
 			{
@@ -339,9 +425,16 @@ void GameManager::GameUpdate(float a_DeltaT)
 			m_pGameScene->SetDate( num2string(mHours) + ":00, " + num2string(mDays) + "/" + num2string(mMonths) + "/" + num2string(mYears) );
 		}
 
+		//update colonies
 		for(auto it = m_HabitableObjects.begin(); it != m_HabitableObjects.end(); ++it)
 		{
 			(*it)->Update(a_DeltaT, m_CurTimeRate);
+		}
+
+		//update traders
+		for(auto it = m_Traders.begin(); it != m_Traders.end(); ++it)
+		{
+			(*it)->Update(m_CurTimeRate, a_DeltaT);
 		}
 	}
 }
@@ -368,41 +461,6 @@ void GameManager::HandleEvent(sf::Event& a_NewEvent)
 	}
 }
 
-/*void GameManager::UpdateDisplayedResStore(Resource::ResourceType a_ResType, float a_Quantity, float a_Quality)
-{
-	if(GameManager::GetSingleton().GetSelectedHabObj())
-		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
-	//GameManager::GetSingleton().GetGameScene()->mResourceValueLabels[a_ResType]->SetText(num2string( round(a_Quantity, 2) ) + " (Q " + num2string( round(a_Quality, 2) ) + ")");
-}
-
-void GameManager::UpdateDisplayedResInf(Resource::ResourceType a_ResType, float a_InfLevel)
-{
-	if(GameManager::GetSingleton().GetSelectedHabObj())
-		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
-	//GameManager::GetSingleton().GetGameScene()->mResourceNameLabels[a_ResType]->SetText(GetResourceStringname(a_ResType) + " (" + num2string(round(a_InfLevel, 2)) + ")");
-}
-
-void GameManager::UpdateDisplayedInf(Infrastructure::InfrastructureType a_InfType, float a_InfLevel)
-{
-	if(GameManager::GetSingleton().GetSelectedHabObj())
-		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
-	if(a_InfType <= Infrastructure::DISPOSAL)
-	{
-		//GameManager::GetSingleton().GetGameScene()->mInfrastructureLabels[a_InfType]->SetText(GetInfrastructureStringname(a_InfType) + " (" + num2string(round(a_InfLevel, 2)) + ")");
-	}
-	else
-	{
-		std::cout << "Warning! Trying to set level display of a resource producing building incorrectly!" << std::endl;
-	}
-}
-
-void GameManager::UpdateSelectedInfrastructure(float a_NewInf)
-{
-	if(GameManager::GetSingleton().GetSelectedHabObj())
-		GameManager::GetSingleton().GetGameScene()->SelectObject(GameManager::GetSingleton().GetSelectedHabObj());
-	//GameManager::GetSingleton().GetGameScene()->SetInf(a_NewInf);
-}*/
-
 float GameManager::GetInfWeighting(HabitableObject::HabitableType a_MyHabType, Infrastructure::InfrastructureType a_MyInfType)
 {
 	return GameManager::GetSingleton().DefaultIndustryWeightingPerObject[a_MyHabType][a_MyInfType];
@@ -412,3 +470,122 @@ HabitableObject* GameManager::GetSelectedHabObj()
 {
 	return m_pCurSelectedHabObject;
 }
+
+std::vector<Planet*> GameManager::GetValidDestinations()
+{
+	return GameManager::GetSingleton().m_SettledPlanets;
+}
+
+void GameManager::AddSettletPlanet(Planet* a_pNewColony)
+{
+	GameManager::GetSingleton().m_SettledPlanets.push_back(a_pNewColony);
+}
+
+void GameManager::ShipChangeLevel(Trader* a_pTrader)
+{
+	//check if a_pTrader need to be displayed
+	if(a_pTrader == GameManager::GetSingleton().m_pCurSelectedDispObject)
+	{
+		GameManager::GetSingleton().ViewDisplayableObject(a_pTrader->GetParentDisplayableObject());
+	}
+	else if(a_pTrader->GetParentDisplayableObject() == GameManager::GetSingleton().m_pCurViewedObject)
+	{
+		a_pTrader->ShowDisplayIcon();
+	}
+	else
+	{
+		a_pTrader->ShowDisplayIcon(false);
+	}
+}
+
+Planet* GameManager::GetRandomTraderDestination(Trader* a_pTrader)
+{
+	Planet* pDestPlanet = NULL;
+	while(pDestPlanet == a_pTrader->GetParentDisplayableObject() || !pDestPlanet)
+	{
+		std::vector<Planet*> viableChoices = GameManager::GetValidDestinations();
+		if(viableChoices.size() == 1)
+			break;
+
+		int numChoices = viableChoices.size();
+		if(numChoices)
+		{
+			int destIndex = iRand(0, numChoices);
+			pDestPlanet = viableChoices[destIndex];
+		}
+	}
+
+	return pDestPlanet;
+}
+
+float GameManager::GetAveragePrice(Resource::ResourceType a_ResType)
+{
+	return GameManager::GetSingleton().m_AveragePrices[a_ResType];
+}
+
+void GameManager::RecalculateAveragePrices()
+{
+	for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+	{
+		m_AveragePrices[Resource::ResourceType(resInd)] = 0;
+	}
+
+	for(auto it = m_SettledPlanets.begin(); it != m_SettledPlanets.end(); ++it)
+	{
+		for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+		{
+			Resource::ResourceType curResType = Resource::ResourceType(resInd);
+			//
+			m_AveragePrices[Resource::ResourceType(resInd)] += (*it)->GetResPrice(curResType);
+			
+			float numStored = (*it)->GetStoredResNum(curResType);
+			if(m_MaxGlobalStorees[curResType] == *it)
+			{
+				m_MaxGloballyStored[curResType] = numStored;
+			}
+			else if(numStored > m_MaxGloballyStored[curResType])
+			{
+				m_MaxGloballyStored[curResType] = numStored;
+				m_MaxGlobalStorees[curResType] = *it;
+			}
+		}
+	}
+	
+	for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+	{
+		m_AveragePrices[Resource::ResourceType(resInd)] /= float(m_SettledPlanets.size());
+	}
+
+	//also recalculate the lowest prices globally
+	for(auto it = m_SettledPlanets.begin(); it != m_SettledPlanets.end(); ++it)
+	{
+		//if(!m_LowestGlobalPrices[]
+	}
+}
+
+float GameManager::GetBasePrice(Resource::ResourceType a_ResType)
+{
+	return GameManager::GetSingleton().m_BasePrices[a_ResType];
+}
+
+float GameManager::GetMaxStoredGlobally(Resource::ResourceType a_ResType)
+{
+	return GameManager::GetSingleton().m_MaxGloballyStored[a_ResType];
+}
+
+/*Planet* GameManager::GetHighestPrice(Resource::ResourceType a_ResType)
+{
+	std::vector<Planet*>& colonies = GameManager::GetSingleton().m_SettledPlanets;
+	Planet* pCurPlanet = colonies[0];
+	float curHighestPrice = pCurPlanet->GetResPrice(a_ResType);
+	for(auto it = colonies.begin(); it != colonies.end(); ++it)
+	{
+		if((*it)->GetResPrice(a_ResType) > curHighestPrice)
+		{
+			curHighestPrice = (*it)->GetResPrice(a_ResType);
+			pCurPlanet = *it;
+		}
+	}
+
+	return pCurPlanet;
+}*/

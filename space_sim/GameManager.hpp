@@ -6,7 +6,7 @@
 
 #include "DisplayableObject.hpp"
 #include "Resources.h"
-#include "Defines_Time.h"
+#include "TimeRate.h"
 #include "HabitableObject.hpp"
 
 class OrionSpur;
@@ -14,6 +14,7 @@ class Planet;
 class DisplayableObject;
 class HabitableObject;
 class Game;
+class Trader;
 namespace sf
 {
 	class Image;
@@ -27,8 +28,8 @@ typedef std::pair<Infrastructure::InfrastructureType, float> IndustryWeightPair;
 class GameManager
 {
 public:
-	Planet* GetHomePlanet();
-	void SetHomePlanet(Planet* a_pNewHomePlanet);
+	static Planet* GetHomePlanet();
+	static void SetHomePlanet(Planet* a_pNewHomePlanet);
 	//
 	static GameManager& GetSingleton()
 	{
@@ -44,10 +45,12 @@ public:
 	
 	void Initialise(Game* a_pGameScene);
 	void Uninitialise();
-	void GameUpdate(float a_DeltaT);
+	void Update(float a_DeltaT);
 	void HandleEvent(sf::Event& a_NewEvent);
 	//
-	DisplayableObject::DisplayableType GetCurrentlyViewedType();
+	static DisplayableObject::DisplayableType GetCurrentlyViewedType();
+	static DisplayableObject* GetCurrentlyViewedObject();
+	//
 	void ViewDisplayableObject(DisplayableObject* a_pDisplayObject);
 	void ClickDisplayableObject(DisplayableObject* a_pDisplayObject);
 	void ClickHabitableObject(HabitableObject* a_pHabObject);
@@ -63,6 +66,17 @@ public:
 	//
 	IndustryWeightMap PersonnelAllocationWeighting;
 	//
+	static std::vector<Planet*> GetValidDestinations();
+	static void AddSettletPlanet(Planet* a_pNewColony);
+	static void ShipChangeLevel(Trader* a_pTrader);
+	static Planet* GetRandomTraderDestination(Trader* a_pTrader);
+	//
+	static float GetAveragePrice(Resource::ResourceType a_ResType);
+	static float GetBasePrice(Resource::ResourceType a_ResType);
+	static float GetMaxStoredGlobally(Resource::ResourceType a_ResType);
+	//static Resource::ResourceType GetRandomLowPrice(HabitableObject& a_TargetPlanet);
+	//static Planet* GetHighestPrice(Resource::ResourceType a_ResType);
+	//
 private:
 	GameManager();
 	//
@@ -74,6 +88,8 @@ private:
 	//
 	TimeRate m_CurTimeRate;
 	std::vector<HabitableObject*> m_HabitableObjects;
+	std::vector<Planet*> m_SettledPlanets;
+	std::vector<Trader*> m_Traders;
 	//
 	//DisplayableObject::DisplayableType m_CurView;
 	DisplayableObject* m_pCurViewedObject;
@@ -85,6 +101,13 @@ private:
 	int mDays;
 	int mMonths;
 	int mYears;
+	//
+	std::map<Resource::ResourceType, float> m_AveragePrices;
+	std::map<Resource::ResourceType, float> m_BasePrices;
+	std::map<Resource::ResourceType, float> m_MaxGloballyStored;
+	std::map<Resource::ResourceType, HabitableObject*> m_MaxGlobalStorees;
+	std::map<Resource::ResourceType, HabitableObject*> m_LowestGlobalPrices;
+	void RecalculateAveragePrices();
 };
 
 #endif	//GAME_MANAGER_HPP

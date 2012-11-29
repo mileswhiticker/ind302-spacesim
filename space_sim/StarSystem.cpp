@@ -15,11 +15,15 @@ StarSystem::StarSystem(StellarGroup* a_pParent, bool a_IsHomeSystem)
 ,	mIsNebula(false)
 //,	mAsteroidBelt(*new AsteroidBelt())
 {
+	m_ImageName = "../media/system.png";
+	m_BGImageName = "../media/starsystem_bg.png";
+	//
 	if(a_IsHomeSystem)
 	{
 		//create the starting planet
 		mContents.push_back(new Planet(this, HabitableObject::PLANET_TERRAN));
-		GameManager::GetSingleton().SetHomePlanet((Planet*)mContents.back());
+		GameManager::SetHomePlanet((Planet*)mContents.back());
+		GameManager::AddSettletPlanet((Planet*)mContents.back());
 
 		//create this system's planets
 		GenerateContents();
@@ -31,6 +35,8 @@ StarSystem::StarSystem(StellarGroup* a_pParent, bool a_IsHomeSystem)
 	}
 	else
 	{
+		GenerateContents();
+
 		//5% chance of being a nebula
 		mIsNebula = iRand() > 95 ? true : false;
 		
@@ -63,7 +69,7 @@ StarSystem::~StarSystem()
 
 void StarSystem::GenerateContents()
 {
-	int numPlanets = iRand(20);
+	int numPlanets = 1 + iRand(5);
 	for(int curPlanetNum = 0; curPlanetNum < numPlanets; ++curPlanetNum)
 	{
 		//create random planet type
@@ -89,6 +95,7 @@ void StarSystem::GenerateContents()
 		}
 
 		GameManager::GetSingleton().AddHabitableObject((Planet*)mContents.back());
+		GameManager::AddSettletPlanet((Planet*)mContents.back());
 	}
 	//create the star
 	mContents.push_back(new Star(this));

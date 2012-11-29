@@ -4,6 +4,7 @@
 #include "SceneManager.hpp"
 #include "GameManager.hpp"
 
+#include "Traders.hpp"
 #include "HabitableObject.hpp"
 
 #include "Num2StringHelper.h"
@@ -24,6 +25,9 @@ Game::Game()
 	m_SceneType = SIM;
 	sf::Vector2f windowDims = SFGManager::GetSingleton().GetWindowDimensions();
 	sf::FloatRect allocation;
+	
+	//sfg::Table::Ptr m_pTraderDetailTable;
+	//sfg::Table::Ptr m_pTraderListTable;
 
 	//right panel
 	m_pRightPanel = sfg::Notebook::Create();
@@ -34,23 +38,19 @@ Game::Game()
 	m_pRightPanel->SetAllocation(allocation);
 	m_pRightPanel->SetScrollable(true);
 	//
-	sfg::Table::Ptr pTable1 = sfg::Table::Create();
-	pTable1->Attach(sfg::Label::Create("Test1"), sf::Rect<sf::Uint32>(0,0,1,1));
-	pTable1->Attach(sfg::Label::Create("Test2"), sf::Rect<sf::Uint32>(1,0,1,1));
-	pTable1->Attach(sfg::Label::Create("Test3"), sf::Rect<sf::Uint32>(2,0,1,1));
-	m_pRightPanel->AppendPage(pTable1, sfg::Label::Create("Panel1"));
+	m_pTraderDetailTable = sfg::Table::Create();
+	m_pTraderName = sfg::Label::Create("trader name");
+	m_pTraderDetailTable->Attach(m_pTraderName, sf::Rect<sf::Uint32>(0,0,1,1));
+	m_pTraderWealth = sfg::Label::Create("trader wealth");
+	m_pTraderDetailTable->Attach(m_pTraderWealth, sf::Rect<sf::Uint32>(0,1,1,1));
+	for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+	{
+		m_pTraderDetailTable->Attach(sfg::Label::Create(GetResourceStringname(Resource::ResourceType(resInd))), sf::Rect<sf::Uint32>(0,resInd + 2,1,1));
+	}
+	m_pRightPanel->AppendPage(m_pTraderDetailTable, sfg::Label::Create("Trader detail view"));
 	//
-	sfg::Table::Ptr pTable2 = sfg::Table::Create();
-	pTable2->Attach(sfg::Label::Create("Test1"), sf::Rect<sf::Uint32>(0,0,1,1));
-	pTable2->Attach(sfg::Label::Create("Test2"), sf::Rect<sf::Uint32>(0,1,1,1));
-	pTable2->Attach(sfg::Label::Create("Test3"), sf::Rect<sf::Uint32>(0,2,1,1));
-	m_pRightPanel->AppendPage(pTable2, sfg::Label::Create("Panel2"));
-	//
-	/*sfg::Table::Ptr pTable3 = sfg::Table::Create();
-	pTable3->Attach(sfg::Label::Create("Test1"), sf::Rect<sf::Uint32>(0,0,1,1));
-	pTable3->Attach(sfg::Label::Create("Test2"), sf::Rect<sf::Uint32>(1,0,1,1));
-	pTable3->Attach(sfg::Label::Create("Test3"), sf::Rect<sf::Uint32>(0,1,1,1));
-	pRightPanel->AppendPage(pTable3, sfg::Label::Create("Panel3"));*/
+	m_pTraderListTable = sfg::Table::Create();
+	m_pRightPanel->AppendPage(m_pTraderListTable, sfg::Label::Create("Trader list view"));
 	//
 	m_pWidgets.push_back(m_pRightPanel);
 
@@ -210,6 +210,8 @@ Game::Game()
 	m_pResWaterLabel = sfg::Label::Create("m_pResWaterLabel");
 	m_pConsumableResTable->Attach(m_pResWaterLabel, sf::Rect<sf::Uint32>(2,1,1,1));
 	
+	//unused for now
+	/*
 	//ship production
 	m_pShipProdTable = sfg::Table::Create();
 	m_pBottomPanel->AppendPage(m_pShipProdTable, sfg::Label::Create("Ship production"));
@@ -221,6 +223,7 @@ Game::Game()
 	m_pBottomPanel->AppendPage(m_pDockedTradersTable, sfg::Label::Create("Docked traders"));
 	m_pShipProdTable->SetId("m_pDockedTradersTable");
 	//todo
+	*/
 
 	//bottom right status panel
 	m_pStatusTable = sfg::Table::Create();
@@ -269,8 +272,8 @@ void Game::ChangeView(DisplayableObject* a_pNewFocus)
 	if(!a_pNewFocus)
 		return;
 
-	if(a_pNewFocus->GetParent())
-		m_pMainMenuButton->SetLabel(GetDisplayStringname(a_pNewFocus->GetParent()->GetDisplayableType()));
+	if(a_pNewFocus->GetParentDisplayableObject())
+		m_pMainMenuButton->SetLabel(GetDisplayStringname(a_pNewFocus->GetParentDisplayableObject()->GetDisplayableType()));
 	else
 		m_pMainMenuButton->SetLabel("Main Menu");
 	m_pTitleLabel->SetText( GetDisplayStringname(a_pNewFocus->GetDisplayableType()) );
@@ -282,9 +285,34 @@ void Game::ChangeView(DisplayableObject* a_pNewFocus)
 void Game::SelectObject(HabitableObject* a_pNewSelect)
 {
 	m_pCurSelect = a_pNewSelect;
+	BottomPanelClick();
+
+	/*DisplayInf(m_pCurSelect);
+	//
+	DisplayPower(m_pCurSelect);
+	DisplayAtmos(m_pCurSelect);
+	DisplayStorage(m_pCurSelect);
+	DisplayYearlyProd(m_pCurSelect);
+	DisplayEmploy(m_pCurSelect);
+	DisplayComm(m_pCurSelect);
+	DisplayResidential(m_pCurSelect);
+	//
+	DisplayMining(m_pCurSelect);
+	DisplayGasCollection(m_pCurSelect);
+	DisplayWasteRec(m_pCurSelect);
+	DisplayScrapRec(m_pCurSelect);
+	//
+	DisplayElectronic(m_pCurSelect);
+	DisplayMaterials(m_pCurSelect);
+	DisplayDomesticG(m_pCurSelect);
+	DisplayLuxuryG(m_pCurSelect);
+	//
+	DisplayFood(m_pCurSelect);
+	DisplayWater(m_pCurSelect);
+	DisplayFuel(m_pCurSelect);*/
 
 	//OBJECT INFO
-	m_pObjnameLabel->SetText(a_pNewSelect->GetName());
+	/*m_pObjnameLabel->SetText(a_pNewSelect->GetName());
 	m_pObjtypeLabel->SetText(GetHabitableStringname(a_pNewSelect->GetHabitableType()));
 	m_pObjlocLabel->SetText("obj location");
 	m_pObjinfLabel->SetText("Total infrastructure: " + num2string( round(a_pNewSelect->GetInfrastructureLevel(), 2) ));
@@ -389,7 +417,7 @@ void Game::SelectObject(HabitableObject* a_pNewSelect)
 	m_pResFuelLabel->SetText("Fuel: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FUEL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FUEL), 2)));
 	//
 	m_pWaterInfLabel->SetText("Water purifying: " + num2string(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WATER_PURIFICATION)));
-	m_pResWaterLabel->SetText("Water: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATER), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATER), 2)));
+	m_pResWaterLabel->SetText("Water: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATER), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATER), 2)));*/
 }
 
 void Game::SetDate(std::string a_NewDate)
@@ -484,9 +512,9 @@ void Game::DisplayMining(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
 		m_pMiningInfLabel->SetText("Mining operations: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::MINING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::MINING), 2)) + "%employ)");
-		m_pResCarbLabel->SetText("Carbon matter: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::CARBONACEOUS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::CARBONACEOUS), 2)));
-		m_pResSiliLabel->SetText("Silicon matter: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SILICACEOUS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SILICACEOUS), 2)));
-		m_pResMetalLabel->SetText("Metal ore: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::METALLIC), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::METALLIC), 2)));
+		m_pResCarbLabel->SetText("Carbon matter: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::CARBONACEOUS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::CARBONACEOUS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::CARBONACEOUS), 2)));
+		m_pResSiliLabel->SetText("Silicon matter: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SILICACEOUS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SILICACEOUS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::SILICACEOUS), 2)));
+		m_pResMetalLabel->SetText("Metal ore: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::METALLIC), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::METALLIC), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::METALLIC), 2)));
 	}
 }
 
@@ -495,9 +523,9 @@ void Game::DisplayGasCollection(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
 		m_pGasInfLabel->SetText("Gas collection: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::GAS_PROCESSING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::GAS_PROCESSING), 2)) + "%employ)");
-		m_pResOxyLabel->SetText("Oxygen: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::OXYGEN), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::OXYGEN), 2)));
-		m_pResHydroLabel->SetText("Hydrogen: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::HYDROGEN), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::HYDROGEN), 2)));
-		m_pResWaterCLabel->SetText("H20: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATERCRYSTALS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATERCRYSTALS), 2)));
+		m_pResOxyLabel->SetText("Oxygen: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::OXYGEN), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::OXYGEN), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::OXYGEN), 2)));
+		m_pResHydroLabel->SetText("Hydrogen: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::HYDROGEN), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::HYDROGEN), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::HYDROGEN), 2)));
+		m_pResWaterCLabel->SetText("H20: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATERCRYSTALS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATERCRYSTALS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::WATERCRYSTALS), 2)));
 	}
 }
 
@@ -506,7 +534,7 @@ void Game::DisplayWasteRec(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
 		m_pWasteInfLabel->SetText("Waste recycling: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WASTE_RECYCLING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::WASTE_RECYCLING), 2)) + "%employ)");
-		m_pResWasteLabel->SetText("Organic waste: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::ORGANICWASTE), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::ORGANICWASTE), 2)));
+		m_pResWasteLabel->SetText("Organic waste: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::ORGANICWASTE), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::ORGANICWASTE), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::ORGANICWASTE), 2)));
 	}
 }
 
@@ -515,7 +543,7 @@ void Game::DisplayScrapRec(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pRawResTable"))
 	{
 		m_pScrapInfLabel->SetText("Scrap recycling: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::SCRAP_RECYCLING), 2)) + "(" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::SCRAP_RECYCLING), 2)) + "%employ)");
-		m_pResScrapLabel->SetText("Scrap waste: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SCRAPWASTE), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SCRAPWASTE), 2)));
+		m_pResScrapLabel->SetText("Scrap waste: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SCRAPWASTE), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SCRAPWASTE), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::SCRAPWASTE), 2)));
 	}
 }
 
@@ -524,8 +552,8 @@ void Game::DisplayElectronic(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
 		m_pElecInfLabel->SetText("Electronics production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::ELECTRONICS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::ELECTRONICS_PRODUCTION), 2)) + "%employ)");
-		m_pResCompLabel->SetText("Circuitry: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::CIRCUITRY), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::CIRCUITRY), 2)));
-		m_pResCircLabel->SetText("Components: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::COMPONENTS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::COMPONENTS), 2)));
+		m_pResCompLabel->SetText("Circuitry: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::CIRCUITRY), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::CIRCUITRY), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::CIRCUITRY), 2)));
+		m_pResCircLabel->SetText("Components: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::COMPONENTS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::COMPONENTS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::COMPONENTS), 2)));
 	}
 }
 
@@ -534,8 +562,8 @@ void Game::DisplayMaterials(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
 		m_pMatInfLabel->SetText("Materials production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::MATERIALS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::MATERIALS_PRODUCTION), 2)) + "%employ)");
-		m_pResSheetLabel->SetText("Sheet metal: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SHEETMETAL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SHEETMETAL), 2)));
-		m_pResGirderLabel->SetText("Girders: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::GIRDERS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::GIRDERS), 2)));
+		m_pResSheetLabel->SetText("Sheet metal: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::SHEETMETAL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::SHEETMETAL), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::SHEETMETAL), 2)));
+		m_pResGirderLabel->SetText("Girders: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::GIRDERS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::GIRDERS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::GIRDERS), 2)));
 	}
 }
 
@@ -544,7 +572,7 @@ void Game::DisplayDomesticG(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
 		m_pDomGInfLabel->SetText("Domestic production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::DOMESTICGOODS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::DOMESTICGOODS_PRODUCTION), 2)) + "%employ)");
-		m_pResDomGLabel->SetText("Domestic goods: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::DOMESTICGOODS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::DOMESTICGOODS), 2)));
+		m_pResDomGLabel->SetText("Domestic goods: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::DOMESTICGOODS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::DOMESTICGOODS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::DOMESTICGOODS), 2)));
 	}
 }
 
@@ -553,7 +581,7 @@ void Game::DisplayLuxuryG(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pFinishedResTable"))
 	{
 		m_pLuxGInfLabel->SetText("Luxury production: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::LUXURYGOODS_PRODUCTION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::LUXURYGOODS_PRODUCTION), 2)) + "%employ)");
-		m_pResLuxGLabel->SetText("Luxury goods: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::LUXURYGOODS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::LUXURYGOODS), 2)));
+		m_pResLuxGLabel->SetText("Luxury goods: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::LUXURYGOODS), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::LUXURYGOODS), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::LUXURYGOODS), 2)));
 	}
 }
 
@@ -562,7 +590,7 @@ void Game::DisplayFood(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
 	{
 		m_pFoodInfLabel->SetText("Farming: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FOOD_PROCESSING), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::FOOD_PROCESSING), 2)) + "%employ)");
-		m_pResFoodLabel->SetText("Food: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FOOD), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FOOD), 2)));
+		m_pResFoodLabel->SetText("Food: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FOOD), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FOOD), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::FOOD), 2)));
 		if(!a_pNewSelect->GetSoilAmount() || !a_pNewSelect->GetInfrastructureLevel(Infrastructure::FOOD_PROCESSING))
 		{
 			m_pSoilLabel->SetText("Soil: 0% 0Q");
@@ -579,7 +607,7 @@ void Game::DisplayWater(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
 	{
 		m_pWaterInfLabel->SetText("Water purifying: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::WATER_PURIFICATION), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::WATER_PURIFICATION), 2)) + "%employ)");
-		m_pResWaterLabel->SetText("Water: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATER), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATER), 2)));
+		m_pResWaterLabel->SetText("Water: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::WATER), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::WATER), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::WATER), 2)));
 	}
 }
 
@@ -588,7 +616,7 @@ void Game::DisplayFuel(HabitableObject* a_pNewSelect)
 	if(!m_pBottomPanel->GetNthPage(m_pBottomPanel->GetCurrentPage())->GetId().compare("m_pConsumableResTable"))
 	{
 		m_pFuelInfLabel->SetText("Fuel processing: " + num2string(round(a_pNewSelect->GetInfrastructureLevel(Infrastructure::FUEL_PROCESSING), 2)) + " (" + num2string(round(100 * a_pNewSelect->GetPersonnelMultiplier(Infrastructure::FUEL_PROCESSING), 2)) + "%employ)");
-		m_pResFuelLabel->SetText("Fuel: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FUEL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FUEL), 2)));
+		m_pResFuelLabel->SetText("Fuel: " + num2string(round(a_pNewSelect->GetStoredResNum(Resource::FUEL), 2)) + " Q" + num2string(round(a_pNewSelect->GetStoredResQ(Resource::FUEL), 2)) + " $" + num2string(round(a_pNewSelect->GetResPrice(Resource::FUEL), 2)));
 	}
 }
 
@@ -639,4 +667,33 @@ void Game::BottomPanelClick()
 			//
 		}
 	}
+}
+
+void Game::UpdateTraderDisplay(Trader* a_pSelectedTrader)
+{
+	//
+}
+
+void Game::AddTrader(Trader* a_pTrader)
+{
+	sfg::Label::Ptr traderListItem = sfg::Label::Create(a_pTrader->GetName());
+	traderListItem->SetId(a_pTrader->GetName());
+	//traderListItem->GetSignal(sfg::Widget::OnLeftClick).Connect(&Game::TraderListClick, this);
+	//
+	m_pTraderListTable->Attach(traderListItem, sf::Rect<sf::Uint32>(0,m_pTraderListTable->GetChildren().size(),1,1));
+}
+
+void Game::ClearAllTraders()
+{
+	m_pTraderListTable->RemoveAll();
+	/*sfg::Container::WidgetsList widgetsList = m_pTraderListTable->GetChildren();
+	for(auto it = widgetsList.begin(); it != widgetsList.end(); ++it)
+	{
+		delete *it;
+	}*/
+}
+
+void Game::TraderListClick()
+{
+	//if(!
 }

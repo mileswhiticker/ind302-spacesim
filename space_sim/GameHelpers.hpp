@@ -12,4 +12,8 @@ std::string GetInfrastructureStringname(Infrastructure::InfrastructureType a_Inf
 
 Infrastructure::InfrastructureType GetIndustryFromResource(Resource::ResourceType a_ResType);
 
+std::string GetRandomName(DisplayableObject::DisplayableType a_DispType);
+
+std::string GetRandomTraderName();
+
 #endif	//GAME_HELPERS_HPP

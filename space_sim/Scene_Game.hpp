@@ -14,6 +14,7 @@
 
 class DisplayableObject;
 class HabitableObject;
+class Trader;
 namespace sf
 {
 	class Sprite;
@@ -36,6 +37,11 @@ public:
 	//
 	void SetDate(std::string a_NewDate);
 	void BottomPanelClick();
+	//
+	void AddTrader(Trader* a_pTrader);
+	void ClearAllTraders();
+	//
+	void TraderListClick();
 	//
 private:
 	sfg::Notebook::Ptr m_pBottomPanel;
@@ -76,6 +82,8 @@ public:
 	void DisplayFood(HabitableObject* a_pNewSelect);
 	void DisplayWater(HabitableObject* a_pNewSelect);
 	void DisplayFuel(HabitableObject* a_pNewSelect);
+	//
+	void UpdateTraderDisplay(Trader* a_pSelectedTrader);
 	//
 private:
 	//---- BOTTOM PANEL ----//
@@ -172,6 +180,15 @@ private:
 	//docked traders
 	sfg::Table::Ptr m_pDockedTradersTable;
 	//
+
+	//trader display
+	sfg::Table::Ptr m_pTraderDetailTable;
+	//
+	sfg::Label::Ptr m_pTraderName;
+	sfg::Label::Ptr m_pTraderWealth;
+
+	//total trader list
+	sfg::Table::Ptr m_pTraderListTable;
 };
 
 #endif SCENE_GAME_HPP

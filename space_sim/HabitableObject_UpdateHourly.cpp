@@ -22,8 +22,8 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 		if(m_StoredResNum[Resource::FOOD] < foodNeeded)
 		{
 			//some people starve to death
-			std::cout << int(float(mPopulation) * m_StoredResNum[Resource::FOOD] / foodNeeded) << " died of starvation!" << std::endl;
-			mPopulation = int(float(mPopulation) *m_StoredResNum[Resource::FOOD] / foodNeeded);
+			//std::cout << int(float(mPopulation) * m_StoredResNum[Resource::FOOD] / foodNeeded) << " died of starvation!" << std::endl;
+			//mPopulation = int(float(mPopulation) *m_StoredResNum[Resource::FOOD] / foodNeeded);
 			foodNeeded = m_StoredResNum[Resource::FOOD];
 			UpdateUIInf(Infrastructure::RESIDENTIAL);
 		}
@@ -46,8 +46,8 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 		if(m_StoredResNum[Resource::WATER] < waterNeeded)
 		{
 			//some people die of thirst
-			std::cout << mPopulation - int(mPopulation * m_StoredResNum[Resource::WATER] / waterNeeded) << " people died of thirst!" << std::endl;
-			mPopulation = int(mPopulation * m_StoredResNum[Resource::WATER] / waterNeeded);
+			//std::cout << mPopulation - int(mPopulation * m_StoredResNum[Resource::WATER] / waterNeeded) << " people died of thirst!" << std::endl;
+			//mPopulation = int(mPopulation * m_StoredResNum[Resource::WATER] / waterNeeded);
 			waterNeeded = m_StoredResNum[Resource::WATER];
 			UpdateUIInf(Infrastructure::RESIDENTIAL);
 		}
@@ -98,7 +98,7 @@ void HabitableObject::HourlyUpdate(int a_PropogationDir, int a_Quantity)
 		{
 			//todo: running out of oxygen (people die)
 			float missingOxy = oxyNeeded - m_StoredResNum[Resource::OXYGEN];
-			std::cout << missingOxy << " units of oxygen short!" << std::endl;
+			//std::cout << missingOxy << " units of oxygen short!" << std::endl;
 			oxyNeeded = m_StoredResNum[Resource::OXYGEN];
 			UpdateUIInf(Infrastructure::RESIDENTIAL);
 		}

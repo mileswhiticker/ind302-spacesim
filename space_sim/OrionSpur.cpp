@@ -21,7 +21,8 @@
 OrionSpur::OrionSpur()
 :	DisplayableObject(DisplayableObject::ORIONSPUR, NULL)
 {
-	//
+	m_ImageName = "../media/broke.png";
+	m_BGImageName = "../media/orionspur_bg.png";
 }
 
 OrionSpur::~OrionSpur()
@@ -45,18 +46,10 @@ OrionSpur::~OrionSpur()
 void OrionSpur::GenerateContents()
 {
 	//we have to pre-generate all the stellar groups, so that they can be displayed on the orion spur viewscreen
-	int numStellarGroups = iRand(MIN_NUM_STELLARGROUPS, MAX_NUM_STELLARGROUPS);
-	/*
-	#pragma omp for
-      for (i=nStart; i<=nEnd; ++i) {
-            #pragma omp atomic
-            nSum += i;
-      }
-	  */
-	#pragma omp for
+	int numStellarGroups = 0;//iRand(MIN_NUM_STELLARGROUPS, MAX_NUM_STELLARGROUPS);
+
 	for(int curGroupNum = 1; curGroupNum < numStellarGroups; ++curGroupNum)
 	{
-		#pragma omp atomic
 		//they each handle their own construction
 		mContents.push_back(new StellarGroup(this));
 	}

@@ -2,6 +2,7 @@
 
 #include "StarSystem.hpp"
 #include "MathHelpers.h"
+#include "GameHelpers.hpp"
 
 Planet::Planet(StarSystem* a_pParent, HabitableObject::HabitableType a_NewType)
 //:	DisplayableObject(DisplayableObject::PLANET, a_pParent)
@@ -50,7 +51,9 @@ Planet::Planet(StarSystem* a_pParent, HabitableObject::HabitableType a_NewType)
 			break;
 		}
 	}
+	//
 	GenerateData();
+	mObjName = GetRandomName(DisplayableObject::PLANET);
 }
 
 void Planet::GenerateContents()
@@ -65,6 +68,9 @@ Star::Star(StarSystem* a_pParent)
 	//
 	mRelPosition.x = 0.5f;
 	mRelPosition.y = 0.5f;
+	//
+	m_ImageName = "../media/star.png";
+	m_BGImageName = "../media/star_bg.png";
 }
 
 void Star::GenerateContents()

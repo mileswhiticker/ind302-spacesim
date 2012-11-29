@@ -4,7 +4,7 @@
 #include "DisplayableObject.hpp"
 #include "TimeRate.h"
 
-#define HOURS_PLANET 1.f
+#define HOURS_PLANET 5.f
 #define DAYS_STARSYSTEM 3.f
 #define WEEKS_STELLARGROUP 6.f
 #define MONTHS_ORIONSPUR 12.f

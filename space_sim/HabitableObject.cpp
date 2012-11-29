@@ -50,6 +50,8 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 		//
 		m_StoredResNum.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
 		m_StoredResQ.insert(std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f));
+		//
+		m_ResPrices.insert( std::pair<Resource::ResourceType, float>(Resource::ResourceType(ind), 0.f) );
 	}
 	for(int ind = 0; ind < Infrastructure::MAXVAL; ++ind)
 	{
@@ -93,7 +95,7 @@ HabitableObject::HabitableObject(HabitableType a_MyType, StarSystem* a_pStarSyst
 	m_StoredResQ[Resource::FOOD] = 1.f;
 	m_StoredResNum[Resource::WATER] = 1000000;
 	m_StoredResQ[Resource::WATER] = 1.f;
-	m_StoredResNum[Resource::FUEL] = 100000;
+	m_StoredResNum[Resource::FUEL] = 5000;
 	m_StoredResQ[Resource::FUEL] = 1.f;
 	//m_StoredResNum[Resource::OXYGEN] = 100000;
 	//m_StoredResQ[Resource::OXYGEN] = 1.f;
@@ -344,6 +346,8 @@ int HabitableObject::GetNumJobs()
 float HabitableObject::GetYearlyProduction()
 {
 	//todo
+	//this seems to be fine like it is for now :|
+
 	return 0.f;
 }
 
@@ -355,4 +359,63 @@ float HabitableObject::GetSoilQ()
 float HabitableObject::GetSoilAmount()
 {
 	return mStoredSoilForFarming;
+}
+
+float HabitableObject::GetResPrice(Resource::ResourceType a_ResType)
+{
+	return m_ResPrices[a_ResType];
+}
+
+void HabitableObject::RecalculatePrices()
+{
+	//for now, just calculate prices according to our stocks
+	float storageSpace = mInfrastructureLevel[Infrastructure::STORAGE] * SPACE_PER_STORAGE;
+	if(!storageSpace)
+		storageSpace = 0.000001f;
+	for(int resInd = 0; resInd < Resource::MAXVAL; ++resInd)
+	{
+		Resource::ResourceType curResType = Resource::ResourceType(resInd);
+
+		//apply a price modifier according to how full our stocks are
+		float quantityMulti = 1.f;
+		/*float filledPercent = m_StoredResNum[curResType] / storageSpace;
+		float targetPercent = 1.f / float(Resource::MAXVAL);
+		quantityMulti += targetPercent - filledPercent;
+		if(quantityMulti <= 0)
+			quantityMulti = 0.01f;*/
+
+		//apply a price modifier for how much we have vs the max global amount
+		float globalMulti = GameManager::GetMaxStoredGlobally(curResType) / (m_StoredResNum[curResType] * 2);
+		if(!m_StoredResNum[curResType])
+			globalMulti = 1.f;
+
+		//apply a price modifier for quality
+		float qualityMulti = m_StoredResQ[curResType] * 2;
+
+		m_ResPrices[curResType] = GameManager::GetBasePrice(curResType) * qualityMulti * quantityMulti * globalMulti;
+	}
+	std::map<Resource::ResourceType, float>& derpy = m_ResPrices;
+	std::cout << "";
+	/*m_ResPrices[Resource::CARBONACEOUS] = GameManager::GetBasePrice(Resource::CARBONACEOUS);
+	m_ResPrices[Resource::SILICACEOUS] = GameManager::GetBasePrice(Resource::SILICACEOUS);
+	m_ResPrices[Resource::METALLIC] = GameManager::GetBasePrice(Resource::METALLIC);
+	m_ResPrices[Resource::WATERCRYSTALS] = GameManager::GetBasePrice(Resource::WATERCRYSTALS);
+	//
+	m_ResPrices[Resource::HYDROGEN] = GameManager::GetBasePrice(Resource::HYDROGEN);
+	m_ResPrices[Resource::OXYGEN] = GameManager::GetBasePrice(Resource::OXYGEN);
+	//
+	m_ResPrices[Resource::ORGANICWASTE] = GameManager::GetBasePrice(Resource::ORGANICWASTE);
+	m_ResPrices[Resource::SCRAPWASTE] = GameManager::GetBasePrice(Resource::SCRAPWASTE);
+	//
+	m_ResPrices[Resource::FOOD] = GameManager::GetBasePrice(Resource::FOOD);
+	m_ResPrices[Resource::WATER] = GameManager::GetBasePrice(Resource::WATER);
+	m_ResPrices[Resource::FUEL] = GameManager::GetBasePrice(Resource::FUEL);
+	//
+	m_ResPrices[Resource::GIRDERS] = GameManager::GetBasePrice(Resource::GIRDERS);
+	m_ResPrices[Resource::SHEETMETAL] = GameManager::GetBasePrice(Resource::SHEETMETAL);
+	m_ResPrices[Resource::COMPONENTS] = GameManager::GetBasePrice(Resource::COMPONENTS);
+	m_ResPrices[Resource::CIRCUITRY] = GameManager::GetBasePrice(Resource::CIRCUITRY);
+	//
+	m_ResPrices[Resource::DOMESTICGOODS] = GameManager::GetBasePrice(Resource::DOMESTICGOODS);
+	m_ResPrices[Resource::LUXURYGOODS] = GameManager::GetBasePrice(Resource::LUXURYGOODS);*/
 }

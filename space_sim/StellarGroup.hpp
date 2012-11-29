@@ -16,10 +16,7 @@ public:
 	StellarGroup(OrionSpur* a_pParent, bool a_IsLocalGroup = false);
 	~StellarGroup();
 	//
-	//virtual void HideContents();
-	//
-protected:
-	void GenerateContents();
+	virtual void GenerateContents();
 	//
 private:
 	float mDiameter;

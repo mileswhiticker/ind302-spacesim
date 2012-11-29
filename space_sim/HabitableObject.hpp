@@ -8,7 +8,7 @@ class StarSystem;
 
 #include "Industry.h"
 #include "Resources.h"
-#include "Defines_Time.h"
+#include "TimeRate.h"
 
 #define UPWARD 1
 #define DOWNWARD 2
@@ -72,7 +72,13 @@ public:
 	float GetStoredResNum(Resource::ResourceType a_ResType);
 	float GetStoredResQ(Resource::ResourceType a_ResType);
 
+	float GetResPrice(Resource::ResourceType a_ResType);
 	void Update(float a_DeltaT, TimeRate a_TimeRate);
+	//
+
+	//made public for easy handling of trading
+	void AddResources(Resource::ResourceType a_NewType, float a_Quality, float a_Quantity);
+	void RemoveResources(Resource::ResourceType a_NewType, float a_Quantity);
 	//
 protected:
 	void HourlyUpdate(int a_PropogationDir, int a_Quantity = 1);
@@ -101,6 +107,7 @@ protected:
 	//
 	std::map<Resource::ResourceType, float> m_PlanetResQ;
 	std::map<Resource::ResourceType, float> m_PlanetResAbundance;
+	std::map<Resource::ResourceType, float> m_ResPrices;
 	//todo: atmospheric composition
 	//
 	StarSystem* m_pOrbitingStarSystem;
@@ -114,9 +121,8 @@ protected:
 	void RecalculateStorageNeeded();
 	void RecalculateTargetFoodProduction();
 	void RecalculateUsedStorage();
+	void RecalculatePrices();
 	
-	void AddResources(Resource::ResourceType a_NewType, float a_Quality, float a_Quantity);
-	void RemoveResources(Resource::ResourceType a_NewType, float a_Quantity);
 	//
 	float mCalculatedResourceSpace;
 	float mUsedStorageSpace;

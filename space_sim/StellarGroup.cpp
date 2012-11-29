@@ -23,6 +23,9 @@ StellarGroup::StellarGroup(OrionSpur* a_pParent, bool a_IsLocalGroup)
 ,	mDiameter(0)
 ,	mNumStarSystems(0)
 {
+	m_ImageName = "../media/group.png";
+	m_BGImageName = "../media/stellargroup_bg.png";
+
 	//what's this used for?
 	mDiameter = fRand(MIN_STELLAR_GROUP_DIAMETER, MAX_STELLAR_GROUP_DIAMETER);
 
@@ -34,9 +37,13 @@ StellarGroup::StellarGroup(OrionSpur* a_pParent, bool a_IsLocalGroup)
 
 		//create home system
 		mContents.push_back(new StarSystem(this, true));
+
+		//GenerateContents();
 	}
 	else
 	{
+		GenerateContents();
+
 		//calculate a random position for this group in the orion spur cross-section
 
 		//just pick a random point in a square for now
@@ -57,14 +64,6 @@ StellarGroup::StellarGroup(OrionSpur* a_pParent, bool a_IsLocalGroup)
 		mRelPosition.y = r * sin( theta) * sin( phi );
 		//mRelPosition.z = r * cos( theta );*/
 	}
-
-	//only need to generate these as we come into range of this stellar group
-	int numStarSystems = iRand(MIN_STARSYSTEMS_PER_STELLARGROUP, MAX_STARSYSTEMS_PER_STELLARGROUP);
-	for(int curSystemNum = 0; curSystemNum < numStarSystems; ++curSystemNum)
-	{
-		//create new star system
-		mContents.push_back(new StarSystem(this));
-	}
 }
 
 StellarGroup::~StellarGroup()
@@ -79,5 +78,12 @@ StellarGroup::~StellarGroup()
 
 void StellarGroup::GenerateContents()
 {
-	//
+	int numStarSystems = iRand(1, 3);
+	for(int curSystemNum = 0; curSystemNum < numStarSystems; ++curSystemNum)
+	{
+		//create new star system
+		mContents.push_back(new StarSystem(this));
+	}
+
+	mGeneratedContents = true;
 }

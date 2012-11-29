@@ -152,6 +152,9 @@
     <ClCompile Include="Speed.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp">
@@ -230,6 +233,9 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Speed.hpp">
+      <Filter>Header Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
       <Filter>Header Files\Defines</Filter>
     </ClInclude>
   </ItemGroup>

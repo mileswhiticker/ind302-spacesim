@@ -35,21 +35,10 @@ namespace Resource
 		//
 		MAXVAL
 	};
-
-	struct ResRequirement
-	{
-		ResRequirement(ResourceType a_MyType, float a_Amount)
-		:	resType(a_MyType)
-		,	amount(a_Amount)
-		{
-			//
-		}
-		ResourceType resType;
-		float amount;
-	};
-
-	static std::map<ResourceType, std::vector<ResRequirement>> Requirements;
 };
+
+bool IsCriticalResource(Resource::ResourceType a_ResType);
+bool IsImportantResource(Resource::ResourceType a_ResType);
 
 #define NUM_RAW_MATERIALS int(Resource::FOOD)
 #define NUM_PRODUCED_GOODS (int(Resource::MAXVAL) - NUM_RAW_MATERIALS)
