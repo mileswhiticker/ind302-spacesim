@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\Scenes">
       <UniqueIdentifier>{200f184d-75ce-478d-a437-86895f20477b}</UniqueIdentifier>
     </Filter>
@@ -45,6 +41,9 @@
     </Filter>
     <Filter Include="Source Files\Traders">
       <UniqueIdentifier>{05d477b4-b3bf-4261-b447-18045535ecc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Defines">
+      <UniqueIdentifier>{59f2aab6-6312-40a0-accc-a1c938b436b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +146,12 @@
     <ClCompile Include="Traders.cpp">
       <Filter>Source Files\Traders</Filter>
     </ClCompile>
+    <ClCompile Include="VectorHelpers.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Speed.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp">
@@ -203,23 +208,29 @@
     <ClInclude Include="GameHelpers.hpp">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Defines_Time.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="MathHelpers.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="HabitableObject.hpp">
       <Filter>Header Files\Galaxy</Filter>
     </ClInclude>
-    <ClInclude Include="Industry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Traders.hpp">
       <Filter>Header Files\Traders</Filter>
+    </ClInclude>
+    <ClInclude Include="Industry.h">
+      <Filter>Header Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Header Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeRate.h">
+      <Filter>Header Files\Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorHelpers.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Speed.hpp">
+      <Filter>Header Files\Defines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

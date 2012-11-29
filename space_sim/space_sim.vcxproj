@@ -101,16 +101,18 @@
     <ClCompile Include="SFGManager.cpp" />
     <ClCompile Include="SimManager.cpp" />
     <ClCompile Include="HabitableObject.cpp" />
+    <ClCompile Include="Speed.cpp" />
     <ClCompile Include="StarSystem.cpp" />
     <ClCompile Include="StellarGroup.cpp" />
     <ClCompile Include="Traders.cpp" />
+    <ClCompile Include="VectorHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppManager.hpp" />
     <ClInclude Include="Asteroid.hpp" />
     <ClInclude Include="Industry.h" />
     <ClInclude Include="MathHelpers.h" />
-    <ClInclude Include="Defines_Time.h" />
+    <ClInclude Include="TimeRate.h" />
     <ClInclude Include="DisplayableObject.hpp" />
     <ClInclude Include="GameHelpers.hpp" />
     <ClInclude Include="GameManager.hpp" />
@@ -127,9 +129,11 @@
     <ClInclude Include="SFGManager.hpp" />
     <ClInclude Include="SimManager.hpp" />
     <ClInclude Include="OrionSpur.hpp" />
+    <ClInclude Include="Speed.hpp" />
     <ClInclude Include="StarSystem.hpp" />
     <ClInclude Include="StellarGroup.hpp" />
     <ClInclude Include="Traders.hpp" />
+    <ClInclude Include="VectorHelpers.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Num2StringHelper.inl" />
