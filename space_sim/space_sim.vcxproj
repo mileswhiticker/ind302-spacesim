@@ -41,7 +41,7 @@
     <LibraryPath>$(ProjectDir)../lib/$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\mcp\Desktop\space_sim\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)../include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(ProjectDir)../lib/$(Configuration);$(LibraryPath)</LibraryPath>
