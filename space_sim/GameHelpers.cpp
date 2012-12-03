@@ -412,7 +412,62 @@ std::string GetRandomName(DisplayableObject::DisplayableType a_DispType)
 	//for some reason, the random characters is borking horribly
 	//std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	//std::string out = "" + alphabet[iRand(alphabet.size())] + alphabet[iRand(alphabet.size())] + alphabet[iRand(alphabet.size())] + std::string("-") + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10));
-	std::string out = num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10));
+	std::string out = "default";
+	switch(a_DispType)
+	{
+	case(DisplayableObject::STARSYSTEM):
+		{
+			switch(iRand(8))
+			{
+			case(0):
+				{
+					out = "Aldebaran";
+					break;
+				}
+			case(1):
+				{
+					out = "Alpha Centauri";
+					break;
+				}
+			case(2):
+				{
+					out = "Betelgeuse";
+					break;
+				}
+			case(3):
+				{
+					out = "Sirius";
+					break;
+				}
+			case(4):
+				{
+					out = "Canis Majoris";
+					break;
+				}
+			case(5):
+				{
+					out = "Cephei";
+					break;
+				}
+			case(6):
+				{
+					out = "Antares";
+					break;
+				}
+			case(7):
+				{
+					out = "Wolf 359";
+					break;
+				}
+			}
+			break;
+		}
+	case(DisplayableObject::PLANET):
+		{
+			out = num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10)) + num2string(iRand(10));
+			break;
+		}
+	}
 	return GetDisplayStringname(a_DispType) + " " + out;
 }
 

@@ -23,6 +23,7 @@ DisplayableObject::DisplayableObject(DisplayableType a_Type, DisplayableObject* 
 ,	mIsHabitableObject(false)
 ,	mIsSelected(false)
 ,	m_pSFImage(NULL)
+,	m_Name("")
 {
 	//these should be overridden in the various constructors
 	m_ImageName = "../media/broke.png";
@@ -194,4 +195,9 @@ bool DisplayableObject::IsAlsoHabitableObject()
 std::string DisplayableObject::GetBGName()
 {
 	return m_BGImageName;
+}
+
+std::string DisplayableObject::GetName()
+{
+	return m_Name;
 }

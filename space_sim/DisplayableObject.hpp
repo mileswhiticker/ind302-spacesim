@@ -46,6 +46,7 @@ public:
 	DisplayableObject* GetParentDisplayableObject();
 	sfg::Image::Ptr GetClickableWidget();
 	std::string GetBGName();
+	std::string GetName();
 	//
 	void Render();
 	bool IsAlsoHabitableObject();
@@ -67,6 +68,7 @@ protected:
 	//
 	sfg::Image::Ptr m_pSFGImage;
 	sf::Image* m_pSFImage;
+	std::string m_Name;
 	//
 private:
 	DisplayableType mMyDisplayableType;

@@ -4,6 +4,7 @@
 #include "SFGManager.hpp"
 #include "StellarGroup.hpp"
 
+#include "GameHelpers.hpp"
 #include "MathHelpers.h"
 #include "Asteroid.hpp"
 #include "Planet.hpp"
@@ -18,6 +19,7 @@ StarSystem::StarSystem(StellarGroup* a_pParent, bool a_IsHomeSystem)
 	m_ImageName = "../media/system.png";
 	m_BGImageName = "../media/starsystem_bg.png";
 	//
+	m_Name = GetRandomName(DisplayableObject::STARSYSTEM);
 	if(a_IsHomeSystem)
 	{
 		//create the starting planet
@@ -102,3 +104,5 @@ void StarSystem::GenerateContents()
 	//
 	mGeneratedContents = true;
 }
+
+std::string GetName();
